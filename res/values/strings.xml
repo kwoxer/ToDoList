@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Listy!</string>
+    <string name="app_name">ToDoList (R)</string>
+    <string name="no_todos">Currently there are no Todo items maintained</string>
+    <string name="menu_insert">Add Item</string>
+    <string name="menu_delete">Delete Todo</string>
+    <string name="todo_summary">Summary</string>
+    <string name="todo_description">Delete Todo</string>
+    <string name="todo_edit_summary">Summary</string>
+    <string name="todo_edit_description">Description</string>
+    <string name="todo_edit_confirm">Save ToDo</string>
+    <string name="additionalWrittenBy">Written by ChangBang</string>
+    <string name="additionalTodo">ToDo</string>
+    <string name="additionalTodoSaved">succuessfully saved</string>
+
+    <color name="background">#226600</color>
+    <color name="black">#000000</color>
+	<color name="white">#FFFFFF</color>
+	<color name="red">#FF0000</color>
+	<color name="green">#00FF00</color>
+	<color name="blue">#0000FF</color>
+</resources>
