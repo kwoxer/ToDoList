@@ -119,7 +119,7 @@ public class TodosOverview extends ListActivity {
 		fillData();
 	}
 
-	// Always called when the ToDo are shown
+	// Always called when the ToDos are shown
 	private void fillData() {
 
 		cursor = dbHelper.fetchAllTodos();

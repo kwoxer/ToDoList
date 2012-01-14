@@ -40,9 +40,10 @@ public class TodoDatabaseAdapter {
 	 * Create a new todo If the todo is successfully created return the new
 	 * rowId for that note, otherwise return a -1 to indicate failure.
 	 */
-	public long createTodo(String category, String summary, String description) {
-		ContentValues initialValues = createContentValues(category, summary,
-				description);
+	public long createTodo(String category, boolean done, String summary,
+			String description) {
+		ContentValues initialValues = createContentValues(category, done,
+				summary, description);
 
 		return database.insert(DATABASE_TABLE, null, initialValues);
 	}
@@ -50,10 +51,10 @@ public class TodoDatabaseAdapter {
 	/**
 	 * Update the todo
 	 */
-	public boolean updateTodo(long rowId, String category, String summary,
-			String description) {
-		ContentValues updateValues = createContentValues(category, summary,
-				description);
+	public boolean updateTodo(long rowId, String category, boolean done,
+			String summary, String description) {
+		ContentValues updateValues = createContentValues(category, done,
+				summary, description);
 		return database.update(DATABASE_TABLE, updateValues, KEY_ROWID + "="
 				+ rowId, null) > 0;
 	}
@@ -72,27 +73,29 @@ public class TodoDatabaseAdapter {
 	 */
 	public Cursor fetchAllTodos() {
 		return database.query(DATABASE_TABLE, new String[]{KEY_ROWID,
-				KEY_CATEGORY, KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null,
-				null, null);
+				KEY_CATEGORY, KEY_DONE, KEY_SUMMARY, KEY_DESCRIPTION}, null,
+				null, null, null, null);
 	}
 
 	/**
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchTodo(long rowId) throws SQLException {
-		Cursor mCursor = database.query(true, DATABASE_TABLE, new String[]{
-				KEY_ROWID, KEY_CATEGORY, KEY_SUMMARY, KEY_DESCRIPTION},
-				KEY_ROWID + "=" + rowId, null, null, null, null, null);
+		Cursor mCursor = database.query(true, DATABASE_TABLE,
+				new String[]{KEY_ROWID, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
+						KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId, null, null,
+				null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
 	}
 
-	private ContentValues createContentValues(String category, String summary,
-			String description) {
+	private ContentValues createContentValues(String category, boolean done,
+			String summary, String description) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_CATEGORY, category);
+		values.put(KEY_DONE, done);
 		values.put(KEY_SUMMARY, summary);
 		values.put(KEY_DESCRIPTION, description);
 		return values;

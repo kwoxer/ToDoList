@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 public class TodoDetails extends Activity {
 	private EditText mTitleText;
 	private EditText mBodyText;
+	private CheckBox mCheckBox;
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Spinner mCategory;
@@ -28,6 +30,7 @@ public class TodoDetails extends Activity {
 		mCategory = (Spinner) findViewById(R.id.category);
 		mTitleText = (EditText) findViewById(R.id.todo_edit_summary);
 		mBodyText = (EditText) findViewById(R.id.todo_edit_description);
+		mCheckBox = (CheckBox) findViewById(R.id.todo_edit_checkBox);
 
 		Button confirmButton = (Button) findViewById(R.id.todo_edit_button);
 		mRowId = null;
@@ -63,6 +66,14 @@ public class TodoDetails extends Activity {
 					mCategory.setSelection(i);
 				}
 			}
+			System.out.println(todo.getInt(todo
+					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)));
+			if (todo.getInt(todo
+					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)) == 1) {
+				mCheckBox.setChecked(true);
+			} else {
+				mCheckBox.setChecked(false);
+			}
 
 			mTitleText.setText(todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_SUMMARY)));
@@ -71,7 +82,6 @@ public class TodoDetails extends Activity {
 							.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DESCRIPTION)));
 		}
 	}
-
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		saveState();
@@ -94,7 +104,7 @@ public class TodoDetails extends Activity {
 		String category = (String) mCategory.getSelectedItem();
 		String summary = mTitleText.getText().toString();
 		String description = mBodyText.getText().toString();
-
+		boolean done = mCheckBox.isChecked();
 		Toast.makeText(
 				this,
 				getResources().getString(R.string.additionalTodo)
@@ -106,12 +116,13 @@ public class TodoDetails extends Activity {
 				Toast.LENGTH_LONG).show();
 
 		if (mRowId == null) {
-			long id = mDbHelper.createTodo(category, summary, description);
+			long id = mDbHelper
+					.createTodo(category, done, summary, description);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
-			mDbHelper.updateTodo(mRowId, category, summary, description);
+			mDbHelper.updateTodo(mRowId, category, done, summary, description);
 		}
 	}
 }

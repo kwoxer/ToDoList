@@ -7,7 +7,7 @@ public class TodoTable {
 	// Database creation SQL statement
 	private static final String DATABASE_CREATE = "create table todo "
 			+ "(_id integer primary key autoincrement, "
-			+ "category text not null, " + "summary text not null,"
+			+ "category text not null, "+ "done integer not null, " + "summary text not null,"
 			+ " description text not null);";
 
 	public static void onCreate(SQLiteDatabase database) {
