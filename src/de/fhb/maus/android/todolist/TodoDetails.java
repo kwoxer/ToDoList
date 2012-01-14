@@ -94,7 +94,7 @@ public class TodoDetails extends Activity {
 		String category = (String) mCategory.getSelectedItem();
 		String summary = mTitleText.getText().toString();
 		String description = mBodyText.getText().toString();
-
+		int done = 1;
 		Toast.makeText(
 				this,
 				getResources().getString(R.string.additionalTodo)
@@ -106,12 +106,13 @@ public class TodoDetails extends Activity {
 				Toast.LENGTH_LONG).show();
 
 		if (mRowId == null) {
-			long id = mDbHelper.createTodo(category, summary, description);
+			long id = mDbHelper
+					.createTodo(category, done, summary, description);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
-			mDbHelper.updateTodo(mRowId, category, summary, description);
+			mDbHelper.updateTodo(mRowId, category, done, summary, description);
 		}
 	}
 }
