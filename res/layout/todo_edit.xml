@@ -25,6 +25,13 @@
             android:hint="@string/todo_edit_summary"
             android:imeOptions="actionNext" >
         </EditText>
+
+        <CheckBox
+            android:id="@+id/todo_edit_checkBox"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.2"/>
+
     </LinearLayout>
 
     <EditText

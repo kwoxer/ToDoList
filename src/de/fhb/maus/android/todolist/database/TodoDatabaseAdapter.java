@@ -40,7 +40,7 @@ public class TodoDatabaseAdapter {
 	 * Create a new todo If the todo is successfully created return the new
 	 * rowId for that note, otherwise return a -1 to indicate failure.
 	 */
-	public long createTodo(String category, int done, String summary,
+	public long createTodo(String category, boolean done, String summary,
 			String description) {
 		ContentValues initialValues = createContentValues(category, done,
 				summary, description);
@@ -51,7 +51,7 @@ public class TodoDatabaseAdapter {
 	/**
 	 * Update the todo
 	 */
-	public boolean updateTodo(long rowId, String category, int done,
+	public boolean updateTodo(long rowId, String category, boolean done,
 			String summary, String description) {
 		ContentValues updateValues = createContentValues(category, done,
 				summary, description);
@@ -91,7 +91,7 @@ public class TodoDatabaseAdapter {
 		return mCursor;
 	}
 
-	private ContentValues createContentValues(String category, int done,
+	private ContentValues createContentValues(String category, boolean done,
 			String summary, String description) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_CATEGORY, category);
