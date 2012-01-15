@@ -135,6 +135,7 @@ public class TodosOverview extends ListActivity {
 				R.layout.todo_row, cursor, from, to);
 		setListAdapter(notes);
 
+		// needed for updating checkboxs
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
