@@ -66,8 +66,7 @@ public class TodoDetails extends Activity {
 					mCategory.setSelection(i);
 				}
 			}
-			System.out.println(todo.getInt(todo
-					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)));
+			
 			if (todo.getInt(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)) == 1) {
 				mCheckBox.setChecked(true);

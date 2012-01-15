@@ -125,8 +125,9 @@ public class TodosOverview extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[]{TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.label};
+		String[] from = new String[]{TodoDatabaseAdapter.KEY_DONE,
+				TodoDatabaseAdapter.KEY_SUMMARY};
+		int[] to = new int[]{R.id.checkBox, R.id.label};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
