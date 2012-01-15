@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -127,12 +128,28 @@ public class TodosOverview extends ListActivity {
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_DONE,
 				TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.checkBox, R.id.label};
+		int[] to = new int[]{R.id.todo_row_checkBox, R.id.label};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.todo_row, cursor, from, to);
 		setListAdapter(notes);
+
+		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+			public boolean setViewValue(View view, Cursor cursor,
+					int columnIndex) {
+				int nCheckedIndex = cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE);
+				if (columnIndex == nCheckedIndex) {
+					CheckBox cb = (CheckBox) view;
+					boolean bChecked = (cursor.getInt(nCheckedIndex) != 0);
+					cb.setChecked(bChecked);
+					return true;
+				}
+				return false;
+			}
+		});
+
 	}
 
 	// When a ToDo Delete Menu is gonna be shown
