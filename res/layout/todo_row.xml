@@ -16,6 +16,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="@string/additionalTodo"
         android:src="@drawable/todo"
         android:visibility="visible" />
 
@@ -27,6 +28,6 @@
         android:lines="1"
         android:text="@+id/TextView"
         android:textColor="@color/white"
-        android:textSize="36px" />
+        android:textSize="36dp" />
 
 </LinearLayout>
