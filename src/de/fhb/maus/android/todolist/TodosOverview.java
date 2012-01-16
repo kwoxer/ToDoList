@@ -10,13 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
-import de.fhb.maus.android.todolist.R;
 
 /**
  * @author Curtis & Sebastian
@@ -53,12 +53,12 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
-				return true;
-			case R.id.about :
-				createAbout();
-				return true;
+		case R.id.insert:
+			createTodo();
+			return true;
+		case R.id.about:
+			createAbout();
+			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -66,9 +66,9 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
-				return true;
+		case R.id.insert:
+			createTodo();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -77,12 +77,12 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case DELETE_ID :
-				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-						.getMenuInfo();
-				dbHelper.deleteTodo(info.id);
-				fillData();
-				return true;
+		case DELETE_ID:
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+					.getMenuInfo();
+			dbHelper.deleteTodo(info.id);
+			fillData();
+			return true;
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -126,9 +126,9 @@ public class TodosOverview extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[]{TodoDatabaseAdapter.KEY_DONE,
-				TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.todo_row_checkBox, R.id.label};
+		String[] from = new String[] { TodoDatabaseAdapter.KEY_DONE,
+				TodoDatabaseAdapter.KEY_SUMMARY };
+		int[] to = new int[] { R.id.todo_row_checkBox, R.id.label };
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
@@ -137,13 +137,48 @@ public class TodosOverview extends ListActivity {
 
 		// needed for updating checkbox
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-			public boolean setViewValue(View view, Cursor cursor,
+			public boolean setViewValue(View view, final Cursor cursor,
 					int columnIndex) {
-				int nCheckedIndex = cursor
-						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE);
+				
+				System.out.println("setting view value for view " + view);
+				
+				int nCheckedIndex = (cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
 				if (columnIndex == nCheckedIndex) {
 					CheckBox cb = (CheckBox) view;
 					boolean bChecked = (cursor.getInt(nCheckedIndex) != 0);
+
+					final long id = cursor.getLong(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
+					final String category = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
+					final String summary = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
+					final String description = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
+
+					cb.setOnClickListener(new OnClickListener() {
+
+						public void onClick(View v) {
+							CheckBox mCheckBox = (CheckBox) v;
+
+							System.out.println("ID: " + id);
+							System.out.println("Checked: "
+									+ mCheckBox.isChecked());
+							System.out.println("Category: " + category);
+							System.out.println("Summary: " + summary);
+							System.out.println("Description: " + description);
+
+							if (mCheckBox.isChecked()) {
+								dbHelper.updateTodo(id, category, true,
+										summary, description);
+							} else {
+								dbHelper.updateTodo(id, category, false,
+										summary, description);
+							}
+
+						}
+					});
 					cb.setChecked(bChecked);
 					return true;
 				}
