@@ -137,11 +137,11 @@ public class TodosOverview extends ListActivity {
 
 		// needed for updating checkbox
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-			public boolean setViewValue(View view, final Cursor cursor,
+			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
-				
+
 				System.out.println("setting view value for view " + view);
-				
+
 				int nCheckedIndex = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
 				if (columnIndex == nCheckedIndex) {
