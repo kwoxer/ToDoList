@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
@@ -134,12 +136,20 @@ public class TodosOverview extends ListActivity {
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.todo_row, cursor, from, to);
 		setListAdapter(notes);
+		
+		
+		
+		
+		
 
-		// Updating Checkbox
+		// Updating Checkbox and Icon
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
 
+				//ImageView ico  = (ImageView) view;
+				//ico.setImageResource(R.drawable.todo_important);
+				
 				int nCheckedIndex = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
 				if (columnIndex == nCheckedIndex) {

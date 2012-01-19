@@ -17,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/additionalTodo"
-        android:src="@drawable/todo"
+        android:src="@drawable/ic_todo"
         android:visibility="visible" />
 
     <TextView
