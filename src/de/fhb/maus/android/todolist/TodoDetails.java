@@ -49,7 +49,6 @@ public class TodoDetails extends Activity {
 				setResult(RESULT_OK);
 				finish();
 			}
-
 		});
 	}
 
@@ -86,7 +85,6 @@ public class TodoDetails extends Activity {
 	}
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		System.out.println(1);
 		saveState();
 		outState.putSerializable(TodoDatabaseAdapter.KEY_ROWID, mRowId);
 	}

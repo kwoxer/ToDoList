@@ -41,7 +41,7 @@ public class TodosOverview extends ListActivity {
 		registerForContextMenu(getListView());
 	}
 
-	// Create the menu based on the XML defintion
+	/** Create the menu based on the XML defintion */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -49,7 +49,7 @@ public class TodosOverview extends ListActivity {
 		return true;
 	}
 
-	// Reaction to the menu selection
+	/** Reaction to the menu selection */
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
@@ -135,12 +135,10 @@ public class TodosOverview extends ListActivity {
 				R.layout.todo_row, cursor, from, to);
 		setListAdapter(notes);
 
-		// needed for updating checkbox
+		// Updating Checkbox
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
-
-				//System.out.println("setting view value for view " + view);
 
 				int nCheckedIndex = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
@@ -158,7 +156,7 @@ public class TodosOverview extends ListActivity {
 							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
 
 					cb.setOnClickListener(new OnClickListener() {
-						
+
 						public void onClick(View v) {
 							CheckBox mCheckBox = (CheckBox) v;
 
@@ -170,7 +168,7 @@ public class TodosOverview extends ListActivity {
 										summary, description);
 						}
 					});
-					
+
 					cb.setChecked(bChecked);
 					return true;
 				}
