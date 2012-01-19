@@ -141,14 +141,16 @@ public class TodosOverview extends ListActivity {
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
+				
+				// Change Icon
 				int nCheckedIndex1 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
-
-				String category_type = cursor.getString((cursor
-						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
+				
 				if (columnIndex == nCheckedIndex1) {
 					ImageView ico = (ImageView) view;
-					if (category_type.equals("Urgent")) {
+					String category_type = cursor.getString((cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
+					if (category_type.equals(getResources().getStringArray(R.array.priorities)[0])) {
 						ico.setImageResource(R.drawable.ic_todoimportant);
 						return true;
 					} else {
@@ -157,6 +159,7 @@ public class TodosOverview extends ListActivity {
 					}
 				}
 
+				// Change Checkbox
 				int nCheckedIndex2 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
 				if (columnIndex == nCheckedIndex2) {
