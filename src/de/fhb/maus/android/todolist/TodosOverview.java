@@ -128,33 +128,40 @@ public class TodosOverview extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[]{TodoDatabaseAdapter.KEY_DONE,
-				TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.todo_row_checkBox, R.id.label};
+		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
+				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY};
+		int[] to = new int[]{R.id.icon, R.id.todo_row_checkBox, R.id.label};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.todo_row, cursor, from, to);
 		setListAdapter(notes);
-		
-		
-		
-		
-		
 
 		// Updating Checkbox and Icon
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
+				int nCheckedIndex1 = (cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 
-				//ImageView ico  = (ImageView) view;
-				//ico.setImageResource(R.drawable.todo_important);
-				
-				int nCheckedIndex = (cursor
+				String category_type = cursor.getString((cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
+				if (columnIndex == nCheckedIndex1) {
+					ImageView ico = (ImageView) view;
+					if (category_type.equals("Urgent")) {
+						ico.setImageResource(R.drawable.ic_todoimportant);
+						return true;
+					} else {
+						ico.setImageResource(R.drawable.ic_todo);
+						return true;
+					}
+				}
+
+				int nCheckedIndex2 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
-				if (columnIndex == nCheckedIndex) {
+				if (columnIndex == nCheckedIndex2) {
 					CheckBox cb = (CheckBox) view;
-					boolean bChecked = (cursor.getInt(nCheckedIndex) != 0);
+					boolean bChecked = (cursor.getInt(nCheckedIndex2) != 0);
 
 					final long id = cursor.getLong(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
