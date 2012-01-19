@@ -3,7 +3,7 @@ package de.fhb.maus.android.todolist;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ConntactActivity extends Activity{
+public class TodoContactActivity extends Activity{
 
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

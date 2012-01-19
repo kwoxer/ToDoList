@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class TodoLoginActivity extends Activity {
 	/** Called when the activity is first created. */
 
 	private Button signIn;
@@ -35,8 +35,8 @@ public class LoginActivity extends Activity {
 				}
 
 				// Log.i(ShowToDoActivity.class.getName(),)
-				startActivity(new Intent(LoginActivity.this,
-						TodosOverview.class));
+				startActivity(new Intent(TodoLoginActivity.this,
+						TodoListActivity.class));
 			}
 
 		});

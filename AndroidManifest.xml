@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_launcher_todolist"
         android:label="@string/app_name" >
         <activity
-            android:name=".LoginActivity"
+            android:name=".TodoLoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.fhb.maus.android.todolist.TodoDetails"
+            android:name=".TodoEditActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name="de.fhb.maus.android.todolist.TodosOverview"
+            android:name=".TodoListActivity"
             android:label="@string/app_name" >
         </activity>
 

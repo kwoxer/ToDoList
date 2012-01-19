@@ -14,7 +14,7 @@ import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
-public class TodoDetails extends Activity {
+public class TodoEditActivity extends Activity {
 	private EditText mTitleText;
 	private EditText mBodyText;
 	private CheckBox mCheckBox;

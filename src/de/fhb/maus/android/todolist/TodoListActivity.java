@@ -24,7 +24,7 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
  * @author Curtis & Sebastian
  * @version v0.0.8
  */
-public class TodosOverview extends ListActivity {
+public class TodoListActivity extends ListActivity {
 	private TodoDatabaseAdapter dbHelper;
 	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
@@ -44,7 +44,7 @@ public class TodosOverview extends ListActivity {
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(TodosOverview.this, TodoDetails.class));
+				startActivity(new Intent(TodoListActivity.this, TodoEditActivity.class));
 			}
 		});
 
@@ -53,7 +53,7 @@ public class TodosOverview extends ListActivity {
 		about.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(TodosOverview.this,
+				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
 						Toast.LENGTH_SHORT).show();
 			}
@@ -116,12 +116,12 @@ public class TodosOverview extends ListActivity {
 	}
 
 	private void createTodo() {
-		Intent i = new Intent(this, TodoDetails.class);
+		Intent i = new Intent(this, TodoEditActivity.class);
 		startActivityForResult(i, ACTIVITY_CREATE);
 	}
 
 	private void createAbout() {
-		Toast.makeText(TodosOverview.this,
+		Toast.makeText(TodoListActivity.this,
 				getResources().getString(R.string.additionalWrittenBy),
 				Toast.LENGTH_SHORT).show();
 	}
@@ -130,7 +130,7 @@ public class TodosOverview extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(this, TodoDetails.class);
+		Intent i = new Intent(this, TodoEditActivity.class);
 		i.putExtra(TodoDatabaseAdapter.KEY_ROWID, id);
 		// Activity returns an result if called with startActivityForResult
 
