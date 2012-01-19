@@ -1,23 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>  
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"  
-    package="de.fhb.maus.android.todolist" android:versionCode="1"  
-    android:versionName="1.0">  
-    <application android:icon="@drawable/ic_launcher_todolist" android:label="@string/app_name">  
-        <activity android:name=".TodosOverview" android:label="@string/app_name">  
-            <intent-filter>  
-                <action android:name="android.intent.action.MAIN" />  
-                <category android:name="android.intent.category.LAUNCHER" />  
-            </intent-filter>  
-        </activity>  
-  
-        <activity android:name="de.fhb.maus.android.todolist.TodoDetails"  
-            android:windowSoftInputMode="stateVisible|adjustResize">  
-            >  
-  
-        </activity>  
-        <provider android:name="de.fhb.maus.android.todolist.MyTodoContentProvider"  
-            android:authorities="de.fhb.maus.android.todolist.provider"></provider>  
-    </application>  
-    <uses-sdk android:minSdkVersion="10" />  
-  
-</manifest>  
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.fhb.maus.android.todolist"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+
+    <application
+        android:icon="@drawable/ic_launcher_todolist"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.fhb.maus.android.todolist.TodoDetails"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name="de.fhb.maus.android.todolist.TodosOverview"
+            android:label="@string/app_name" >
+        </activity>
+
+        <provider
+            android:name="de.fhb.maus.android.todolist.MyTodoContentProvider"
+            android:authorities="de.fhb.maus.android.todolist.provider" >
+        </provider>
+    </application>
+
+</manifest>

@@ -12,11 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
@@ -30,13 +30,39 @@ public class TodosOverview extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor cursor;
+	private Button ok;
+	private Button about;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
+
+		// Sets up Button for adding a ToDo
+		ok = (Button) findViewById(R.id.add);
+		ok.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TodosOverview.this, TodoDetails.class));
+			}
+		});
+
+		// Sets up Button showing the logout Toast
+		about = (Button) findViewById(R.id.logout);
+		about.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(TodosOverview.this,
+						getResources().getString(R.string.additionalLoggedOut),
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
+		
+		// Helps to get our data from a database
 		dbHelper = new TodoDatabaseAdapter(this);
 		dbHelper.open();
 		fillData();
@@ -135,22 +161,24 @@ public class TodosOverview extends ListActivity {
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.todo_row, cursor, from, to);
-		setListAdapter(notes);
 
 		// Updating Checkbox and Icon
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+			// Go through Cursor Adapter and watch
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
-				
+
 				// Change Icon
 				int nCheckedIndex1 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
-				
+
 				if (columnIndex == nCheckedIndex1) {
 					ImageView ico = (ImageView) view;
 					String category_type = cursor.getString((cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
-					if (category_type.equals(getResources().getStringArray(R.array.priorities)[0])) {
+					// getting the actual string from the priority values
+					if (category_type.equals(getResources().getStringArray(
+							R.array.priorities)[0])) {
 						ico.setImageResource(R.drawable.ic_todoimportant);
 						return true;
 					} else {
@@ -195,7 +223,7 @@ public class TodosOverview extends ListActivity {
 				return false;
 			}
 		});
-
+		setListAdapter(notes);
 	}
 
 	// When a ToDo Delete Menu is gonna be shown
