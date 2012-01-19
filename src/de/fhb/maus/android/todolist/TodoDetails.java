@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,6 +21,8 @@ public class TodoDetails extends Activity {
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Spinner mCategory;
+
+	private boolean backButtonOverClicked = false;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -66,7 +69,7 @@ public class TodoDetails extends Activity {
 					mCategory.setSelection(i);
 				}
 			}
-			
+
 			if (todo.getInt(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)) == 1) {
 				mCheckBox.setChecked(true);
@@ -83,14 +86,28 @@ public class TodoDetails extends Activity {
 	}
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		System.out.println(1);
 		saveState();
 		outState.putSerializable(TodoDatabaseAdapter.KEY_ROWID, mRowId);
 	}
 
+	// Just Save the Edit if not the back button was clicked
 	@Override
 	protected void onPause() {
 		super.onPause();
-		saveState();
+		if (!backButtonOverClicked) {
+			saveState();
+		}
+	}
+
+	// Looking for the pressevent of the back Button
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			Log.d(this.getClass().getName(), "back button pressed");
+			backButtonOverClicked = true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override

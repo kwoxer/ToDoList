@@ -53,12 +53,12 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.insert:
-			createTodo();
-			return true;
-		case R.id.about:
-			createAbout();
-			return true;
+			case R.id.insert :
+				createTodo();
+				return true;
+			case R.id.about :
+				createAbout();
+				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -66,9 +66,9 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.insert:
-			createTodo();
-			return true;
+			case R.id.insert :
+				createTodo();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -77,12 +77,12 @@ public class TodosOverview extends ListActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case DELETE_ID:
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-					.getMenuInfo();
-			dbHelper.deleteTodo(info.id);
-			fillData();
-			return true;
+			case DELETE_ID :
+				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+						.getMenuInfo();
+				dbHelper.deleteTodo(info.id);
+				fillData();
+				return true;
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -126,9 +126,9 @@ public class TodosOverview extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[] { TodoDatabaseAdapter.KEY_DONE,
-				TodoDatabaseAdapter.KEY_SUMMARY };
-		int[] to = new int[] { R.id.todo_row_checkBox, R.id.label };
+		String[] from = new String[]{TodoDatabaseAdapter.KEY_DONE,
+				TodoDatabaseAdapter.KEY_SUMMARY};
+		int[] to = new int[]{R.id.todo_row_checkBox, R.id.label};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
@@ -140,7 +140,7 @@ public class TodosOverview extends ListActivity {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
 
-				System.out.println("setting view value for view " + view);
+				//System.out.println("setting view value for view " + view);
 
 				int nCheckedIndex = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
@@ -158,27 +158,19 @@ public class TodosOverview extends ListActivity {
 							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
 
 					cb.setOnClickListener(new OnClickListener() {
-
+						
 						public void onClick(View v) {
 							CheckBox mCheckBox = (CheckBox) v;
 
-							System.out.println("ID: " + id);
-							System.out.println("Checked: "
-									+ mCheckBox.isChecked());
-							System.out.println("Category: " + category);
-							System.out.println("Summary: " + summary);
-							System.out.println("Description: " + description);
-
-							if (mCheckBox.isChecked()) {
+							if (mCheckBox.isChecked())
 								dbHelper.updateTodo(id, category, true,
 										summary, description);
-							} else {
+							else
 								dbHelper.updateTodo(id, category, false,
 										summary, description);
-							}
-
 						}
 					});
+					
 					cb.setChecked(bChecked);
 					return true;
 				}
