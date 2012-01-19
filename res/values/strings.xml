@@ -7,8 +7,8 @@
     <string name="todo_summary">Summary</string>
     <string name="todo_list_add">Add ToDo</string>
     <string name="todo_list_logout">Logout</string>
-    <string name="todo_edit_summary">Summary</string>
-    <string name="todo_edit_description">Description</string>
+    <string name="todo_edit_hint_summary">Summary</string>
+    <string name="todo_edit_hint_description">Description</string>
     <string name="todo_edit_confirm">Save ToDo</string>
     <string name="additionalWrittenBy">Written by ChangBang</string>
     <string name="additionalTodo">ToDo</string>
@@ -16,5 +16,7 @@
     <string name="additionalLoggedOut">You are now logged out. Have a nice day :D</string>
     <string name="login_login">Login</string>
     <string name="login_exit">Exit</string>
+    <string name="login_hint_mail">E-Mail</string>
+    <string name="login_hint_pass">Password</string>
 
 </resources>

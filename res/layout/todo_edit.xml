@@ -4,48 +4,56 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <DatePicker
-        android:id="@+id/datePicker1"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" >
 
-    <Spinner
-        android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/priorities" >
-    </Spinner>
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:entries="@array/priorities" />
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LinearLayout"
-        android:layout_width="fill_parent"
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/summary"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/todo_edit_summary"
-            android:imeOptions="actionNext" >
-        </EditText>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.2" />
+            android:layout_weight="1.99"
+            android:hint="@string/todo_edit_hint_summary"
+            android:imeOptions="actionNext" />
     </LinearLayout>
-
+
+    <LinearLayout
+        android:id="@+id/LinearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
+
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="36.47"
-        android:gravity="top"
-        android:hint="@string/todo_edit_description"
-        android:imeOptions="actionSend|flagNoEnterAction" >
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="clip_vertical"
+        android:hint="@string/todo_edit_hint_description"
+        android:imeOptions="actionGo" >
     </EditText>
 
     <Button
