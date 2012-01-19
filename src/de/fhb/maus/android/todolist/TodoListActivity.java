@@ -231,7 +231,7 @@ public class TodoListActivity extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
 	}
 
 	@Override

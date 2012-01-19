@@ -31,11 +31,11 @@ public class TodoEditActivity extends Activity {
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
 		mCategory = (Spinner) findViewById(R.id.category);
-		mTitleText = (EditText) findViewById(R.id.todo_edit_summary);
-		mBodyText = (EditText) findViewById(R.id.todo_edit_description);
-		mCheckBox = (CheckBox) findViewById(R.id.todo_edit_checkBox);
+		mTitleText = (EditText) findViewById(R.id.summary);
+		mBodyText = (EditText) findViewById(R.id.description);
+		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
-		Button confirmButton = (Button) findViewById(R.id.todo_edit_button);
+		Button confirmButton = (Button) findViewById(R.id.button);
 		mRowId = null;
 		Bundle extras = getIntent().getExtras();
 		mRowId = (bundle == null) ? null : (Long) bundle

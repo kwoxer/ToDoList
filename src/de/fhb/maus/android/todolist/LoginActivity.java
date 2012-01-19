@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class TodoLoginActivity extends Activity {
+public class LoginActivity extends Activity {
 	/** Called when the activity is first created. */
 
 	private Button signIn;
@@ -19,7 +19,7 @@ public class TodoLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		signIn = (Button) findViewById(R.id.SignIn);
+		signIn = (Button) findViewById(R.id.login);
 		signIn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -34,11 +34,9 @@ public class TodoLoginActivity extends Activity {
 					return;
 				}
 
-				// Log.i(ShowToDoActivity.class.getName(),)
-				startActivity(new Intent(TodoLoginActivity.this,
+				startActivity(new Intent(LoginActivity.this,
 						TodoListActivity.class));
 			}
-
 		});
 	}
 }
