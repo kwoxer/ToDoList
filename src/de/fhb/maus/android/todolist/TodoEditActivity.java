@@ -101,6 +101,7 @@ public class TodoEditActivity extends Activity {
 	// Looking for the pressevent of the back Button
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO http://developer.android.com/reference/android/app/Activity.html#onBackPressed%28%29
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			Log.d(this.getClass().getName(), "back button pressed");
 			backButtonOverClicked = true;

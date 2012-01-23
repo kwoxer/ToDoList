@@ -160,7 +160,7 @@ public class TodoListActivity extends ListActivity {
 
 		String[] from = new String[] { TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY };
-		int[] to = new int[] { R.id.icon, R.id.todo_row_checkBox, R.id.label };
+		int[] to = new int[] { R.id.icon, R.id.todo_row_checkBox, R.id.textview };
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
