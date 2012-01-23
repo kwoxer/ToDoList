@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <CheckBox
-        android:id="@+id/todo_row_checkBox"
+        android:id="@+id/todoRowCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:focusable="false" />
@@ -20,14 +20,38 @@
         android:src="@drawable/ic_todo"
         android:visibility="visible" />
 
-    <TextView
-        android:id="@+id/textview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="0px"
-        android:lines="1"
-        android:text="@+id/TextView"
-        android:textColor="@color/white"
-        android:textSize="36dp" />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Platzhalter Datum"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="11dip" />
+
+        <TextView
+            android:id="@+id/textViewSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0px"
+            android:text="@+id/TextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
