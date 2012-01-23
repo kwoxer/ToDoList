@@ -36,8 +36,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1.99"
-            android:hint="@string/todo_edit_hint_summary"
-            android:imeOptions="actionNext" />
+            android:hint="@string/todo_edit_hint_summary" android:inputType="textNoSuggestions"/>
     </LinearLayout>
 
     <LinearLayout
