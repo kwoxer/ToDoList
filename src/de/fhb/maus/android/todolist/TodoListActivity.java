@@ -39,19 +39,23 @@ public class TodoListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
 
+		// TODO sort by date or other things
+		// TODO überfällige Todos – d.h. Todos mit abgelaufenem
+		// Fälligkeitsdatum – sollen visuell besonders hervorgehoben werden
+		// TODO add a menu item "sort by ..." to the View
+
 		// Sets up Button for adding a ToDo
 		ok = (Button) findViewById(R.id.add);
 		ok.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(TodoListActivity.this, TodoEditActivity.class));
+				startActivity(new Intent(TodoListActivity.this,
+						TodoEditActivity.class));
 			}
 		});
 
 		// Sets up Button showing the logout Toast
 		about = (Button) findViewById(R.id.logout);
 		about.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
@@ -61,7 +65,7 @@ public class TodoListActivity extends ListActivity {
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
-		
+
 		// Helps to get our data from a database
 		dbHelper = new TodoDatabaseAdapter(this);
 		dbHelper.open();
@@ -81,12 +85,12 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
-				return true;
-			case R.id.about :
-				createAbout();
-				return true;
+		case R.id.insert:
+			createTodo();
+			return true;
+		case R.id.about:
+			createAbout();
+			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -94,9 +98,9 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
-				return true;
+		case R.id.insert:
+			createTodo();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -105,12 +109,12 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case DELETE_ID :
-				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-						.getMenuInfo();
-				dbHelper.deleteTodo(info.id);
-				fillData();
-				return true;
+		case DELETE_ID:
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+					.getMenuInfo();
+			dbHelper.deleteTodo(info.id);
+			fillData();
+			return true;
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -154,9 +158,9 @@ public class TodoListActivity extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
-				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.icon, R.id.todo_row_checkBox, R.id.label};
+		String[] from = new String[] { TodoDatabaseAdapter.KEY_CATEGORY,
+				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY };
+		int[] to = new int[] { R.id.icon, R.id.todo_row_checkBox, R.id.label };
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,

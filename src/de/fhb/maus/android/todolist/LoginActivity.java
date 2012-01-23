@@ -12,30 +12,40 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	/** Called when the activity is first created. */
 
-	private Button signIn;
+	private Button logIn;
+	private boolean toastAlreadyShown = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
+		//TODO just 6 signs long password
+		//TODO get ToDo from the server when correkt login
+		//TODO check with server if device was offline
 
-		signIn = (Button) findViewById(R.id.login);
-		signIn.setOnClickListener(new OnClickListener() {
+		logIn = (Button) findViewById(R.id.login);
+		logIn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				EditText emailField = (EditText) findViewById(R.id.email);
 				String email = emailField.getText().toString();
 				if (email.length() == 0) {
-					Toast toast = Toast.makeText(getApplicationContext(),
-							"Du musst eine Eingabe in das Emailfeld eingeben.",
-							Toast.LENGTH_SHORT);
-					toast.show();
-					return;
+					if (!toastAlreadyShown) {
+						Toast toast = Toast
+								.makeText(
+										getApplicationContext(),
+										getResources().getString(R.string.login_toast),
+										Toast.LENGTH_SHORT);
+						toast.show();
+						toastAlreadyShown = true;
+						return;
+					}
 				}
-
-				startActivity(new Intent(LoginActivity.this,
-						TodoListActivity.class));
+				else
+					//TODO Login with server and database here
+					startActivity(new Intent(LoginActivity.this,
+							TodoListActivity.class));
 			}
 		});
 	}

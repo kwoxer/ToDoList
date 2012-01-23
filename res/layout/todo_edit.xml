@@ -55,12 +55,24 @@
         android:hint="@string/todo_edit_hint_description"
         android:imeOptions="actionGo" >
     </EditText>
-
-    <Button
-        android:id="@+id/button"
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/todo_edit_confirm" >
-    </Button>
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.36"
+            android:text="@string/todo_edit_confirm" />
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete ToDo" />
+    </LinearLayout>
 
 </LinearLayout>

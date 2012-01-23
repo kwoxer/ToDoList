@@ -12,7 +12,8 @@
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress" android:hint="@string/login_hint_mail">
+        android:hint="@string/login_hint_mail"
+        android:inputType="textEmailAddress" >
 
         <requestFocus />
     </EditText>
@@ -21,7 +22,10 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword" android:hint="@string/login_hint_pass"/>
+        android:hint="@string/login_hint_pass"
+        android:inputType="textPassword"
+        android:onClick="@string/app_name"
+        android:typeface="monospace"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"

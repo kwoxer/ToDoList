@@ -35,7 +35,7 @@ public class TodoEditActivity extends Activity {
 		mBodyText = (EditText) findViewById(R.id.description);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
-		Button confirmButton = (Button) findViewById(R.id.button);
+		Button confirmButton = (Button) findViewById(R.id.button_save);
 		mRowId = null;
 		Bundle extras = getIntent().getExtras();
 		mRowId = (bundle == null) ? null : (Long) bundle
