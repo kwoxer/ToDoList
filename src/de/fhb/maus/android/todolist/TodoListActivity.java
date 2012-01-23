@@ -85,12 +85,12 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.insert:
-			createTodo();
-			return true;
-		case R.id.about:
-			createAbout();
-			return true;
+			case R.id.insert :
+				createTodo();
+				return true;
+			case R.id.about :
+				createAbout();
+				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -98,9 +98,9 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.insert:
-			createTodo();
-			return true;
+			case R.id.insert :
+				createTodo();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -109,12 +109,12 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case DELETE_ID:
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-					.getMenuInfo();
-			dbHelper.deleteTodo(info.id);
-			fillData();
-			return true;
+			case DELETE_ID :
+				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+						.getMenuInfo();
+				dbHelper.deleteTodo(info.id);
+				fillData();
+				return true;
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -158,9 +158,9 @@ public class TodoListActivity extends ListActivity {
 		cursor = dbHelper.fetchAllTodos();
 		startManagingCursor(cursor);
 
-		String[] from = new String[] { TodoDatabaseAdapter.KEY_CATEGORY,
-				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY };
-		int[] to = new int[] { R.id.icon, R.id.todo_row_checkBox, R.id.textview };
+		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
+				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY};
+		int[] to = new int[]{R.id.icon, R.id.todo_row_checkBox, R.id.textview};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,

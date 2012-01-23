@@ -19,10 +19,11 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		
-		//TODO just 6 signs long password
-		//TODO get ToDo from the server when correkt login
-		//TODO check with server if device was offline
+
+		// TODO just 6 signs long password
+		// TODO get ToDo from the server when correkt login
+		// TODO check with server if device was offline
+		// TODO Übergang mit delay, also Server delay einplannen 3000 ms
 
 		logIn = (Button) findViewById(R.id.login);
 		logIn.setOnClickListener(new OnClickListener() {
@@ -32,18 +33,15 @@ public class LoginActivity extends Activity {
 				String email = emailField.getText().toString();
 				if (email.length() == 0) {
 					if (!toastAlreadyShown) {
-						Toast toast = Toast
-								.makeText(
-										getApplicationContext(),
-										getResources().getString(R.string.login_toast),
-										Toast.LENGTH_SHORT);
+						Toast toast = Toast.makeText(getApplicationContext(),
+								getResources().getString(R.string.login_toast),
+								Toast.LENGTH_SHORT);
 						toast.show();
 						toastAlreadyShown = true;
 						return;
 					}
-				}
-				else
-					//TODO Login with server and database here
+				} else
+					// TODO Login with server and database here
 					startActivity(new Intent(LoginActivity.this,
 							TodoListActivity.class));
 			}
