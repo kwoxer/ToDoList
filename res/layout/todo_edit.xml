@@ -45,17 +45,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </LinearLayout>
-
+
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_weight="2.33"
         android:gravity="clip_vertical"
-        android:hint="@string/todo_edit_hint_description"
-        android:imeOptions="actionGo" >
+        android:hint="@string/todo_edit_hint_description" android:inputType="textNoSuggestions">
+
     </EditText>
-
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
