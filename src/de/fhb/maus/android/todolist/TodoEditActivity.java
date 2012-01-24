@@ -1,12 +1,12 @@
 package de.fhb.maus.android.todolist;
 
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,13 +17,15 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class TodoEditActivity extends Activity {
 
-	private DatePicker mDate;
+	// private DatePicker mDatePicker;
 	private Spinner mCategory;
 	private CheckBox mCheckBox;
 	private EditText mTitleText;
@@ -32,8 +34,12 @@ public class TodoEditActivity extends Activity {
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Calendar mCalendar;
-
 	private boolean backButtonOverClicked = false;
+
+	private TextView mTextViewDate, mTextViewTime;
+	private int mYear, mMonth, mDay, mHour, mMinute;
+	static final int DATE_DIALOG_ID = 0;
+	static final int TIME_DIALOG_ID = 1;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -41,12 +47,15 @@ public class TodoEditActivity extends Activity {
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
-		mDate = (DatePicker) findViewById(R.id.datePicker);
+		// mDatePicker = (DatePicker) findViewById(R.id.datePicker);
 		mCategory = (Spinner) findViewById(R.id.category);
 		mTitleText = (EditText) findViewById(R.id.summary);
 		mBodyText = (EditText) findViewById(R.id.description);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 		confirmButton = (Button) findViewById(R.id.button_save);
+
+		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
+		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
 
 		mRowId = null;
 		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
@@ -56,13 +65,59 @@ public class TodoEditActivity extends Activity {
 		if (extras != null) {
 			mRowId = extras.getLong(TodoDatabaseAdapter.KEY_ROWID);
 		}
-		populateFields();
+
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
 				finish();
 			}
 		});
+		mTextViewDate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(DATE_DIALOG_ID);
+			}
+		});
+		mTextViewTime.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(TIME_DIALOG_ID);
+			}
+		});
+		populateFields();
+	}
+	private void updateDisplay() {
+		mTextViewDate.setText(new StringBuilder().append(mYear).append("-")
+				.append(mMonth + 1).append("-").append(mDay).append(" "));
+		mTextViewTime.setText(new StringBuilder().append(mHour).append(":")
+				.append(mMinute).append(" "));
+	}
+	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			mYear = year;
+			mMonth = month;
+			mDay = day;
+			updateDisplay();
+		}
+	};
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+		public void onTimeSet(TimePicker view, int hour, int minute) {
+			mHour = hour;
+			mMinute = minute;
+			updateDisplay();
+		}
+	};
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+			case DATE_DIALOG_ID :
+				return new DatePickerDialog(this, mDateSetListener, mYear,
+						mMonth, mDay);
+			case TIME_DIALOG_ID :
+				return new TimePickerDialog(this, mTimeSetListener, mHour,
+						mMinute, false);
+		}
+		return null;
 	}
 
 	// When showing the Edit Screen for a ToDo
@@ -88,10 +143,30 @@ public class TodoEditActivity extends Activity {
 				mCheckBox.setChecked(false);
 			}
 
+			mYear = mCalendar.get(Calendar.YEAR);
+			mMonth = mCalendar.get(Calendar.MONTH);
+			mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+			mHour = mCalendar.get(Calendar.HOUR);
+			mMinute = mCalendar.get(Calendar.MINUTE);
+
+			// A year y is represented by the integer y - 1900.
+			// A month is represented by an integer from 0 to 11; 0 is January,
+			// 1 is February, and so forth; thus 11 is December.
+			// A date (day of month) is represented by an integer from 1 to 31
+			// in the usual manner.
 			mCalendar.setTimeInMillis(Long.valueOf(todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DATE))));
-			mDate.updateDate(mCalendar.getTime().getYear() + 1900, mCalendar
-					.getTime().getMonth(), mCalendar.getTime().getDate());
+			// mDatePicker.updateDate(mCalendar.getTime().getYear() + 1900,
+			// mCalendar.getTime().getMonth(), mCalendar.getTime()
+			// .getDate());
+			updateDisplay();
+
+			// An hour is represented by an integer from 0 to 23. Thus, the hour
+			// from midnight to 1 a.m. is hour 0, and the hour from noon to 1
+			// p.m. is hour 12.
+			// A minute is represented by an integer from 0 to 59 in the usual
+			// manner.
+			// A second is represented by an integer from 0 to 61;
 
 			//
 			// DateFormat formatter = new
@@ -152,8 +227,7 @@ public class TodoEditActivity extends Activity {
 		String description = mBodyText.getText().toString();
 		boolean done = mCheckBox.isChecked();
 
-		mCalendar.set(mDate.getYear(), mDate.getMonth(), mDate.getDayOfMonth(),
-				12, 12, 12);
+		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
 		String date = String.valueOf(mCalendar.getTime().getTime());
 
 		Toast.makeText(

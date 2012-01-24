@@ -3,23 +3,32 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-        <DatePicker
-            android:id="@+id/datePicker"
+        <TextView
+            android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:paddingRight="10dip"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
         <Spinner
             android:id="@+id/category"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_width="57dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.56"
             android:entries="@array/priorities" />
-
     </LinearLayout>
 
     <LinearLayout

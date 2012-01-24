@@ -234,7 +234,8 @@ public class TodoListActivity extends ListActivity {
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
 				if (columnIndex == nCheckedIndex3) {
 					TextView dateView = (TextView) view;
-					DateFormat dateFormat = DateFormat.getDateTimeInstance();
+					DateFormat dateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd hh:mm");
 					dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
 					String gmtTime = dateFormat.format(Long.valueOf(cursor
 							.getString(nCheckedIndex3)));
