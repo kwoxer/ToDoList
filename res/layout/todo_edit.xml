@@ -13,12 +13,13 @@
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
+
         <Spinner
             android:id="@+id/category"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:entries="@array/priorities" />
+
     </LinearLayout>
 
     <LinearLayout

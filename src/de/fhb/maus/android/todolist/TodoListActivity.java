@@ -1,5 +1,10 @@
 package de.fhb.maus.android.todolist;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
@@ -159,14 +165,16 @@ public class TodoListActivity extends ListActivity {
 		startManagingCursor(cursor);
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
-				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.icon, R.id.todoRowCheckBox, R.id.textViewSummary};
+				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
+				TodoDatabaseAdapter.KEY_SUMMARY};
+		int[] to = new int[]{R.id.icon, R.id.todoRowCheckBox,
+				R.id.textViewDate, R.id.textViewSummary};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
 				R.layout.todo_row, cursor, from, to);
 
-		// Updating Checkbox and Icon
+		// Updating Checkbox and Icon and Date
 		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			public boolean setViewValue(View view, Cursor cursor,
@@ -175,7 +183,6 @@ public class TodoListActivity extends ListActivity {
 				// Change Icon
 				int nCheckedIndex1 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
-
 				if (columnIndex == nCheckedIndex1) {
 					ImageView ico = (ImageView) view;
 					String category_type = cursor.getString((cursor
@@ -197,31 +204,41 @@ public class TodoListActivity extends ListActivity {
 				if (columnIndex == nCheckedIndex2) {
 					CheckBox cb = (CheckBox) view;
 					boolean bChecked = (cursor.getInt(nCheckedIndex2) != 0);
-
 					final long id = cursor.getLong(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
+					final String date = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
 					final String category = cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 					final String summary = cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
 					final String description = cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
-
 					cb.setOnClickListener(new OnClickListener() {
-
 						public void onClick(View v) {
 							CheckBox mCheckBox = (CheckBox) v;
-
 							if (mCheckBox.isChecked())
-								dbHelper.updateTodo(id, category, true,
+								dbHelper.updateTodo(id, date, category, true,
 										summary, description);
 							else
-								dbHelper.updateTodo(id, category, false,
+								dbHelper.updateTodo(id, date, category, false,
 										summary, description);
 						}
 					});
-
 					cb.setChecked(bChecked);
+					return true;
+				}
+
+				// Change Date
+				int nCheckedIndex3 = (cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
+				if (columnIndex == nCheckedIndex3) {
+					TextView dateView = (TextView) view;
+					DateFormat dateFormat = DateFormat.getDateTimeInstance();
+					dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+					String gmtTime = dateFormat.format(Long.valueOf(cursor
+							.getString(nCheckedIndex3)));
+					dateView.setText(gmtTime);
 					return true;
 				}
 				return false;

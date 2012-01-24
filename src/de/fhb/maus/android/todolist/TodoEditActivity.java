@@ -1,5 +1,11 @@
 package de.fhb.maus.android.todolist;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -15,12 +22,16 @@ import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class TodoEditActivity extends Activity {
+
+	private DatePicker mDate;
+	private Spinner mCategory;
+	private CheckBox mCheckBox;
 	private EditText mTitleText;
 	private EditText mBodyText;
-	private CheckBox mCheckBox;
+	private Button confirmButton;
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
-	private Spinner mCategory;
+	private Calendar mCalendar;
 
 	private boolean backButtonOverClicked = false;
 
@@ -30,13 +41,15 @@ public class TodoEditActivity extends Activity {
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
+		mDate = (DatePicker) findViewById(R.id.datePicker);
 		mCategory = (Spinner) findViewById(R.id.category);
 		mTitleText = (EditText) findViewById(R.id.summary);
 		mBodyText = (EditText) findViewById(R.id.description);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
+		confirmButton = (Button) findViewById(R.id.button_save);
 
-		Button confirmButton = (Button) findViewById(R.id.button_save);
 		mRowId = null;
+		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
 		Bundle extras = getIntent().getExtras();
 		mRowId = (bundle == null) ? null : (Long) bundle
 				.getSerializable(TodoDatabaseAdapter.KEY_ROWID);
@@ -61,7 +74,6 @@ public class TodoEditActivity extends Activity {
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CATEGORY));
 
 			for (int i = 0; i < mCategory.getCount(); i++) {
-
 				String s = (String) mCategory.getItemAtPosition(i);
 				Log.e(null, s + " " + category);
 				if (s.equalsIgnoreCase(category)) {
@@ -76,6 +88,23 @@ public class TodoEditActivity extends Activity {
 				mCheckBox.setChecked(false);
 			}
 
+			mCalendar.setTimeInMillis(Long.valueOf(todo.getString(todo
+					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DATE))));
+			mDate.updateDate(mCalendar.getTime().getYear() + 1900, mCalendar
+					.getTime().getMonth(), mCalendar.getTime().getDate());
+
+			//
+			// DateFormat formatter = new
+			// SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+			//
+			// // von MILLISEC zu TIMESTAMP
+			// // Datenbank
+			// DateFormat df = DateFormat.getTimeInstance();
+			// df.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+			// String gmtTime = df.format(new Date());
+			// //System.out.println(gmtTime);
+			//
+
 			mTitleText.setText(todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_SUMMARY)));
 			mBodyText
@@ -83,6 +112,7 @@ public class TodoEditActivity extends Activity {
 							.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DESCRIPTION)));
 		}
 	}
+	// by resuming
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		saveState();
@@ -121,6 +151,11 @@ public class TodoEditActivity extends Activity {
 		String summary = mTitleText.getText().toString();
 		String description = mBodyText.getText().toString();
 		boolean done = mCheckBox.isChecked();
+
+		mCalendar.set(mDate.getYear(), mDate.getMonth(), mDate.getDayOfMonth(),
+				12, 12, 12);
+		String date = String.valueOf(mCalendar.getTime().getTime());
+
 		Toast.makeText(
 				this,
 				getResources().getString(R.string.additionalTodo)
@@ -132,13 +167,14 @@ public class TodoEditActivity extends Activity {
 				Toast.LENGTH_LONG).show();
 
 		if (mRowId == null) {
-			long id = mDbHelper
-					.createTodo(category, done, summary, description);
+			long id = mDbHelper.createTodo(date, category, done, summary,
+					description);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
-			mDbHelper.updateTodo(mRowId, category, done, summary, description);
+			mDbHelper.updateTodo(mRowId, date, category, done, summary,
+					description);
 		}
 	}
 }

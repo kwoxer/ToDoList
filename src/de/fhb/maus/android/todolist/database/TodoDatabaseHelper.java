@@ -12,7 +12,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = "create table todo (_id integer primary key autoincrement, "
-			+ "category text not null, done integer not null, summary text not null, description text not null);";
+			+ "date text not null, category text not null, done integer not null, summary text not null, description text not null);";
 
 	public TodoDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -10,6 +10,7 @@ public class TodoDatabaseAdapter {
 
 	// Database fields
 	public static final String KEY_ROWID = "_id";
+	public static final String KEY_DATE = "date";
 	public static final String KEY_CATEGORY = "category";
 	// Summary of the todo
 	public static final String KEY_SUMMARY = "summary";
@@ -40,9 +41,9 @@ public class TodoDatabaseAdapter {
 	 * Create a new todo If the todo is successfully created return the new
 	 * rowId for that note, otherwise return a -1 to indicate failure.
 	 */
-	public long createTodo(String category, boolean done, String summary,
-			String description) {
-		ContentValues initialValues = createContentValues(category, done,
+	public long createTodo(String date, String category, boolean done,
+			String summary, String description) {
+		ContentValues initialValues = createContentValues(date, category, done,
 				summary, description);
 
 		return database.insert(DATABASE_TABLE, null, initialValues);
@@ -51,9 +52,9 @@ public class TodoDatabaseAdapter {
 	/**
 	 * Update the todo
 	 */
-	public boolean updateTodo(long rowId, String category, boolean done,
-			String summary, String description) {
-		ContentValues updateValues = createContentValues(category, done,
+	public boolean updateTodo(long rowId, String date, String category,
+			boolean done, String summary, String description) {
+		ContentValues updateValues = createContentValues(date, category, done,
 				summary, description);
 		return database.update(DATABASE_TABLE, updateValues, KEY_ROWID + "="
 				+ rowId, null) > 0;
@@ -72,7 +73,7 @@ public class TodoDatabaseAdapter {
 	 * @return Cursor over all notes
 	 */
 	public Cursor fetchAllTodos() {
-		return database.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+		return database.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_DATE,
 				KEY_CATEGORY, KEY_DONE, KEY_SUMMARY, KEY_DESCRIPTION}, null,
 				null, null, null, null);
 	}
@@ -81,19 +82,20 @@ public class TodoDatabaseAdapter {
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchTodo(long rowId) throws SQLException {
-		Cursor mCursor = database.query(true, DATABASE_TABLE,
-				new String[]{KEY_ROWID, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
-						KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId, null, null,
-				null, null, null);
+		Cursor mCursor = database.query(true, DATABASE_TABLE, new String[]{
+				KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
+				KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId, null, null, null,
+				null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
 	}
 
-	private ContentValues createContentValues(String category, boolean done,
-			String summary, String description) {
+	private ContentValues createContentValues(String date, String category,
+			boolean done, String summary, String description) {
 		ContentValues values = new ContentValues();
+		values.put(KEY_DATE, date);
 		values.put(KEY_CATEGORY, category);
 		values.put(KEY_DONE, done);
 		values.put(KEY_SUMMARY, summary);
