@@ -29,8 +29,7 @@ public class TodoEditActivity extends Activity {
 
 	private Spinner mCategory;
 	private CheckBox mCheckBox;
-	private EditText mTitleText;
-	private EditText mBodyText;
+	private EditText mTitleText, mBodyText;
 	private Button confirmButton;
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
@@ -38,9 +37,9 @@ public class TodoEditActivity extends Activity {
 	private boolean backButtonOverClicked = false;
 	private TextView mTextViewDate, mTextViewTime;
 	private int mYear, mMonth, mDay, mHour, mMinute;
+	private DateFormat mDateFormat, mTimeFormat;
 	private Cursor todo;
-	static final int DATE_DIALOG_ID = 0;
-	static final int TIME_DIALOG_ID = 1;
+	static final int DATE_DIALOG_ID = 0, TIME_DIALOG_ID = 1;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -55,6 +54,9 @@ public class TodoEditActivity extends Activity {
 		confirmButton = (Button) findViewById(R.id.button_save);
 		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
 		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
+
+		mDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		mTimeFormat = new SimpleDateFormat("HH:mm");
 
 		mRowId = null;
 		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
@@ -87,16 +89,13 @@ public class TodoEditActivity extends Activity {
 	}
 	private void updateDisplay() {
 		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		DateFormat timeFormat = new SimpleDateFormat("hh:mm");
-		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
-		mTextViewDate.setText(dateFormat.format(mCalendar.getTime().getTime()));
-		mTextViewTime.setText(timeFormat.format(mCalendar.getTime().getTime()));
+		mDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+		mTimeFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+		mTextViewDate
+				.setText(mDateFormat.format(mCalendar.getTime().getTime()));
+		mTextViewTime
+				.setText(mTimeFormat.format(mCalendar.getTime().getTime()));
 
-		// mTextViewDate.setText(new StringBuilder().append(mYear).append("-")
-		// .append(mMonth + 1).append("-").append(mDay).append(" "));
-		// mTextViewTime.setText(new StringBuilder().append(mHour).append(":")
-		// .append(mMinute).append(" "));
 	}
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -131,9 +130,9 @@ public class TodoEditActivity extends Activity {
 		if (mRowId != null) {
 			todo = mDbHelper.fetchTodo(mRowId);
 			startManagingCursor(todo);
+
 			String category = todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CATEGORY));
-
 			for (int i = 0; i < mCategory.getCount(); i++) {
 				String s = (String) mCategory.getItemAtPosition(i);
 				Log.e(null, s + " " + category);
@@ -149,19 +148,20 @@ public class TodoEditActivity extends Activity {
 				mCheckBox.setChecked(false);
 			}
 
-			mYear = mCalendar.get(Calendar.YEAR);
-			mMonth = mCalendar.get(Calendar.MONTH);
-			mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-			mHour = mCalendar.get(Calendar.HOUR);
-			mMinute = mCalendar.get(Calendar.MINUTE);
-
-			updateDisplay();
+			mCalendar.setTimeInMillis(Long.valueOf(todo.getString(todo
+					.getColumnIndex(TodoDatabaseAdapter.KEY_DATE))));
+			mYear = mCalendar.getTime().getYear() + 1900;
+			mMonth = mCalendar.getTime().getMonth();
+			mDay = mCalendar.getTime().getDate();
+			mHour = mCalendar.getTime().getHours() + 1;
+			mMinute = mCalendar.getTime().getMinutes();
 
 			mTitleText.setText(todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_SUMMARY)));
 			mBodyText
 					.setText(todo.getString(todo
 							.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DESCRIPTION)));
+			updateDisplay();
 		}
 	}
 	// by resuming
@@ -199,12 +199,11 @@ public class TodoEditActivity extends Activity {
 	}
 
 	private void saveState() {
+		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
 		String category = (String) mCategory.getSelectedItem();
 		String summary = mTitleText.getText().toString();
 		String description = mBodyText.getText().toString();
 		boolean done = mCheckBox.isChecked();
-
-		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
 		String date = String.valueOf(mCalendar.getTime().getTime());
 
 		Toast.makeText(
