@@ -2,9 +2,7 @@ package de.fhb.maus.android.todolist;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;

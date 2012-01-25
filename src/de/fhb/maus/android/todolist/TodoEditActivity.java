@@ -1,5 +1,7 @@
 package de.fhb.maus.android.todolist;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -25,7 +27,6 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class TodoEditActivity extends Activity {
 
-	// private DatePicker mDatePicker;
 	private Spinner mCategory;
 	private CheckBox mCheckBox;
 	private EditText mTitleText;
@@ -35,9 +36,9 @@ public class TodoEditActivity extends Activity {
 	private TodoDatabaseAdapter mDbHelper;
 	private Calendar mCalendar;
 	private boolean backButtonOverClicked = false;
-
 	private TextView mTextViewDate, mTextViewTime;
 	private int mYear, mMonth, mDay, mHour, mMinute;
+	private Cursor todo;
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
 
@@ -47,13 +48,11 @@ public class TodoEditActivity extends Activity {
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
-		// mDatePicker = (DatePicker) findViewById(R.id.datePicker);
 		mCategory = (Spinner) findViewById(R.id.category);
 		mTitleText = (EditText) findViewById(R.id.summary);
 		mBodyText = (EditText) findViewById(R.id.description);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 		confirmButton = (Button) findViewById(R.id.button_save);
-
 		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
 		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
 
@@ -87,10 +86,17 @@ public class TodoEditActivity extends Activity {
 		populateFields();
 	}
 	private void updateDisplay() {
-		mTextViewDate.setText(new StringBuilder().append(mYear).append("-")
-				.append(mMonth + 1).append("-").append(mDay).append(" "));
-		mTextViewTime.setText(new StringBuilder().append(mHour).append(":")
-				.append(mMinute).append(" "));
+		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat timeFormat = new SimpleDateFormat("hh:mm");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+		mTextViewDate.setText(dateFormat.format(mCalendar.getTime().getTime()));
+		mTextViewTime.setText(timeFormat.format(mCalendar.getTime().getTime()));
+
+		// mTextViewDate.setText(new StringBuilder().append(mYear).append("-")
+		// .append(mMonth + 1).append("-").append(mDay).append(" "));
+		// mTextViewTime.setText(new StringBuilder().append(mHour).append(":")
+		// .append(mMinute).append(" "));
 	}
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -123,7 +129,7 @@ public class TodoEditActivity extends Activity {
 	// When showing the Edit Screen for a ToDo
 	private void populateFields() {
 		if (mRowId != null) {
-			Cursor todo = mDbHelper.fetchTodo(mRowId);
+			todo = mDbHelper.fetchTodo(mRowId);
 			startManagingCursor(todo);
 			String category = todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CATEGORY));
@@ -149,36 +155,7 @@ public class TodoEditActivity extends Activity {
 			mHour = mCalendar.get(Calendar.HOUR);
 			mMinute = mCalendar.get(Calendar.MINUTE);
 
-			// A year y is represented by the integer y - 1900.
-			// A month is represented by an integer from 0 to 11; 0 is January,
-			// 1 is February, and so forth; thus 11 is December.
-			// A date (day of month) is represented by an integer from 1 to 31
-			// in the usual manner.
-			mCalendar.setTimeInMillis(Long.valueOf(todo.getString(todo
-					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DATE))));
-			// mDatePicker.updateDate(mCalendar.getTime().getYear() + 1900,
-			// mCalendar.getTime().getMonth(), mCalendar.getTime()
-			// .getDate());
 			updateDisplay();
-
-			// An hour is represented by an integer from 0 to 23. Thus, the hour
-			// from midnight to 1 a.m. is hour 0, and the hour from noon to 1
-			// p.m. is hour 12.
-			// A minute is represented by an integer from 0 to 59 in the usual
-			// manner.
-			// A second is represented by an integer from 0 to 61;
-
-			//
-			// DateFormat formatter = new
-			// SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
-			//
-			// // von MILLISEC zu TIMESTAMP
-			// // Datenbank
-			// DateFormat df = DateFormat.getTimeInstance();
-			// df.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
-			// String gmtTime = df.format(new Date());
-			// //System.out.println(gmtTime);
-			//
 
 			mTitleText.setText(todo.getString(todo
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_SUMMARY)));
