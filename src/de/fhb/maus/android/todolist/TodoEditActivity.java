@@ -45,9 +45,9 @@ public class TodoEditActivity extends Activity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		mDbHelper = new TodoDatabaseAdapter(this);
-
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
+
 		mCategory = (Spinner) findViewById(R.id.category);
 		mTitleText = (EditText) findViewById(R.id.summary);
 		mBodyText = (EditText) findViewById(R.id.description);
@@ -55,13 +55,13 @@ public class TodoEditActivity extends Activity {
 		confirmButton = (Button) findViewById(R.id.button_save);
 		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
 		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
-
+		//http://developer.android.com/reference/java/text/SimpleDateFormat.html
 		mDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		mTimeFormat = new SimpleDateFormat("HH:mm");
-
-		mRowId = null;
 		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
+
 		Bundle extras = getIntent().getExtras();
+		mRowId = null;
 		mRowId = (bundle == null) ? null : (Long) bundle
 				.getSerializable(TodoDatabaseAdapter.KEY_ROWID);
 		if (extras != null) {
