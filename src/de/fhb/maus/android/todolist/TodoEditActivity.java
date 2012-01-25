@@ -45,6 +45,7 @@ public class TodoEditActivity extends Activity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		mDbHelper = new TodoDatabaseAdapter(this);
+		
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
 		mCategory = (Spinner) findViewById(R.id.category);
@@ -66,7 +67,7 @@ public class TodoEditActivity extends Activity {
 		if (extras != null) {
 			mRowId = extras.getLong(TodoDatabaseAdapter.KEY_ROWID);
 		}
-
+		
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
@@ -161,6 +162,13 @@ public class TodoEditActivity extends Activity {
 			mBodyText
 					.setText(todo.getString(todo
 							.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DESCRIPTION)));
+			updateDisplay();
+		}else{
+			mYear = mCalendar.get(Calendar.YEAR);
+			mMonth = mCalendar.get(Calendar.MONTH);
+			mDay = mCalendar.get(Calendar.DATE);
+			mHour = mCalendar.get(Calendar.HOUR);
+			mMinute = mCalendar.get(Calendar.MINUTE);
 			updateDisplay();
 		}
 	}
