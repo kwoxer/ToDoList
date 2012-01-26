@@ -164,7 +164,11 @@ public class TodoListActivity extends ListActivity {
 		
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
 				R.id.textViewDate, R.id.textViewSummary};
-
+		
+		//https://github.com/monxalo/android-section-adapter/tree/master/src/com/monxalo/android/widget
+		//http://stackoverflow.com/questions/5165726/sorting-a-cursor-in-android-to-be-used-in-simplecursoradapter
+		
+		
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter row = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
