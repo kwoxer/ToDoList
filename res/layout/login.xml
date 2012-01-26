@@ -9,7 +9,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login_hint_mail"
@@ -19,13 +19,14 @@
     </EditText>
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login_hint_pass"
         android:inputType="textPassword"
+        android:maxLength="6"
         android:onClick="@string/app_name"
-        android:typeface="monospace" android:maxLength="6"/>
+        android:typeface="monospace" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -33,14 +34,14 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/login"
+            android:id="@+id/buttonLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.77"
             android:text="@string/login_login" />
 
         <Button
-            android:id="@+id/exit"
+            android:id="@+id/buttonExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.57"

@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	/** Called when the activity is first created. */
 
-	private Button logIn;
+	private Button mLogIn;
 	private boolean toastAlreadyShown = false;
 
 	@Override
@@ -20,16 +20,15 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		// TODO just 6 signs long password
-		// TODO get ToDo from the server when correkt login
+		// TODO get ToDo from the server when correct login
 		// TODO check with server if device was offline
-		// TODO Übergang mit delay, also Server delay einplannen 3000 ms
+		// TODO Übergang mit delay, also Server delay einplanen 3000 ms
 
-		logIn = (Button) findViewById(R.id.login);
-		logIn.setOnClickListener(new OnClickListener() {
+		mLogIn = (Button) findViewById(R.id.buttonLogin);
+		mLogIn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				EditText emailField = (EditText) findViewById(R.id.email);
+				EditText emailField = (EditText) findViewById(R.id.editTextEmail);
 				String email = emailField.getText().toString();
 				if (email.length() == 0) {
 					if (!toastAlreadyShown) {

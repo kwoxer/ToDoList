@@ -3,8 +3,8 @@
 
     <string name="app_name">ToDoList (R)</string>
     <string name="todo_list_noTodos">Currently there are no Todo items maintained</string>
-    <string name="todo_list_delete">Delete Todo</string>
     <string name="todo_list_add">Add ToDo</string>
+    <string name="todo_list_delete">Delete ToDo</string>
     <string name="todo_list_logout">Logout</string>
     <string name="todo_edit_hint_summary">Summary</string>
     <string name="todo_edit_hint_description">Write what the ToDo is about</string>

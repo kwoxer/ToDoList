@@ -26,16 +26,16 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
  * @author Curtis & Sebastian
- * @version v0.0.8
+ * @version v0.4
  */
 public class TodoListActivity extends ListActivity {
-	private TodoDatabaseAdapter dbHelper;
+	private TodoDatabaseAdapter mDbHelper;
 	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
-	private Cursor cursor;
-	private Button ok;
-	private Button about;
+	private Cursor mCursor;
+	private Button mAdd;
+	private Button mAbout;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -44,13 +44,11 @@ public class TodoListActivity extends ListActivity {
 		setContentView(R.layout.todo_list);
 
 		// TODO sort by date or other things
-		// TODO überfällige Todos – d.h. Todos mit abgelaufenem
-		// Fälligkeitsdatum – sollen visuell besonders hervorgehoben werden
 		// TODO add a menu item "sort by ..." to the View
 
 		// Sets up Button for adding a ToDo
-		ok = (Button) findViewById(R.id.add);
-		ok.setOnClickListener(new OnClickListener() {
+		mAdd = (Button) findViewById(R.id.buttonAdd);
+		mAdd.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(TodoListActivity.this,
 						TodoEditActivity.class));
@@ -58,8 +56,8 @@ public class TodoListActivity extends ListActivity {
 		});
 
 		// Sets up Button showing the logout Toast
-		about = (Button) findViewById(R.id.logout);
-		about.setOnClickListener(new OnClickListener() {
+		mAbout = (Button) findViewById(R.id.buttonLogout);
+		mAbout.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
@@ -71,8 +69,8 @@ public class TodoListActivity extends ListActivity {
 		this.getListView().setDividerHeight(2);
 
 		// Helps to get our data from a database
-		dbHelper = new TodoDatabaseAdapter(this);
-		dbHelper.open();
+		mDbHelper = new TodoDatabaseAdapter(this);
+		mDbHelper.open();
 		fillData();
 		registerForContextMenu(getListView());
 	}
@@ -116,7 +114,7 @@ public class TodoListActivity extends ListActivity {
 			case DELETE_ID :
 				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 						.getMenuInfo();
-				dbHelper.deleteTodo(info.id);
+				mDbHelper.deleteTodo(info.id);
 				fillData();
 				return true;
 		}
@@ -141,7 +139,6 @@ public class TodoListActivity extends ListActivity {
 		Intent i = new Intent(this, TodoEditActivity.class);
 		i.putExtra(TodoDatabaseAdapter.KEY_ROWID, id);
 		// Activity returns an result if called with startActivityForResult
-
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
@@ -158,30 +155,29 @@ public class TodoListActivity extends ListActivity {
 
 	// Always called when the ToDos are shown
 	private void fillData() {
-
-		cursor = dbHelper.fetchAllTodos();
-		startManagingCursor(cursor);
+		mCursor = mDbHelper.fetchAllTodos();
+		startManagingCursor(mCursor);
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
 				TodoDatabaseAdapter.KEY_SUMMARY};
-		int[] to = new int[]{R.id.icon, R.id.todoRowCheckBox,
+		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
 				R.id.textViewDate, R.id.textViewSummary};
 
 		// Now create an array adapter and set it to display using our row
-		SimpleCursorAdapter notes = new SimpleCursorAdapter(this,
-				R.layout.todo_row, cursor, from, to);
+		SimpleCursorAdapter row = new SimpleCursorAdapter(this,
+				R.layout.todo_row, mCursor, from, to);
 
 		// Updating Checkbox and Icon and Date
-		notes.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+		row.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
 
 				// Update Icon
-				int nCheckedIndex1 = (cursor
+				int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
-				if (columnIndex == nCheckedIndex1) {
+				if (columnIndex == nCheckedIndexIcon) {
 					ImageView ico = (ImageView) view;
 					String category_type = cursor.getString((cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
@@ -197,11 +193,11 @@ public class TodoListActivity extends ListActivity {
 				}
 
 				// Update Checkbox
-				int nCheckedIndex2 = (cursor
+				int nCheckedIndexCheckbox = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
-				if (columnIndex == nCheckedIndex2) {
+				if (columnIndex == nCheckedIndexCheckbox) {
 					CheckBox cb = (CheckBox) view;
-					boolean bChecked = (cursor.getInt(nCheckedIndex2) != 0);
+					boolean bChecked = (cursor.getInt(nCheckedIndexCheckbox) != 0);
 					final long id = cursor.getLong(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
 					final String date = cursor.getString(cursor
@@ -216,10 +212,10 @@ public class TodoListActivity extends ListActivity {
 						public void onClick(View v) {
 							CheckBox mCheckBox = (CheckBox) v;
 							if (mCheckBox.isChecked())
-								dbHelper.updateTodo(id, date, category, true,
+								mDbHelper.updateTodo(id, date, category, true,
 										summary, description);
 							else
-								dbHelper.updateTodo(id, date, category, false,
+								mDbHelper.updateTodo(id, date, category, false,
 										summary, description);
 						}
 					});
@@ -228,23 +224,23 @@ public class TodoListActivity extends ListActivity {
 				}
 
 				// Update Date
-				int nCheckedIndex3 = (cursor
+				int nCheckedIndexDate = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
-				if (columnIndex == nCheckedIndex3) {
+				if (columnIndex == nCheckedIndexDate) {
 					TextView dateTextView = (TextView) view;
 					DateFormat dateFormat = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm");
 					dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
 					String gmtTime = dateFormat.format(Long.valueOf(cursor
-							.getString(nCheckedIndex3)));
+							.getString(nCheckedIndexDate)));
 					dateTextView.setText(gmtTime);
 					return true;
 				}
 
 				// Update Summary Color
-				int nCheckedIndex4 = (cursor
+				int nCheckedIndexColor = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
-				if (columnIndex == nCheckedIndex4) {
+				if (columnIndex == nCheckedIndexColor) {
 					TextView summaryTextView = (TextView) view;
 					summaryTextView.setText(cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY)));
@@ -269,7 +265,7 @@ public class TodoListActivity extends ListActivity {
 				return false;
 			}
 		});
-		setListAdapter(notes);
+		setListAdapter(row);
 	}
 	// When a ToDo Delete Menu is gonna be shown
 	@Override
@@ -282,8 +278,8 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (dbHelper != null) {
-			dbHelper.close();
+		if (mDbHelper != null) {
+			mDbHelper.close();
 		}
 	}
 }

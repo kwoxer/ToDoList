@@ -7,28 +7,29 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
-        android:layout_height="429dp" />
+        android:layout_height="429dp" >
+    </ListView>
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/todo_list_noTodos" />
-    
+
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/buttonAdd"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.52"
             android:text="@string/todo_list_add" />
 
         <Button
-            android:id="@+id/logout"
+            android:id="@+id/buttonLogout"
             android:layout_width="107dp"
             android:layout_height="wrap_content"
             android:text="@string/todo_list_logout" />

@@ -26,21 +26,20 @@ import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class TodoEditActivity extends Activity {
-
 	private Spinner mCategory;
 	private CheckBox mCheckBox;
 	private EditText mTitleText, mBodyText;
-	private Button confirmButton;
+	private Button mConfirmButton;
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Calendar mCalendar;
-	private boolean backButtonOverClicked = false;
 	private TextView mTextViewDate, mTextViewTime;
 	private int mYear, mMonth, mDay, mHour, mMinute;
 	private DateFormat mDateFormat, mTimeFormat;
-	private Cursor todo;
+	private Cursor mCursor;
 	static final int DATE_DIALOG_ID = 0, TIME_DIALOG_ID = 1;
-
+	private boolean backButtonClicked = false;
+	
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -49,13 +48,13 @@ public class TodoEditActivity extends Activity {
 		setContentView(R.layout.todo_edit);
 
 		mCategory = (Spinner) findViewById(R.id.category);
-		mTitleText = (EditText) findViewById(R.id.summary);
-		mBodyText = (EditText) findViewById(R.id.description);
-		mCheckBox = (CheckBox) findViewById(R.id.checkBox);
-		confirmButton = (Button) findViewById(R.id.button_save);
+		mTitleText = (EditText) findViewById(R.id.textViewSummary);
+		mBodyText = (EditText) findViewById(R.id.textViewDescription);
+		mCheckBox = (CheckBox) findViewById(R.id.checkBoxDone);
+		mConfirmButton = (Button) findViewById(R.id.buttonSave);
 		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
 		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
-		//http://developer.android.com/reference/java/text/SimpleDateFormat.html
+		// http://developer.android.com/reference/java/text/SimpleDateFormat.html
 		mDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		mTimeFormat = new SimpleDateFormat("HH:mm");
 		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
@@ -68,7 +67,7 @@ public class TodoEditActivity extends Activity {
 			mRowId = extras.getLong(TodoDatabaseAdapter.KEY_ROWID);
 		}
 
-		confirmButton.setOnClickListener(new View.OnClickListener() {
+		mConfirmButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
 				finish();
@@ -129,10 +128,10 @@ public class TodoEditActivity extends Activity {
 	// When showing the Edit Screen for a ToDo
 	private void populateFields() {
 		if (mRowId != null) {
-			todo = mDbHelper.fetchTodo(mRowId);
-			startManagingCursor(todo);
+			mCursor = mDbHelper.fetchTodo(mRowId);
+			startManagingCursor(mCursor);
 
-			String category = todo.getString(todo
+			String category = mCursor.getString(mCursor
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CATEGORY));
 			for (int i = 0; i < mCategory.getCount(); i++) {
 				String s = (String) mCategory.getItemAtPosition(i);
@@ -142,14 +141,14 @@ public class TodoEditActivity extends Activity {
 				}
 			}
 
-			if (todo.getInt(todo
+			if (mCursor.getInt(mCursor
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DONE)) == 1) {
 				mCheckBox.setChecked(true);
 			} else {
 				mCheckBox.setChecked(false);
 			}
 
-			mCalendar.setTimeInMillis(Long.valueOf(todo.getString(todo
+			mCalendar.setTimeInMillis(Long.valueOf(mCursor.getString(mCursor
 					.getColumnIndex(TodoDatabaseAdapter.KEY_DATE))));
 			mYear = mCalendar.getTime().getYear() + 1900;
 			mMonth = mCalendar.getTime().getMonth();
@@ -157,10 +156,10 @@ public class TodoEditActivity extends Activity {
 			mHour = mCalendar.getTime().getHours() + 1;
 			mMinute = mCalendar.getTime().getMinutes();
 
-			mTitleText.setText(todo.getString(todo
+			mTitleText.setText(mCursor.getString(mCursor
 					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_SUMMARY)));
 			mBodyText
-					.setText(todo.getString(todo
+					.setText(mCursor.getString(mCursor
 							.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_DESCRIPTION)));
 			updateDisplay();
 		} else {
@@ -183,7 +182,7 @@ public class TodoEditActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (!backButtonOverClicked) {
+		if (!backButtonClicked) {
 			saveState();
 		}
 	}
@@ -195,7 +194,7 @@ public class TodoEditActivity extends Activity {
 		// http://developer.android.com/reference/android/app/Activity.html#onBackPressed%28%29
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			Log.d(this.getClass().getName(), "back button pressed");
-			backButtonOverClicked = true;
+			backButtonClicked = true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}

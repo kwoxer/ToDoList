@@ -10,26 +10,17 @@
         android:focusable="false" />
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/imageViewIcon"
         android:layout_width="30dp"
         android:layout_height="40dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="@string/additionalTodo"
         android:src="@drawable/ic_todo"
         android:visibility="visible" />
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutToDoText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical" >
@@ -38,7 +29,6 @@
             android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Platzhalter Datum"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="11dip" />
 
