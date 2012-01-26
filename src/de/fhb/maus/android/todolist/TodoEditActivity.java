@@ -74,13 +74,11 @@ public class TodoEditActivity extends Activity {
 			}
 		});
 		mTextViewDate.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 		mTextViewTime.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				showDialog(TIME_DIALOG_ID);
 			}
@@ -120,7 +118,7 @@ public class TodoEditActivity extends Activity {
 						mMonth, mDay);
 			case TIME_DIALOG_ID :
 				return new TimePickerDialog(this, mTimeSetListener, mHour,
-						mMinute, false);
+						mMinute, true);
 		}
 		return null;
 	}

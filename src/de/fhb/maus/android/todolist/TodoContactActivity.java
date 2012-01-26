@@ -9,6 +9,4 @@ public class TodoContactActivity extends Activity{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_contact);
 	}
-	
-	
 }
