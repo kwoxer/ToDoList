@@ -178,7 +178,7 @@ public class TodoListActivity extends ListActivity {
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
 
-				// Change Icon
+				// Update Icon
 				int nCheckedIndex1 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndex1) {
@@ -196,7 +196,7 @@ public class TodoListActivity extends ListActivity {
 					}
 				}
 
-				// Change Checkbox
+				// Update Checkbox
 				int nCheckedIndex2 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));
 				if (columnIndex == nCheckedIndex2) {
@@ -227,25 +227,50 @@ public class TodoListActivity extends ListActivity {
 					return true;
 				}
 
-				// Change Date
+				// Update Date
 				int nCheckedIndex3 = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
 				if (columnIndex == nCheckedIndex3) {
-					TextView dateView = (TextView) view;
+					TextView dateTextView = (TextView) view;
 					DateFormat dateFormat = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm");
 					dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
 					String gmtTime = dateFormat.format(Long.valueOf(cursor
 							.getString(nCheckedIndex3)));
-					dateView.setText(gmtTime);
+					dateTextView.setText(gmtTime);
 					return true;
 				}
+
+				// Update Summary Color
+				int nCheckedIndex4 = (cursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
+				if (columnIndex == nCheckedIndex4) {
+					TextView summaryTextView = (TextView) view;
+					summaryTextView.setText(cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY)));
+					String todoTimeInSoconds;
+					todoTimeInSoconds = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
+					if (Long.valueOf(todoTimeInSoconds)
+							- System.currentTimeMillis() < 0)
+						summaryTextView.setTextColor(getResources().getColor(
+								R.color.red));
+					else if (Long.valueOf(todoTimeInSoconds)
+							- System.currentTimeMillis() <= 86400)
+						// 1 day
+						summaryTextView.setTextColor(getResources().getColor(
+								R.color.green));
+					else
+						summaryTextView.setTextColor(getResources().getColor(
+								R.color.white));
+					return true;
+				}
+
 				return false;
 			}
 		});
 		setListAdapter(notes);
 	}
-
 	// When a ToDo Delete Menu is gonna be shown
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
