@@ -97,7 +97,7 @@ public class TodoListActivity extends ListActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	// Delete a Todo
+	/** Delete a Todo by long click on it */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -118,6 +118,7 @@ public class TodoListActivity extends ListActivity {
 		Intent i = new Intent(this, TodoEditActivity.class);
 		i.putExtra(TodoDatabaseAdapter.KEY_ROWID, id);
 		// Activity returns an result if called with startActivityForResult
+		// TODO sancezz fragen
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
@@ -154,11 +155,11 @@ public class TodoListActivity extends ListActivity {
 				R.id.textViewDate, R.id.textViewSummary};
 
 		// Now create an array adapter and set it to display using our row
-		SimpleCursorAdapter row = new SimpleCursorAdapter(this,
+		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
 
 		// Updating Checkbox and Icon and Date
-		row.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
@@ -254,7 +255,7 @@ public class TodoListActivity extends ListActivity {
 				return false;
 			}
 		});
-		setListAdapter(row);
+		setListAdapter(column);
 	}
 	// When a ToDo Delete Menu is gonna be shown
 	@Override
