@@ -71,7 +71,7 @@ public class TodoEditActivity extends Activity {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
 				saveToDo();
-				
+
 			}
 		});
 		mDeleteButton.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +192,17 @@ public class TodoEditActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		populateFields();
+	}
+
+	public void onBackPressed() {
+		Toast.makeText(
+				this,
+				getResources().getString(R.string.additionalTodo)
+						+ " "
+						+ getResources().getString(
+								R.string.additionalTodoNoChanges),
+				Toast.LENGTH_LONG).show();
+		finish();
 	}
 
 	private void saveToDo() {
