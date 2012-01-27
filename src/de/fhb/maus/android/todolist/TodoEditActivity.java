@@ -38,7 +38,6 @@ public class TodoEditActivity extends Activity {
 	private DateFormat mDateFormat, mTimeFormat;
 	private Cursor mCursor;
 	static final int DATE_DIALOG_ID = 0, TIME_DIALOG_ID = 1;
-	private boolean backButtonClicked = false;
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -70,6 +69,7 @@ public class TodoEditActivity extends Activity {
 		mConfirmButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
+				saveState();
 				finish();
 			}
 		});
@@ -172,30 +172,15 @@ public class TodoEditActivity extends Activity {
 	// by resuming
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		saveState();
 		outState.putSerializable(TodoDatabaseAdapter.KEY_ROWID, mRowId);
 	}
 
-	// Just Save the Edit if not the back button was clicked
+	//
 	@Override
 	protected void onPause() {
-		super.onPause();
-		if (!backButtonClicked) {
-			saveState();
-		}
+		super.onPause();	
 	}
 
-	// Looking for the pressevent of the back Button
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO
-		// http://developer.android.com/reference/android/app/Activity.html#onBackPressed%28%29
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Log.d(this.getClass().getName(), "back button pressed");
-			backButtonClicked = true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
 
 	@Override
 	protected void onResume() {
