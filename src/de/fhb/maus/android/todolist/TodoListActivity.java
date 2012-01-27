@@ -36,16 +36,13 @@ public class TodoListActivity extends ListActivity {
 	private Cursor mCursor;
 	private Button mAdd;
 	private Button mAbout;
+	private int order = 0;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
-
-		// TODO sort by date or other things
-		// TODO add a menu item "sort by ..." to the View
-
 		// Sets up Button for adding a ToDo
 		mAdd = (Button) findViewById(R.id.buttonAdd);
 		mAdd.setOnClickListener(new OnClickListener() {
@@ -54,7 +51,6 @@ public class TodoListActivity extends ListActivity {
 						TodoEditActivity.class));
 			}
 		});
-
 		// Sets up Button showing the logout Toast
 		mAbout = (Button) findViewById(R.id.buttonLogout);
 		mAbout.setOnClickListener(new OnClickListener() {
@@ -64,14 +60,12 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
-
 		// Helps to get our data from a database
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
-		fillData();
+		fillToDoList();
 		registerForContextMenu(getListView());
 	}
 
@@ -87,24 +81,20 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
+			case R.id.noOrder :
+				order = 0;
+				fillToDoList();
 				return true;
-			case R.id.about :
-				createAbout();
+			case R.id.orderByDate :
+				order = 1;
+				fillToDoList();
+				return true;
+			case R.id.orderByName :
+				order = 2;
+				fillToDoList();
 				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.insert :
-				createTodo();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	// Delete a Todo
@@ -115,21 +105,10 @@ public class TodoListActivity extends ListActivity {
 				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 						.getMenuInfo();
 				mDbHelper.deleteTodo(info.id);
-				fillData();
+				fillToDoList();
 				return true;
 		}
 		return super.onContextItemSelected(item);
-	}
-
-	private void createTodo() {
-		Intent i = new Intent(this, TodoEditActivity.class);
-		startActivityForResult(i, ACTIVITY_CREATE);
-	}
-
-	private void createAbout() {
-		Toast.makeText(TodoListActivity.this,
-				getResources().getString(R.string.additionalWrittenBy),
-				Toast.LENGTH_SHORT).show();
 	}
 
 	// A ToDo was clicked
@@ -150,25 +129,30 @@ public class TodoListActivity extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		fillData();
+		fillToDoList();
 	}
 
 	// Always called when the ToDos are shown
-	private void fillData() {
-		mCursor = mDbHelper.fetchAllTodos();
+	private void fillToDoList() {
+		switch (order) {
+			case 0 :
+				mCursor = mDbHelper.fetchAllTodos();
+				break;
+			case 1 :
+				mCursor = mDbHelper.fetchAllTodosOrderByDate();
+				break;
+			case 2 :
+				mCursor = mDbHelper.fetchAllTodosOrderByName();
+				break;
+		}
 		startManagingCursor(mCursor);
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
 				TodoDatabaseAdapter.KEY_SUMMARY};
-		
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
 				R.id.textViewDate, R.id.textViewSummary};
-		
-		//https://github.com/monxalo/android-section-adapter/tree/master/src/com/monxalo/android/widget
-		//http://stackoverflow.com/questions/5165726/sorting-a-cursor-in-android-to-be-used-in-simplecursoradapter
-		
-		
+
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter row = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);

@@ -12,11 +12,8 @@ public class TodoDatabaseAdapter {
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_DATE = "date";
 	public static final String KEY_CATEGORY = "category";
-	// Summary of the todo
 	public static final String KEY_SUMMARY = "summary";
-	// Checked when done
 	public static final String KEY_DONE = "done";
-	// Full description
 	public static final String KEY_DESCRIPTION = "description";
 	private static final String DATABASE_TABLE = "todo";
 	private Context mContext;
@@ -45,7 +42,6 @@ public class TodoDatabaseAdapter {
 			String summary, String description) {
 		ContentValues initialValues = createContentValues(date, category, done,
 				summary, description);
-
 		return mDatabase.insert(DATABASE_TABLE, null, initialValues);
 	}
 
@@ -73,9 +69,19 @@ public class TodoDatabaseAdapter {
 	 * @return Cursor over all notes
 	 */
 	public Cursor fetchAllTodos() {
-		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_DATE,
-				KEY_CATEGORY, KEY_DONE, KEY_SUMMARY, KEY_DESCRIPTION}, null,
-				null, null, null, null);
+		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
+				KEY_DESCRIPTION}, null, null, null, null, null);
+	}
+	public Cursor fetchAllTodosOrderByName() {
+		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
+				KEY_DESCRIPTION}, null, null, null, null, KEY_SUMMARY);
+	}
+	public Cursor fetchAllTodosOrderByDate() {
+		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
+				KEY_DESCRIPTION}, null, null, null, null, KEY_DATE);
 	}
 
 	/**

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/insert"
-        android:title="Insert Item">
+        android:id="@+id/noOrder"
+        android:title="Normal">
     </item>
 
     <item
-        android:id="@+id/about"
-        android:title="About Listy">
+        android:id="@+id/orderByDate"
+        android:title="Order by Date">
+    </item>
+    
+     <item
+        android:id="@+id/orderByName"
+        android:title="Order by Name">
     </item>
 
 </menu>
