@@ -11,7 +11,8 @@
     <string name="todo_edit_confirm">Save ToDo</string>
     <string name="additionalWrittenBy">Written by KwoXsaN</string>
     <string name="additionalTodo">ToDo</string>
-    <string name="additionalTodoSaved">succuessfully saved</string>
+    <string name="additionalTodoSave">succuessfully saved</string>
+    <string name="additionalTodoDelete">succuessfully deleted</string>
     <string name="additionalLoggedOut">You are now logged out. Have a nice day :D</string>
     <string name="login_login">Login</string>
     <string name="login_exit">Exit</string>

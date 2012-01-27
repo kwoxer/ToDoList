@@ -29,7 +29,7 @@ public class TodoEditActivity extends Activity {
 	private Spinner mCategory;
 	private CheckBox mCheckBox;
 	private EditText mTitleText, mBodyText;
-	private Button mConfirmButton;
+	private Button mAddButton, mDeleteButton;
 	private Long mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Calendar mCalendar;
@@ -38,7 +38,7 @@ public class TodoEditActivity extends Activity {
 	private DateFormat mDateFormat, mTimeFormat;
 	private Cursor mCursor;
 	static final int DATE_DIALOG_ID = 0, TIME_DIALOG_ID = 1;
-	
+
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -50,7 +50,8 @@ public class TodoEditActivity extends Activity {
 		mTitleText = (EditText) findViewById(R.id.textViewSummary);
 		mBodyText = (EditText) findViewById(R.id.textViewDescription);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBoxDone);
-		mConfirmButton = (Button) findViewById(R.id.buttonSave);
+		mAddButton = (Button) findViewById(R.id.buttonSave);
+		mDeleteButton = (Button) findViewById(R.id.buttonDelete);
 		mTextViewDate = (TextView) findViewById(R.id.textViewDate);
 		mTextViewTime = (TextView) findViewById(R.id.textViewTime);
 		// http://developer.android.com/reference/java/text/SimpleDateFormat.html
@@ -66,11 +67,17 @@ public class TodoEditActivity extends Activity {
 			mRowId = extras.getLong(TodoDatabaseAdapter.KEY_ROWID);
 		}
 
-		mConfirmButton.setOnClickListener(new View.OnClickListener() {
+		mAddButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				setResult(RESULT_OK);
-				saveState();
-				finish();
+				saveToDo();
+				
+			}
+		});
+		mDeleteButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				setResult(RESULT_OK);
+				deleteToDo();
 			}
 		});
 		mTextViewDate.setOnClickListener(new View.OnClickListener() {
@@ -178,9 +185,8 @@ public class TodoEditActivity extends Activity {
 	//
 	@Override
 	protected void onPause() {
-		super.onPause();	
+		super.onPause();
 	}
-
 
 	@Override
 	protected void onResume() {
@@ -188,7 +194,7 @@ public class TodoEditActivity extends Activity {
 		populateFields();
 	}
 
-	private void saveState() {
+	private void saveToDo() {
 		mCalendar.set(mYear, mMonth, mDay, mHour, mMinute, 0);
 		String category = (String) mCategory.getSelectedItem();
 		String summary = mTitleText.getText().toString();
@@ -198,12 +204,9 @@ public class TodoEditActivity extends Activity {
 
 		Toast.makeText(
 				this,
-				getResources().getString(R.string.additionalTodo)
-						+ " "
-						+ summary
-						+ " "
-						+ getResources()
-								.getString(R.string.additionalTodoSaved),
+				getResources().getString(R.string.additionalTodo) + " "
+						+ summary + " "
+						+ getResources().getString(R.string.additionalTodoSave),
 				Toast.LENGTH_LONG).show();
 
 		if (mRowId == null) {
@@ -215,6 +218,24 @@ public class TodoEditActivity extends Activity {
 		} else {
 			mDbHelper.updateTodo(mRowId, date, category, done, summary,
 					description);
+		}
+		finish();
+	}
+
+	private void deleteToDo() {
+		if (mRowId != null) {
+			mDbHelper.deleteTodo(mRowId);
+			String summary = mTitleText.getText().toString();
+			Toast.makeText(
+					this,
+					getResources().getString(R.string.additionalTodo)
+							+ " "
+							+ summary
+							+ " "
+							+ getResources().getString(
+									R.string.additionalTodoDelete),
+					Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 }
