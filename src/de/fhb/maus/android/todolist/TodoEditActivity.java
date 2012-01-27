@@ -46,7 +46,7 @@ public class TodoEditActivity extends Activity {
 		mDbHelper.open();
 		setContentView(R.layout.todo_edit);
 
-		mCategory = (Spinner) findViewById(R.id.category);
+		mCategory = (Spinner) findViewById(R.id.spinnerCategory);
 		mTitleText = (EditText) findViewById(R.id.textViewSummary);
 		mBodyText = (EditText) findViewById(R.id.textViewDescription);
 		mCheckBox = (CheckBox) findViewById(R.id.checkBoxDone);
