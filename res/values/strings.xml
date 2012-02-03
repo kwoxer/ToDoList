@@ -21,5 +21,9 @@
     <string name="login_hint_pass">Password</string>
     <string name="login_toast">You must set an correct E-Mail!</string>
     <string name="contact_add">Add contacts</string>
-
+    <string name="contact_edit_name">Name</string>
+    <string name="contact_edit_phone">Telephone</string>
+    <string name="contact_edit_email">Email</string>
+	<string name="contact_edit_button">Save</string>
+	
 </resources>
