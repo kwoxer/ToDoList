@@ -40,7 +40,7 @@ public class AddContactActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_contact);
+		setContentView(R.layout.contact_edit);
 		
 		
 		// initialise the ui elements
