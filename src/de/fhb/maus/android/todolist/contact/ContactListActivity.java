@@ -52,10 +52,7 @@ public class ContactListActivity extends ListActivity {
 
 			}
 		});
-
 		showPhoneContacts();
-		adapter = new InteractivContactarrayAdapter(this, contactsList);
-		setListAdapter(adapter);
 		registerForContextMenu(getListView());
 	}
 
@@ -113,13 +110,17 @@ public class ContactListActivity extends ListActivity {
 						.withSelection(ContactsContract.Data._ID + "=?", params).build());
 				try {
 					cr.applyBatch(ContactsContract.AUTHORITY, ops);
+					
 				} catch (OperationApplicationException e) {
 					e.printStackTrace();
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
+				adapter.clear();
+				showPhoneContacts();
 				return true;
 		}
+		
 		return super.onContextItemSelected(item);
 	}
 	// When a ToDo Delete Menu is gonna be shown
@@ -151,12 +152,11 @@ public class ContactListActivity extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 		adapter.clear();
 		showPhoneContacts();
-		adapter = new InteractivContactarrayAdapter(this, contactsList);
-		setListAdapter(adapter);
-
 	}
 	private void showPhoneContacts() {
-
+		
+		adapter = new InteractivContactarrayAdapter(this, contactsList);
+		setListAdapter(adapter);
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
