@@ -153,9 +153,9 @@ public class TodoListActivity extends ListActivity {
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
-				TodoDatabaseAdapter.KEY_SUMMARY, TodoDatabaseAdapter.KEY_CONTACTID};
+				TodoDatabaseAdapter.KEY_SUMMARY};
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
-				R.id.textViewDate, R.id.textViewSummary, R.id.showContactButton};
+				R.id.textViewDate, R.id.textViewSummary};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
@@ -186,20 +186,18 @@ public class TodoListActivity extends ListActivity {
 					}
 				}
 
-				int nCheckedIndexContactButton = cursor
-						.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID);
-				if(columnIndex == nCheckedIndexContactButton){
-					Button contactButton = (Button) view;
-					contactButton.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							startActivity(new Intent(TodoListActivity.this,
-									ContactListActivity.class));
-							
-						}
-					} );
-				}
+				//TODO vorerst rausgenommen da ich an der Datenbank rumgespielt habe 
+//				Button contactButton = (Button) view;
+//				contactButton.setOnClickListener(new OnClickListener() {
+//					
+//					@Override
+//					public void onClick(View v) {
+//						startActivity(new Intent(TodoListActivity.this,
+//								ContactListActivity.class));
+//						
+//					}
+//				} );
+				
 				
 				// Update Checkbox
 				int nCheckedIndexCheckbox = (cursor
@@ -217,18 +215,16 @@ public class TodoListActivity extends ListActivity {
 							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
 					final String description = cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
-					final String contact = cursor.getString(cursor
-							.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
 					cb.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							CheckBox mCheckBox = (CheckBox) v;
 							if (mCheckBox.isChecked())
 								mDbHelper.updateTodo(id, date, category, true,
-										summary, description, contact);
+										summary, description);
 							else
 								mDbHelper.updateTodo(id, date, category, false,
-										summary, description, contact);
+										summary, description);
 						}
 					});
 					cb.setChecked(bChecked);

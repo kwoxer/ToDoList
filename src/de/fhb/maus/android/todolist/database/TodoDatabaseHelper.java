@@ -12,8 +12,14 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = "create table todo (_id integer primary key autoincrement, "
-			+ "date text not null, category text not null, done integer not null, summary text not null, description text not null, contact text not null);";
+			+ "date text not null, category text not null, done integer not null, summary text not null, description text not null);";
 
+	
+	private static final String DATABASE_CREATE2 = "Create table hat(_id integer not null," 
+			+ " _cid integer not null, FOREIGN KEY (_id) REFERENCES todo (_id),FOREIGN KEY (_cid) REFERENCES contacttable (_cid), primary key (_id, _cid))";
+	
+	private static final String DATABASE_CREATE3 = "Create table contacttable(_cid integer not null primary key," 
+			+ " displayName text not null, email text not null, phonenumber text not null)";
 	public TodoDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -22,6 +28,8 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		database.execSQL(DATABASE_CREATE);
+		database.execSQL(DATABASE_CREATE3);
+		database.execSQL(DATABASE_CREATE2);
 	}
 
 	// Method is called during an upgrade of the database, e.g. if you increase

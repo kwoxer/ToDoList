@@ -14,7 +14,7 @@
             android:id="@+id/entryName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/contact_edit_name"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:textSize="12dip" />
@@ -23,7 +23,7 @@
             android:id="@+id/entryPhone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Telefon"
+            android:hint="@string/contact_edit_phone"
             android:numeric="integer"
             android:imeOptions="actionNext"
             android:singleLine="true"
@@ -33,7 +33,7 @@
             android:id="@+id/entryEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/contact_edit_email"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:textSize="12dip" />
@@ -49,7 +49,7 @@
             android:id="@+id/saveEntry"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Speichern" >
+            android:text="@string/contact_edit_button" >
         </Button>
     </LinearLayout>
 

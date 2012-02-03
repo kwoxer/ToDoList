@@ -220,7 +220,6 @@ public class TodoEditActivity extends Activity {
 		String description = mBodyText.getText().toString();
 		boolean done = mCheckBox.isChecked();
 		String date = String.valueOf(mCalendar.getTime().getTime());
-		String contact = "tedbnsiofabnct";
 
 		Toast.makeText(
 				this,
@@ -231,13 +230,13 @@ public class TodoEditActivity extends Activity {
 
 		if (mRowId == null) {
 			long id = mDbHelper.createTodo(date, category, done, summary,
-					description, contact);
+					description);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
 			mDbHelper.updateTodo(mRowId, date, category, done, summary,
-					description, contact);
+					description);
 		}
 		finish();
 	}
