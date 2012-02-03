@@ -13,7 +13,14 @@ public class Contact implements Serializable {
 	private String number = null;
 	private String email = null;
 	private boolean selected;
+	private long contactid;
 	
+	public long getContactid() {
+		return contactid;
+	}
+	public void setContactid(long contactid) {
+		this.contactid = contactid;
+	}
 	public String getName() {
 		return name;
 	}
@@ -38,7 +45,4 @@ public class Contact implements Serializable {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-	
-	
-	
 }

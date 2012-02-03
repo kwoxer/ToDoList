@@ -3,10 +3,6 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fhb.maus.android.todolist.R;
-import de.fhb.maus.android.todolist.R.id;
-import de.fhb.maus.android.todolist.R.layout;
-
 import android.app.ListActivity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -19,16 +15,17 @@ import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import de.fhb.maus.android.todolist.R;
 
 public class ContactListActivity extends ListActivity {
 	private static final int ACTIVITY_CREATE = 0;
@@ -65,13 +62,50 @@ public class ContactListActivity extends ListActivity {
 	/** Delete a Todo by long click on it */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		
+		Cursor cursor = getContentResolver().query(
+				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+		// System.out.println(cursor.moveToNext());
+
+		while (cursor.moveToNext()) {
+			String contactId = cursor.getString(cursor
+					.getColumnIndex(BaseColumns._ID));
+			contact = new Contact();
+
+			/*
+			 * query the phones for each contact
+			 */
+			Cursor names = getContentResolver().query(
+					ContactsContract.Contacts.CONTENT_URI, null,
+					ContactsContract.Contacts._ID + " = " + contactId, null,
+					null);
+			while (names.moveToNext()) {
+				Log.v("phoneNumber", "while oben drin");
+				String displayName = names
+						.getString(names
+								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				contact.setName(displayName);
+				Log.v("phoneNumber", "nach display_name");
+			}
+			names.close();
+		}
+		
+				
 		switch (item.getItemId()) {
 			case DELETE_ID :
 				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 						.getMenuInfo();
-
+				
+				Contact contact =  (Contact) getListAdapter().getItem(info.position);
+				long contactid = contact.getContactid();
+				
+				Log.v("displayname", contact.getName());
+				Log.v("contactid", String.valueOf(contactid));
+				
+				
 				ContentResolver cr = getContentResolver();
-				String[] params = new String[]{String.valueOf(7)};
+				String[] params = new String[]{String.valueOf(contactid)};
 
 				ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 				ops.add(ContentProviderOperation
@@ -131,7 +165,6 @@ public class ContactListActivity extends ListActivity {
 		while (cursor.moveToNext()) {
 			String contactId = cursor.getString(cursor
 					.getColumnIndex(BaseColumns._ID));
-			System.out.println(contactId);
 			contact = new Contact();
 
 			/*
@@ -146,7 +179,9 @@ public class ContactListActivity extends ListActivity {
 				String displayName = names
 						.getString(names
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				long contactid = names.getLong(names.getColumnIndex(ContactsContract.Contacts._ID));
 				contact.setName(displayName);
+				contact.setContactid(contactid);
 				Log.v("phoneNumber", "nach display_name");
 			}
 			names.close();
