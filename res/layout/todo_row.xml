@@ -43,12 +43,5 @@
             android:textSize="18dp" />
 
     </LinearLayout>
-   
-    <Button
-        android:id="@+id/showContactButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/contact_add" 
-        android:focusable="false"/>
 
 </LinearLayout>

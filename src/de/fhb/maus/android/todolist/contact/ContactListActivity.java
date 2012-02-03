@@ -57,34 +57,6 @@ public class ContactListActivity extends ListActivity {
 	/** Delete a Todo by long click on it */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		
-		Cursor cursor = getContentResolver().query(
-				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-
-		// System.out.println(cursor.moveToNext());
-
-		while (cursor.moveToNext()) {
-			String contactId = cursor.getString(cursor
-					.getColumnIndex(BaseColumns._ID));
-			contact = new Contact();
-
-			/*
-			 * query the phones for each contact
-			 */
-			Cursor names = getContentResolver().query(
-					ContactsContract.Contacts.CONTENT_URI, null,
-					ContactsContract.Contacts._ID + " = " + contactId, null,
-					null);
-			while (names.moveToNext()) {
-				Log.v("phoneNumber", "while oben drin");
-				String displayName = names
-						.getString(names
-								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-				contact.setName(displayName);
-				Log.v("phoneNumber", "nach display_name");
-			}
-			names.close();
-		}
 				
 		switch (item.getItemId()) {
 			case DELETE_ID :
@@ -155,8 +127,6 @@ public class ContactListActivity extends ListActivity {
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
-		// System.out.println(cursor.moveToNext());
-
 		while (cursor.moveToNext()) {
 			String contactId = cursor.getString(cursor
 					.getColumnIndex(BaseColumns._ID));
@@ -170,20 +140,15 @@ public class ContactListActivity extends ListActivity {
 					ContactsContract.Contacts._ID + " = " + contactId, null,
 					null);
 			while (names.moveToNext()) {
-				Log.v("phoneNumber", "while oben drin");
 				String displayName = names
 						.getString(names
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 				long contactid = names.getLong(names.getColumnIndex(ContactsContract.Contacts._ID));
 				contact.setName(displayName);
 				contact.setContactid(contactid);
-				Log.v("phoneNumber", "nach display_name");
 			}
 			names.close();
 
-			/*
-			 * query the phones for each contact
-			 */
 			Cursor phones = getContentResolver().query(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 					null,
@@ -194,20 +159,14 @@ public class ContactListActivity extends ListActivity {
 						.getString(phones
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				contact.setNumber(phoneNumber);
-				Log.v("phoneNumber", "nach number");
 			}
 			phones.close();
 
-			/*
-			 * query the emails for each contact
-			 */
-			Log.v("phoneNumber", "vor emailcursor");
 			Cursor emails = getContentResolver().query(
 					ContactsContract.CommonDataKinds.Email.CONTENT_URI,
 					null,
 					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = "
 							+ contactId, null, null);
-			Log.v("phoneNumber", "mitte");
 			while (emails.moveToNext()) {
 				String email = emails
 						.getString(emails
@@ -216,7 +175,6 @@ public class ContactListActivity extends ListActivity {
 			}
 
 			contactsList.add(contact);
-			Log.v("phoneNumber", "unten");
 			emails.close();
 		}
 	}
