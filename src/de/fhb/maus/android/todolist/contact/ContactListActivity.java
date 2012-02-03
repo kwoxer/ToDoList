@@ -8,94 +8,139 @@ import de.fhb.maus.android.todolist.R.id;
 import de.fhb.maus.android.todolist.R.layout;
 
 import android.app.ListActivity;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ContactListActivity extends ListActivity{
+public class ContactListActivity extends ListActivity {
 	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private List<Contact> contactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> adapter;
-	
+	private static final int DELETE_ID = Menu.FIRST + 1;
+	private Contact contact;
+
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
-		
+
 		Button addContact = (Button) findViewById(R.id.addContact);
 		addContact.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				startActivity(new Intent(TodoContactActivity.this,
-//						AddContactActivity.class));
-				
+				// startActivity(new Intent(TodoContactActivity.this,
+				// AddContactActivity.class));
+
 				startActivityForResult(new Intent(ContactListActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
-				
+
 			}
 		});
-		
-		
+
 		showPhoneContacts();
-		adapter = new InteractivContactarrayAdapter(this,contactsList);
+		adapter = new InteractivContactarrayAdapter(this, contactsList);
 		setListAdapter(adapter);
-		
+		registerForContextMenu(getListView());
 	}
-	
+
+	/** Delete a Todo by long click on it */
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id){
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case DELETE_ID :
+				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+						.getMenuInfo();
+
+				ContentResolver cr = getContentResolver();
+				String[] params = new String[]{String.valueOf(7)};
+
+				ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+				ops.add(ContentProviderOperation
+						.newDelete(ContactsContract.RawContacts.CONTENT_URI)
+						.withSelection(ContactsContract.Data._ID + "=?", params).build());
+				try {
+					cr.applyBatch(ContactsContract.AUTHORITY, ops);
+				} catch (OperationApplicationException e) {
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+	// When a ToDo Delete Menu is gonna be shown
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-//		Toast.makeText(this, item + "selected", Toast.LENGTH_LONG).show();
-		Contact item =(Contact) this.getListAdapter().getItem(position);
-		
-//		String keyword = item.getName();
-//		Toast.makeText(this, keyword, Toast.LENGTH_SHORT).show();		
-		
+		// Toast.makeText(this, item + "selected", Toast.LENGTH_LONG).show();
+		Contact item = (Contact) this.getListAdapter().getItem(position);
+
+		// String keyword = item.getName();
+		// Toast.makeText(this, keyword, Toast.LENGTH_SHORT).show();
+
 		Intent i = new Intent(this, ContactEditActivity.class);
 		i.putExtra("contact", item);
-		
+
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 		adapter.clear();
-		showPhoneContacts();		
-		adapter = new InteractivContactarrayAdapter(this,contactsList);
+		showPhoneContacts();
+		adapter = new InteractivContactarrayAdapter(this, contactsList);
 		setListAdapter(adapter);
-		
+
 	}
-	private void showPhoneContacts(){
-		Contact contact;
+	private void showPhoneContacts() {
 
 		Cursor cursor = getContentResolver().query(
-			ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-		
+				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+		// System.out.println(cursor.moveToNext());
+
 		while (cursor.moveToNext()) {
 			String contactId = cursor.getString(cursor
 					.getColumnIndex(BaseColumns._ID));
-			
+			System.out.println(contactId);
 			contact = new Contact();
-			
+
 			/*
 			 * query the phones for each contact
 			 */
 			Cursor names = getContentResolver().query(
-					ContactsContract.Contacts.CONTENT_URI,
-					null,
-					ContactsContract.Contacts._ID
-							+ " = " + contactId, null, null);
+					ContactsContract.Contacts.CONTENT_URI, null,
+					ContactsContract.Contacts._ID + " = " + contactId, null,
+					null);
 			while (names.moveToNext()) {
 				Log.v("phoneNumber", "while oben drin");
 				String displayName = names
@@ -105,16 +150,16 @@ public class ContactListActivity extends ListActivity{
 				Log.v("phoneNumber", "nach display_name");
 			}
 			names.close();
-			
+
 			/*
 			 * query the phones for each contact
 			 */
 			Cursor phones = getContentResolver().query(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 					null,
-					ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-							+ " = " + contactId, null, null);
-			while(phones.moveToNext()){
+					ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
+							+ contactId, null, null);
+			while (phones.moveToNext()) {
 				String phoneNumber = phones
 						.getString(phones
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
@@ -122,29 +167,27 @@ public class ContactListActivity extends ListActivity{
 				Log.v("phoneNumber", "nach number");
 			}
 			phones.close();
-			
+
 			/*
 			 * query the emails for each contact
 			 */
 			Log.v("phoneNumber", "vor emailcursor");
 			Cursor emails = getContentResolver().query(
-				ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-				null,
-				ContactsContract.CommonDataKinds.Email.CONTACT_ID
-						+ " = " + contactId, null, null);
+					ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+					null,
+					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = "
+							+ contactId, null, null);
 			Log.v("phoneNumber", "mitte");
-			while(emails.moveToNext()){
+			while (emails.moveToNext()) {
 				String email = emails
 						.getString(emails
 								.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
 				contact.setNumber(email);
-			}				
-				contactsList.add(contact);
-				Log.v("phoneNumber", "unten");
-			
+			}
 
+			contactsList.add(contact);
+			Log.v("phoneNumber", "unten");
+			emails.close();
 		}
 	}
 }
-
-
