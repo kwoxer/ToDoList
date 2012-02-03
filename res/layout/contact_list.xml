@@ -19,7 +19,7 @@
             android:id="@+id/buttonAddContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@+id/contact_add" />
+            android:text="@string/contact_add" />
     </LinearLayout>
 
 </LinearLayout>
