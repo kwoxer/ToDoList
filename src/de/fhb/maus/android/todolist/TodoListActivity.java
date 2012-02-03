@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.fhb.maus.android.todolist.contact.TodoContactActivity;
+import de.fhb.maus.android.todolist.contact.ContactListActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
@@ -195,7 +195,7 @@ public class TodoListActivity extends ListActivity {
 						@Override
 						public void onClick(View v) {
 							startActivity(new Intent(TodoListActivity.this,
-									TodoContactActivity.class));
+									ContactListActivity.class));
 							
 						}
 					} );

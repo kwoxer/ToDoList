@@ -20,7 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class TodoContactActivity extends ListActivity{
+public class ContactListActivity extends ListActivity{
 	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private List<Contact> contactsList = new ArrayList<Contact>();
@@ -38,8 +38,8 @@ public class TodoContactActivity extends ListActivity{
 //				startActivity(new Intent(TodoContactActivity.this,
 //						AddContactActivity.class));
 				
-				startActivityForResult(new Intent(TodoContactActivity.this,
-						AddContactActivity.class), ACTIVITY_EDIT);
+				startActivityForResult(new Intent(ContactListActivity.this,
+						ContactEditActivity.class), ACTIVITY_EDIT);
 				
 			}
 		});
@@ -60,7 +60,7 @@ public class TodoContactActivity extends ListActivity{
 //		String keyword = item.getName();
 //		Toast.makeText(this, keyword, Toast.LENGTH_SHORT).show();		
 		
-		Intent i = new Intent(this, AddContactActivity.class);
+		Intent i = new Intent(this, ContactEditActivity.class);
 		i.putExtra("contact", item);
 		
 		startActivityForResult(i, ACTIVITY_EDIT);

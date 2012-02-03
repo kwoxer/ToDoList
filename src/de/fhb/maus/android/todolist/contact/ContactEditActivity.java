@@ -26,7 +26,7 @@ import de.fhb.maus.android.todolist.R.id;
 import de.fhb.maus.android.todolist.R.layout;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
-public class AddContactActivity extends Activity{
+public class ContactEditActivity extends Activity{
 	
 	/**
 	 * the ui elements
@@ -87,7 +87,7 @@ public class AddContactActivity extends Activity{
 	private void saveEntry(){
 		String editedName = entryName.getText().toString();
 		if ("".equals(editedName)) {
-			Toast.makeText(AddContactActivity.this,
+			Toast.makeText(ContactEditActivity.this,
 					"Ein Name muss eingegeben werden!", Toast.LENGTH_SHORT)
 					.show();
 		} else {			
