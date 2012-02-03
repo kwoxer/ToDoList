@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fhb.maus.android.todolist.contact.TodoContactActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**

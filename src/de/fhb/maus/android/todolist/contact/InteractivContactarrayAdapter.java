@@ -1,6 +1,10 @@
-package de.fhb.maus.android.todolist;
+package de.fhb.maus.android.todolist.contact;
 
 import java.util.List;
+
+import de.fhb.maus.android.todolist.R;
+import de.fhb.maus.android.todolist.R.id;
+import de.fhb.maus.android.todolist.R.layout;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

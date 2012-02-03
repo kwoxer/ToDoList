@@ -1,4 +1,4 @@
-package de.fhb.maus.android.todolist;
+package de.fhb.maus.android.todolist.contact;
 
 
 
@@ -21,6 +21,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import de.fhb.maus.android.todolist.R;
+import de.fhb.maus.android.todolist.R.id;
+import de.fhb.maus.android.todolist.R.layout;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class AddContactActivity extends Activity{

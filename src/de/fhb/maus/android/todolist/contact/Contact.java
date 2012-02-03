@@ -1,4 +1,4 @@
-package de.fhb.maus.android.todolist;
+package de.fhb.maus.android.todolist.contact;
 
 import java.io.Serializable;
 

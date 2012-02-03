@@ -24,11 +24,11 @@
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name=".TodoContactActivity"
+            android:name=".contact.TodoContactActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name=".AddContactActivity"
+            android:name=".contact.AddContactActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
 
