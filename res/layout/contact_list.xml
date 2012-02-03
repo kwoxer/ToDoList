@@ -10,19 +10,16 @@
         android:layout_height="429dp" >
     </ListView>
 
-
-
     <LinearLayout
         android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-       <Button
-        android:id="@+id/addContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kontakt hinzufuegen" />
-
+        <Button
+            android:id="@+id/buttonAddContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/contact_add" />
     </LinearLayout>
 
 </LinearLayout>

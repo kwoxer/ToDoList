@@ -2,7 +2,6 @@ package de.fhb.maus.android.todolist.contact;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.ListActivity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,7 +38,7 @@ public class ContactListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
 
-		Button addContact = (Button) findViewById(R.id.addContact);
+		Button addContact = (Button) findViewById(R.id.buttonAddContact);
 		addContact.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -87,7 +85,6 @@ public class ContactListActivity extends ListActivity {
 			}
 			names.close();
 		}
-		
 				
 		switch (item.getItemId()) {
 			case DELETE_ID :
@@ -110,7 +107,6 @@ public class ContactListActivity extends ListActivity {
 						.withSelection(ContactsContract.Data._ID + "=?", params).build());
 				try {
 					cr.applyBatch(ContactsContract.AUTHORITY, ops);
-					
 				} catch (OperationApplicationException e) {
 					e.printStackTrace();
 				} catch (RemoteException e) {
@@ -154,7 +150,6 @@ public class ContactListActivity extends ListActivity {
 		showPhoneContacts();
 	}
 	private void showPhoneContacts() {
-		
 		adapter = new InteractivContactarrayAdapter(this, contactsList);
 		setListAdapter(adapter);
 		Cursor cursor = getContentResolver().query(

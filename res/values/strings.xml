@@ -20,6 +20,6 @@
     <string name="login_hint_mail">E-Mail</string>
     <string name="login_hint_pass">Password</string>
     <string name="login_toast">You must set an correct E-Mail!</string>
-    <string name="showContact">Kontakte</string>
+    <string name="contact_add">Add contacts</string>
 
 </resources>
