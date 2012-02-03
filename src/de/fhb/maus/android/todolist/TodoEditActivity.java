@@ -68,6 +68,7 @@ public class TodoEditActivity extends Activity {
 		}
 
 		mAddButton.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View view) {
 				setResult(RESULT_OK);
 				saveToDo();
@@ -75,17 +76,20 @@ public class TodoEditActivity extends Activity {
 			}
 		});
 		mDeleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View view) {
 				setResult(RESULT_OK);
 				deleteToDo();
 			}
 		});
 		mTextViewDate.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 		mTextViewTime.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				showDialog(TIME_DIALOG_ID);
 			}
@@ -103,6 +107,7 @@ public class TodoEditActivity extends Activity {
 
 	}
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		@Override
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			mYear = year;
 			mMonth = month;
@@ -111,6 +116,7 @@ public class TodoEditActivity extends Activity {
 		}
 	};
 	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+		@Override
 		public void onTimeSet(TimePicker view, int hour, int minute) {
 			mHour = hour;
 			mMinute = minute;
@@ -177,6 +183,7 @@ public class TodoEditActivity extends Activity {
 		}
 	}
 	// by resuming
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(TodoDatabaseAdapter.KEY_ROWID, mRowId);
@@ -194,6 +201,7 @@ public class TodoEditActivity extends Activity {
 		populateFields();
 	}
 
+	@Override
 	public void onBackPressed() {
 		Toast.makeText(
 				this,
@@ -212,6 +220,7 @@ public class TodoEditActivity extends Activity {
 		String description = mBodyText.getText().toString();
 		boolean done = mCheckBox.isChecked();
 		String date = String.valueOf(mCalendar.getTime().getTime());
+		String contact = "tedbnsiofabnct";
 
 		Toast.makeText(
 				this,
@@ -222,13 +231,13 @@ public class TodoEditActivity extends Activity {
 
 		if (mRowId == null) {
 			long id = mDbHelper.createTodo(date, category, done, summary,
-					description);
+					description, contact);
 			if (id > 0) {
 				mRowId = id;
 			}
 		} else {
 			mDbHelper.updateTodo(mRowId, date, category, done, summary,
-					description);
+					description, contact);
 		}
 		finish();
 	}

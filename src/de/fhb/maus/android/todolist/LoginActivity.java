@@ -27,6 +27,7 @@ public class LoginActivity extends Activity {
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		mLogIn.setOnClickListener(new OnClickListener() {
 
+			@Override
 			public void onClick(View v) {
 				EditText emailField = (EditText) findViewById(R.id.editTextEmail);
 				String email = emailField.getText().toString();
