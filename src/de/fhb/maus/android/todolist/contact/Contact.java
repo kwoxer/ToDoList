@@ -14,12 +14,22 @@ public class Contact implements Parcelable {
 	private String name = null;
 	private String number = null;
 	private String email = null;
-	private boolean selected ;
+	private byte selected = 0;
 	public boolean isSelected() {
-		return selected;
+		if(selected == 1){
+			return true;
+		}else{
+			return false;
+		}
 	}
+	
 	public void setSelected(boolean selected) {
-		this.selected = selected;
+		if(selected){
+			this.selected = 1;
+		}else{
+			this.selected = 0;
+		}
+		
 	}
 	private long contactid;
 
@@ -62,6 +72,7 @@ public class Contact implements Parcelable {
 		dest.writeString(number);
 		dest.writeString(email);
 		dest.writeLong(contactid);
+		dest.writeByte(selected);
 	}
 	
 	private Contact(Parcel in){
@@ -69,7 +80,9 @@ public class Contact implements Parcelable {
 		number = in.readString();
 		email = in.readString();
 		contactid = in.readLong();	
+		selected = in.readByte();		
 	}
+	
 	public static final Parcelable.Creator<Contact> CREATOR = 
 			new Parcelable.Creator<Contact>() {
 				@Override
@@ -82,6 +95,5 @@ public class Contact implements Parcelable {
 					// TODO Auto-generated method stub
 					return new Contact[size];
 				}
-				};
-				
+		};				
 }

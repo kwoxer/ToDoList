@@ -10,14 +10,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
+import de.fhb.maus.android.todolist.TodoListActivity;
+import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class ContactListShowActualActivity extends ListActivity{
 	
 	private Button addContact;
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
-	
+	private String rowid;
+	private TodoDatabaseAdapter mDbHelper;
 	/**
 	 * when Activity is created
 	 */
@@ -35,12 +39,8 @@ public class ContactListShowActualActivity extends ListActivity{
 			}
 		});
 		
-		Log.v("OnActivityResult in ShowActual", "bin drin");
-		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
 		mContactsList.clear();
 		mContactsList = getIntent().getParcelableArrayListExtra("contactlist");
-		
-		
 		
 		if (mContactsList != null) {
 			Log.v("OnActivityResult in ShowActual", mContactsList.get(1).getName());
@@ -48,7 +48,14 @@ public class ContactListShowActualActivity extends ListActivity{
 			mContactsList = new ArrayList<Contact>();
 		}
 		
+		rowid = getIntent().getStringExtra("todoRowid");
 		
+		if(rowid != null){
+			Toast.makeText(ContactListShowActualActivity.this, "test " + rowid,
+					Toast.LENGTH_SHORT).show();
+			mDbHelper = new TodoDatabaseAdapter(this);
+			mDbHelper.open();
+		}
 		
 		showContact();
 		registerForContextMenu(getListView());
@@ -64,10 +71,6 @@ public class ContactListShowActualActivity extends ListActivity{
 		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
 		mContactsList.clear();
 		mContactsList = intent.getParcelableArrayListExtra("contactlist");
-		if(mContactsList == null){
-			Log.v("OnActivityResult in ShowActual", "return");
-			return;
-		}
 		showContact();
 	}
 	

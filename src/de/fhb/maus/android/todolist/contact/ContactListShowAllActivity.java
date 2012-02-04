@@ -45,8 +45,6 @@ public class ContactListShowAllActivity extends ListActivity {
 		addContact.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// startActivity(new Intent(TodoContactActivity.this,
-				// AddContactActivity.class));
 
 				startActivityForResult(new Intent(ContactListShowAllActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
@@ -200,12 +198,24 @@ public class ContactListShowAllActivity extends ListActivity {
 		}
 	}
 	
+	private ArrayList<Contact> getCheckedContacts(){
+		ArrayList<Contact> selectedContacts = new ArrayList<Contact>();
+		Log.v("size()",String.valueOf(mContactsList.size()));
+		for(int i = 0; i<mContactsList.size();i++){
+			if(mContactsList.get(i).isSelected()){
+				selectedContacts.add(mContactsList.get(i));
+			}			
+		}
+		return selectedContacts;
+	}
+	
+	
 	@Override
 	public void onBackPressed(){
-		Log.v("onbackPressed in ShowAll", "bin drin");
-		Log.v("onbackPressed in ShowAll", mContactsList.get(1).getName());
+		Log.v("onbackPressed in ShowAll BackPressed", "bin drin");
+
 		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
-		intent.putParcelableArrayListExtra("contactlist", mContactsList);
+		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
