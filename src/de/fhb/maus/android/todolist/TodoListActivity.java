@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fhb.maus.android.todolist.contact.ContactEditActivity;
 import de.fhb.maus.android.todolist.contact.ContactListActivity;
 import de.fhb.maus.android.todolist.contact.InteractivContactarrayAdapter;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
@@ -36,7 +37,7 @@ public class TodoListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd, mLogout;
+	private Button mAdd, mLogout, mContact;
 	private int order = 0;
 
 	/**
@@ -67,15 +68,14 @@ public class TodoListActivity extends ListActivity {
 		});
 
 		
-		Button test = (Button) findViewById(R.id.button1);
-//		test.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-////				Toast.makeText(TodoListActivity.this,
-////						"bla "+nCheckedIndexIcon,
-////						Toast.LENGTH_SHORT).show();
-//			}
-//		});	
+		mContact = (Button) findViewById(R.id.buttonshowContact);
+		mContact.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TodoListActivity.this,
+				ContactListActivity.class));
+			}
+		});	
 		
 
 		// Divides the ToDo with a line

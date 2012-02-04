@@ -24,13 +24,13 @@
         android:id="@+id/buttonsendSms"
         android:layout_width="69dp"
         android:layout_height="wrap_content"
-        android:text="@string/sendsms" />
+        android:text="@string/sendsms" android:focusable="false"/>
 
     <Button
         android:id="@+id/buttonSendEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sendemail" />
+        android:text="@string/sendemail" android:focusable="false"/>
 
 </LinearLayout>
    
