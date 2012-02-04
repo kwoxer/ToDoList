@@ -177,13 +177,13 @@ public class TodoListActivity extends ListActivity {
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
 				TodoDatabaseAdapter.KEY_SUMMARY, TodoDatabaseAdapter.KEY_ROWID};
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
-				R.id.textViewDate, R.id.textViewSummary, R.id.button1};
+				R.id.textViewDate, R.id.textViewSummary, R.id.buttonContacts};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
 
-		// Updating Checkbox and Icon and Date
+		// Updating Items
 		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			@Override
