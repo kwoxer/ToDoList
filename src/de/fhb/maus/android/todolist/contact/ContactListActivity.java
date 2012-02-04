@@ -26,12 +26,12 @@ import android.widget.ListView;
 import de.fhb.maus.android.todolist.R;
 
 public class ContactListActivity extends ListActivity {
-	private static final int ACTIVITY_CREATE = 0;
+	//private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
-	private List<Contact> contactsList = new ArrayList<Contact>();
-	private ArrayAdapter<Contact> adapter;
 	private static final int DELETE_ID = Menu.FIRST + 1;
-	private Contact contact;
+	private List<Contact> mContactsList = new ArrayList<Contact>();
+	private ArrayAdapter<Contact> mAdapter;
+	private Contact mContact;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class ContactListActivity extends ListActivity {
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
-				adapter.clear();
+				mAdapter.clear();
 				showPhoneContacts();
 				return true;
 		}
@@ -118,19 +118,19 @@ public class ContactListActivity extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		adapter.clear();
+		mAdapter.clear();
 		showPhoneContacts();
 	}
 	private void showPhoneContacts() {
-		adapter = new InteractivContactarrayAdapter(this, contactsList);
-		setListAdapter(adapter);
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
+		setListAdapter(mAdapter);
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
 		while (cursor.moveToNext()) {
 			String contactId = cursor.getString(cursor
 					.getColumnIndex(BaseColumns._ID));
-			contact = new Contact();
+			mContact = new Contact();
 
 			/*
 			 * query the phones for each contact
@@ -144,8 +144,8 @@ public class ContactListActivity extends ListActivity {
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 				long contactid = names.getLong(names
 						.getColumnIndex(BaseColumns._ID));
-				contact.setName(displayName);
-				contact.setContactid(contactid);
+				mContact.setName(displayName);
+				mContact.setContactid(contactid);
 			}
 			names.close();
 
@@ -158,7 +158,7 @@ public class ContactListActivity extends ListActivity {
 				String phoneNumber = phones
 						.getString(phones
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-				contact.setNumber(phoneNumber);
+				mContact.setNumber(phoneNumber);
 			}
 			phones.close();
 
@@ -171,10 +171,10 @@ public class ContactListActivity extends ListActivity {
 				String email = emails
 						.getString(emails
 								.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
-				contact.setNumber(email);
+				mContact.setNumber(email);
 			}
 
-			contactsList.add(contact);
+			mContactsList.add(mContact);
 			emails.close();
 		}
 	}

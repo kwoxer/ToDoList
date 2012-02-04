@@ -31,7 +31,7 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
  */
 public class TodoListActivity extends ListActivity {
 	private TodoDatabaseAdapter mDbHelper;
-	private static final int ACTIVITY_CREATE = 0;
+	//private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;

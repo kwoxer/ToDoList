@@ -25,11 +25,11 @@ public class ContactEditActivity extends Activity {
 	/**
 	 * the ui elements
 	 */
-	private EditText entryName;
-	private EditText entryEmail;
-	private EditText entryPhone;
-	private Button saveEntry;
-	private Contact contact;
+	private EditText mName;
+	private EditText mEmail;
+	private EditText mPhone;
+	private Button mSave;
+	private Contact mContact;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,35 +37,35 @@ public class ContactEditActivity extends Activity {
 		setContentView(R.layout.contact_edit);
 
 		// initialise the ui elements
-		entryName = (EditText) findViewById(R.id.editTextName);
-		entryPhone = (EditText) findViewById(R.id.editTextPhone);
-		entryEmail = (EditText) findViewById(R.id.editTextEmail);
-		saveEntry = (Button) findViewById(R.id.buttonSave);
+		mName = (EditText) findViewById(R.id.editTextName);
+		mPhone = (EditText) findViewById(R.id.editTextPhone);
+		mEmail = (EditText) findViewById(R.id.editTextEmail);
+		mSave = (Button) findViewById(R.id.buttonSave);
 
-		contact = (Contact) getIntent().getSerializableExtra("contact");
-		if (contact != null) {
-			String displayName = contact.getName();
+		mContact = (Contact) getIntent().getSerializableExtra("contact");
+		if (mContact != null) {
+			String displayName = mContact.getName();
 			if (displayName != null) {
 				Log.v("AddContactActivityGetIntent", displayName);
-				entryName.setText(displayName);
-				entryName.setEnabled(false);
-				saveEntry.setText("bearbeiten");
-				String phonenumber = contact.getNumber();
+				mName.setText(displayName);
+				mName.setEnabled(false);
+				mSave.setText("bearbeiten");
+				String phonenumber = mContact.getNumber();
 				if (phonenumber != null) {
-					entryPhone.setText(phonenumber);
-					entryPhone.setEnabled(false);
+					mPhone.setText(phonenumber);
+					mPhone.setEnabled(false);
 				}
-				String email = contact.getEmail();
+				String email = mContact.getEmail();
 				if (email != null) {
-					entryEmail.setText(email);
-					entryEmail.setEnabled(false);
+					mEmail.setText(email);
+					mEmail.setEnabled(false);
 				}
 			}
 		}
 
 		// set a listener on the saveEntry button (we do not do any validation
 		// here!)
-		saveEntry.setOnClickListener(new OnClickListener() {
+		mSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				saveEntry();
@@ -74,7 +74,7 @@ public class ContactEditActivity extends Activity {
 	}
 
 	private void saveEntry() {
-		String editedName = entryName.getText().toString();
+		String editedName = mName.getText().toString();
 		if ("".equals(editedName)) {
 			Toast.makeText(ContactEditActivity.this,
 					"Ein Name muss eingegeben werden!", Toast.LENGTH_SHORT)
@@ -92,8 +92,8 @@ public class ContactEditActivity extends Activity {
 							rawContactInsertIndex)
 					.withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
 					.withValue(StructuredName.DISPLAY_NAME, editedName).build());
-			String editedEmail = entryEmail.getText().toString();
-			String editedPhone = entryPhone.getText().toString();
+			String editedEmail = mEmail.getText().toString();
+			String editedPhone = mPhone.getText().toString();
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation
 						.newInsert(Data.CONTENT_URI)
