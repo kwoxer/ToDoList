@@ -31,12 +31,11 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
  */
 public class TodoListActivity extends ListActivity {
 	private TodoDatabaseAdapter mDbHelper;
-	//private static final int ACTIVITY_CREATE = 0;
+	// private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd;
-	private Button mAbout;
+	private Button mAdd, mAbout, mContact;
 	private int order = 0;
 
 	/** Called when the activity is first created. */
@@ -65,8 +64,8 @@ public class TodoListActivity extends ListActivity {
 		});
 
 		// TODO Übergangsimplementation
-		Button contactButton = (Button) findViewById(R.id.buttonshowContact);
-		contactButton.setOnClickListener(new OnClickListener() {
+		mContact = (Button) findViewById(R.id.buttonshowContact);
+		mContact.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -134,7 +133,6 @@ public class TodoListActivity extends ListActivity {
 		Intent i = new Intent(this, TodoEditActivity.class);
 		i.putExtra(TodoDatabaseAdapter.KEY_ROWID, id);
 		// Activity returns an result if called with startActivityForResult
-		// TODO sancezz fragen
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 

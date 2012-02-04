@@ -47,7 +47,6 @@ public class ContactListActivity extends ListActivity {
 
 				startActivityForResult(new Intent(ContactListActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
-
 			}
 		});
 		showPhoneContacts();
