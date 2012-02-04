@@ -68,12 +68,10 @@ public class TodoListActivity extends ListActivity {
 		// TODO Übergangsimplementation
 		mContact = (Button) findViewById(R.id.buttonshowContact);
 		mContact.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(TodoListActivity.this,
 						ContactListActivity.class));
-
 			}
 		});
 

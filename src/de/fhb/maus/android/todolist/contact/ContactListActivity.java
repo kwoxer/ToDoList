@@ -51,6 +51,7 @@ public class ContactListActivity extends ListActivity {
 						ContactEditActivity.class), ACTIVITY_EDIT);
 			}
 		});
+		//TODO hier steigt er aus, warum zeigt er die kontakte nimma an?
 		showPhoneContacts();
 		registerForContextMenu(getListView());
 	}
