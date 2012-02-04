@@ -20,8 +20,7 @@
         android:layout_weight="0.78"
         android:hint="@string/contact_edit_phone"
         android:imeOptions="actionNext"
-        android:numeric="integer"
-        android:singleLine="true"
+        android:singleLine="false"
         android:textSize="12dip" />
 
     <Button
