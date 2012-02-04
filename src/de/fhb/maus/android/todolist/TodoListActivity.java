@@ -36,7 +36,7 @@ public class TodoListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd, mLogout,test;
+	private Button mAdd, mLogout;
 	private int order = 0;
 
 	/**
@@ -67,7 +67,7 @@ public class TodoListActivity extends ListActivity {
 		});
 
 		
-		
+		Button test = (Button) findViewById(R.id.button1);
 //		test.setOnClickListener(new OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
@@ -186,15 +186,8 @@ public class TodoListActivity extends ListActivity {
 				R.layout.todo_row, mCursor, from, to);
 
 		
-//		test = (Button) findViewById(R.id.buttonAddContact);
-//		test.setOnClickListener(new OnClickListener()  {
-//             @Override
-//             public void onClick(View v)  {
-//            		Toast.makeText(TodoListActivity.this,
-//						"bla ",
-//						Toast.LENGTH_SHORT).show();
-//             }
-//         });
+//		test.
+		
 		// Updating Checkbox and Icon and Date
 		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
@@ -206,9 +199,6 @@ public class TodoListActivity extends ListActivity {
 				final int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndexIcon) {
-					//Button butt = (Button) view;
-					
-					
 					ImageView ico = (ImageView) view;
 					String category_type = cursor.getString((cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
