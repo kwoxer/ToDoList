@@ -23,6 +23,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.contact.ContactListActivity;
+import de.fhb.maus.android.todolist.contact.InteractivContactarrayAdapter;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
@@ -35,11 +36,11 @@ public class TodoListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd, mAbout, mContact;
+	private Button mAdd, mLogout,test;
 	private int order = 0;
 
-	/** 
-	 * Called when the activity is first created. 
+	/**
+	 * Called when the activity is first created.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class TodoListActivity extends ListActivity {
 			}
 		});
 		// Sets up Button showing the logout Toast
-		mAbout = (Button) findViewById(R.id.buttonLogout);
-		mAbout.setOnClickListener(new OnClickListener() {
+		mLogout = (Button) findViewById(R.id.buttonLogout);
+		mLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(TodoListActivity.this,
@@ -65,15 +66,17 @@ public class TodoListActivity extends ListActivity {
 			}
 		});
 
-		// TODO Übergangsimplementation
-		mContact = (Button) findViewById(R.id.buttonshowContact);
-		mContact.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(TodoListActivity.this,
-						ContactListActivity.class));
-			}
-		});
+		
+		
+//		test.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+////				Toast.makeText(TodoListActivity.this,
+////						"bla "+nCheckedIndexIcon,
+////						Toast.LENGTH_SHORT).show();
+//			}
+//		});	
+		
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -84,8 +87,8 @@ public class TodoListActivity extends ListActivity {
 		registerForContextMenu(getListView());
 	}
 
-	/** 
-	 * Create the menu based on the XML defintion 
+	/**
+	 * Create the menu based on the XML defintion
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,8 +97,8 @@ public class TodoListActivity extends ListActivity {
 		return true;
 	}
 
-	/** 
-	 * Reaction to the menu selection 
+	/**
+	 * Reaction to the menu selection
 	 */
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -116,8 +119,8 @@ public class TodoListActivity extends ListActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	/** 
-	 * Delete a Todo by long click on it 
+	/**
+	 * Delete a Todo by long click on it
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -145,10 +148,9 @@ public class TodoListActivity extends ListActivity {
 	}
 
 	/**
-	 * Called with the result of the other activity
-	 * requestCode was the origin request code send to the activity
-	 * resultCode is the return code, 0 is everything is ok
-	 * intend can be use to get some data from the caller
+	 * Called with the result of the other activity requestCode was the origin
+	 * request code send to the activity resultCode is the return code, 0 is
+	 * everything is ok intend can be use to get some data from the caller
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
@@ -183,17 +185,30 @@ public class TodoListActivity extends ListActivity {
 		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
 
+		
+//		test = (Button) findViewById(R.id.buttonAddContact);
+//		test.setOnClickListener(new OnClickListener()  {
+//             @Override
+//             public void onClick(View v)  {
+//            		Toast.makeText(TodoListActivity.this,
+//						"bla ",
+//						Toast.LENGTH_SHORT).show();
+//             }
+//         });
 		// Updating Checkbox and Icon and Date
 		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			@Override
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
-				
+
 				// Update Icon
-				int nCheckedIndexIcon = (cursor
+				final int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndexIcon) {
+					//Button butt = (Button) view;
+					
+					
 					ImageView ico = (ImageView) view;
 					String category_type = cursor.getString((cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
@@ -207,7 +222,7 @@ public class TodoListActivity extends ListActivity {
 						return true;
 					}
 				}
-
+				
 				// TODO vorerst rausgenommen da ich an der Datenbank rumgespielt
 				// habe
 				// Button contactButton = (Button) view;
@@ -291,7 +306,6 @@ public class TodoListActivity extends ListActivity {
 								R.color.white));
 					return true;
 				}
-
 				return false;
 			}
 		});
