@@ -193,11 +193,11 @@ public class TodoListActivity extends ListActivity {
 				// Update Button
 				if (view instanceof Button) {
 					Button test = (Button) view;
+					final String id = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
 					test.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							final String id = cursor.getString(cursor
-									.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
 							Toast.makeText(TodoListActivity.this, "test " + id,
 									Toast.LENGTH_SHORT).show();
 							startActivity(new Intent(TodoListActivity.this,
