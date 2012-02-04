@@ -57,26 +57,26 @@ public class ContactListActivity extends ListActivity {
 	/** Delete a Todo by long click on it */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-				
+
 		switch (item.getItemId()) {
 			case DELETE_ID :
 				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 						.getMenuInfo();
-				
-				Contact contact =  (Contact) getListAdapter().getItem(info.position);
+
+				Contact contact = (Contact) getListAdapter().getItem(
+						info.position);
 				long contactid = contact.getContactid();
-				
+
 				Log.v("displayname", contact.getName());
 				Log.v("contactid", String.valueOf(contactid));
-				
-				
+
 				ContentResolver cr = getContentResolver();
 				String[] params = new String[]{String.valueOf(contactid)};
 
 				ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 				ops.add(ContentProviderOperation
 						.newDelete(ContactsContract.RawContacts.CONTENT_URI)
-						.withSelection(ContactsContract.Data._ID + "=?", params).build());
+						.withSelection(BaseColumns._ID + "=?", params).build());
 				try {
 					cr.applyBatch(ContactsContract.AUTHORITY, ops);
 				} catch (OperationApplicationException e) {
@@ -88,7 +88,7 @@ public class ContactListActivity extends ListActivity {
 				showPhoneContacts();
 				return true;
 		}
-		
+
 		return super.onContextItemSelected(item);
 	}
 	// When a ToDo Delete Menu is gonna be shown
@@ -137,13 +137,13 @@ public class ContactListActivity extends ListActivity {
 			 */
 			Cursor names = getContentResolver().query(
 					ContactsContract.Contacts.CONTENT_URI, null,
-					ContactsContract.Contacts._ID + " = " + contactId, null,
-					null);
+					BaseColumns._ID + " = " + contactId, null, null);
 			while (names.moveToNext()) {
 				String displayName = names
 						.getString(names
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-				long contactid = names.getLong(names.getColumnIndex(ContactsContract.Contacts._ID));
+				long contactid = names.getLong(names
+						.getColumnIndex(BaseColumns._ID));
 				contact.setName(displayName);
 				contact.setContactid(contactid);
 			}

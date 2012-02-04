@@ -63,18 +63,18 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		//TODO Übergangsimplementation
+
+		// TODO Übergangsimplementation
 		Button contactButton = (Button) findViewById(R.id.buttonshowContact);
 		contactButton.setOnClickListener(new OnClickListener() {
-		
+
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(TodoListActivity.this,
 						ContactListActivity.class));
-				
+
 			}
-		} );
+		});
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -199,19 +199,19 @@ public class TodoListActivity extends ListActivity {
 					}
 				}
 
-				//TODO vorerst rausgenommen da ich an der Datenbank rumgespielt habe 
-//				Button contactButton = (Button) view;
-//				contactButton.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View v) {
-//						startActivity(new Intent(TodoListActivity.this,
-//								ContactListActivity.class));
-//						
-//					}
-//				} );
-				
-				
+				// TODO vorerst rausgenommen da ich an der Datenbank rumgespielt
+				// habe
+				// Button contactButton = (Button) view;
+				// contactButton.setOnClickListener(new OnClickListener() {
+				//
+				// @Override
+				// public void onClick(View v) {
+				// startActivity(new Intent(TodoListActivity.this,
+				// ContactListActivity.class));
+				//
+				// }
+				// } );
+
 				// Update Checkbox
 				int nCheckedIndexCheckbox = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_DONE));

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
-import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -20,9 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
-import de.fhb.maus.android.todolist.R.id;
-import de.fhb.maus.android.todolist.R.layout;
-import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class ContactEditActivity extends Activity {
 
@@ -41,10 +37,10 @@ public class ContactEditActivity extends Activity {
 		setContentView(R.layout.contact_edit);
 
 		// initialise the ui elements
-		entryName = (EditText) findViewById(R.id.entryName);
-		entryEmail = (EditText) findViewById(R.id.entryEmail);
-		entryPhone = (EditText) findViewById(R.id.entryPhone);
-		saveEntry = (Button) findViewById(R.id.saveEntry);
+		entryName = (EditText) findViewById(R.id.editTextName);
+		entryPhone = (EditText) findViewById(R.id.editTextPhone);
+		entryEmail = (EditText) findViewById(R.id.editTextEmail);
+		saveEntry = (Button) findViewById(R.id.buttonSave);
 
 		contact = (Contact) getIntent().getSerializableExtra("contact");
 		if (contact != null) {

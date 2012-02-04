@@ -11,7 +11,7 @@
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/entryName"
+            android:id="@+id/editTextName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/contact_edit_name"
@@ -20,7 +20,7 @@
             android:textSize="12dip" />
 
         <EditText
-            android:id="@+id/entryPhone"
+            android:id="@+id/editTextPhone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/contact_edit_phone"
@@ -30,7 +30,7 @@
             android:textSize="12dip" />
 
         <EditText
-            android:id="@+id/entryEmail"
+            android:id="@+id/editTextEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/contact_edit_email"
@@ -46,7 +46,7 @@
         android:layout_alignParentBottom="true" >
 
         <Button
-            android:id="@+id/saveEntry"
+            android:id="@+id/buttonSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/contact_edit_button" >

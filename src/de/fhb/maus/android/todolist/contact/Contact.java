@@ -7,14 +7,13 @@ public class Contact implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	private String name = null;
 	private String number = null;
 	private String email = null;
 	private boolean selected;
 	private long contactid;
-	
+
 	public long getContactid() {
 		return contactid;
 	}
