@@ -206,7 +206,8 @@ public class ContactListShowAllActivity extends ListActivity {
 		Log.v("onbackPressed in ShowAll", mContactsList.get(1).getName());
 		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
 		intent.putParcelableArrayListExtra("contactlist", mContactsList);
-		startActivity(intent);
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 	
 }

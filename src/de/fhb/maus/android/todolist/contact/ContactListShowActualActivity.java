@@ -61,15 +61,13 @@ public class ContactListShowActualActivity extends ListActivity{
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		Log.v("OnActivityResult in ShowActual", "bin drin");
 		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
 		mContactsList.clear();
-		mContactsList = getIntent().getParcelableArrayListExtra("contactlist");
-		Log.v("OnActivityResult in ShowActual", mContactsList.get(1).getName());
-//		mContactsList.clear();
-//		for(int i = 0 ; i< sekContactList.size(); i++){
-//			mContactsList.add(sekContactList.get(i));
-//		}
+		mContactsList = intent.getParcelableArrayListExtra("contactlist");
+		if(mContactsList == null){
+			Log.v("OnActivityResult in ShowActual", "return");
+			return;
+		}
 		showContact();
 	}
 	
