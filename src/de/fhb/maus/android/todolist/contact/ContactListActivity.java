@@ -2,6 +2,7 @@ package de.fhb.maus.android.todolist.contact;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.ListActivity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -156,11 +157,14 @@ public class ContactListActivity extends ListActivity {
 				String displayName = names
 						.getString(names
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				Log.v("showcontact", "displayname");
 				long contactid = names.getLong(names
 						.getColumnIndex(BaseColumns._ID));
+				Log.v("showcontact", "displayname2");
 				mContact.setName(displayName);
 				mContact.setContactid(contactid);
 			}
+			Log.v("showcontact", "displayname3");
 			names.close();
 
 			Cursor phones = getContentResolver().query(
@@ -168,11 +172,14 @@ public class ContactListActivity extends ListActivity {
 					null,
 					ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
 							+ contactId, null, null);
+			Log.v("showcontact", "displayname4");
 			while (phones.moveToNext()) {
+				Log.v("showcontact", "displayname5");
 				String phoneNumber = phones
 						.getString(phones
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				mContact.setNumber(phoneNumber);
+				Log.v("showcontact", "displayname6");
 			}
 			phones.close();
 

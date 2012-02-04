@@ -25,5 +25,8 @@
     <string name="contact_edit_phone">Telephone</string>
     <string name="contact_edit_email">Email</string>
 	<string name="contact_edit_button">Save</string>
+	<string name="showContactList">show contacts</string>
+	<string name="sendsms">sms versenden</string>
+	<string name="sendemail">email versenden</string>
 	
 </resources>

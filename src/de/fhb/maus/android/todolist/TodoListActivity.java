@@ -189,7 +189,7 @@ public class TodoListActivity extends ListActivity {
 			@Override
 			public boolean setViewValue(View view, Cursor cursor,
 					int columnIndex) {
-
+				
 				// Update Icon
 				int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
