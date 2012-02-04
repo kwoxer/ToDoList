@@ -94,6 +94,14 @@ public class ContactEditActivity extends Activity {
 					.withValue(StructuredName.DISPLAY_NAME, editedName).build());
 			String editedEmail = mEmail.getText().toString();
 			String editedPhone = mPhone.getText().toString();
+			if (!"".equals(editedPhone)) {
+				ops.add(ContentProviderOperation
+						.newInsert(Data.CONTENT_URI)
+						.withValueBackReference(Data.RAW_CONTACT_ID,
+								rawContactInsertIndex)
+						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+						.withValue(Phone.NUMBER, editedPhone).build());
+			}
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation
 						.newInsert(Data.CONTENT_URI)
@@ -106,14 +114,7 @@ public class ContactEditActivity extends Activity {
 								editedEmail).build());
 
 			}
-			if (!"".equals(editedPhone)) {
-				ops.add(ContentProviderOperation
-						.newInsert(Data.CONTENT_URI)
-						.withValueBackReference(Data.RAW_CONTACT_ID,
-								rawContactInsertIndex)
-						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-						.withValue(Phone.NUMBER, editedPhone).build());
-			}
+			
 
 			try {
 				getContentResolver()

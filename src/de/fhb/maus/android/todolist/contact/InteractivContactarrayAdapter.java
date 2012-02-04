@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import de.fhb.maus.android.todolist.R;
+import de.fhb.maus.android.todolist.sending.SendingTextActivity;
 
 @SuppressWarnings("rawtypes")
 public class InteractivContactarrayAdapter extends ArrayAdapter {
@@ -65,6 +66,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					Intent intent = new Intent(getContext(),SendingTextActivity.class);
 					intent.putExtra("contact",element);
 					intent.putExtra("sms", true);
+					intent.putExtra("email", false);
 					getContext().startActivity(intent);
 				}
 			});
@@ -75,19 +77,17 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 				
 				@Override
 				public void onClick(View v) {
-					
-					
+					Contact element = (Contact) viewHolder.sendSms.getTag();
+					Intent intent = new Intent(getContext(),SendingTextActivity.class);
+					intent.putExtra("contact",element);
+					intent.putExtra("sms", false);
+					intent.putExtra("email", true);
+					getContext().startActivity(intent);					
 				}
 			});
 			
-			
-			
-			
 			view.setTag(viewHolder);
-			viewHolder.sendSms.setTag(list.get(position));
-			
-			
-			
+			viewHolder.sendSms.setTag(list.get(position));			
 			
 		} else {
 			view = convertview;

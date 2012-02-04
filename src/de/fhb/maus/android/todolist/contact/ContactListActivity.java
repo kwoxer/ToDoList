@@ -192,7 +192,7 @@ public class ContactListActivity extends ListActivity {
 				String email = emails
 						.getString(emails
 								.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
-				mContact.setNumber(email);
+				mContact.setEmail(email);
 			}
 
 			mContactsList.add(mContact);
