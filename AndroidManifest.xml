@@ -31,9 +31,13 @@
             android:name=".contact.ContactEditActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
+        <activity
+            android:name=".contact.SendingTextActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
 
         <provider
-            android:name="de.fhb.maus.android.todolist.MyTodoContentProvider"
+            android:name=".MyTodoContentProvider"
             android:authorities="de.fhb.maus.android.todolist.provider" >
         </provider>
     </application>

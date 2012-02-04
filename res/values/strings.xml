@@ -28,5 +28,6 @@
 	<string name="showContactList">show contacts</string>
 	<string name="sendsms">sms versenden</string>
 	<string name="sendemail">email versenden</string>
+	<string name="sending">absenden</string>
 	
 </resources>

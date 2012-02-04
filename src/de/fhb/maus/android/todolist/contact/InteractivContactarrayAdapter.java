@@ -3,7 +3,7 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.List;
 
 import android.app.Activity;
-import android.sax.StartElementListener;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,10 +55,23 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 							element.setSelected(buttonView.isChecked());
 						}
 					});
-			view.setTag(viewHolder);
 			viewHolder.checkbox.setTag(list.get(position));
 			viewHolder.sendSms = (Button) view.findViewById(R.id.buttonsendSms);
 			viewHolder.sendSms.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Contact element = (Contact) viewHolder.sendSms.getTag();
+					Intent intent = new Intent(getContext(),SendingTextActivity.class);
+					intent.putExtra("contact",element);
+					intent.putExtra("sms", true);
+					getContext().startActivity(intent);
+				}
+			});
+			
+			viewHolder.sendEmail = (Button) view.findViewById(R.id.buttonSendEmail);
+			
+			viewHolder.sendEmail.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -67,7 +80,12 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 				}
 			});
 			
-			viewHolder.sendEmail = (Button) view.findViewById(R.id.buttonSendEmail);
+			
+			
+			
+			view.setTag(viewHolder);
+			viewHolder.sendSms.setTag(list.get(position));
+			
 			
 			
 			
@@ -76,7 +94,6 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			((ViewHolder) view.getTag()).checkbox.setTag(list.get(position));
 		}
 		ViewHolder holder = (ViewHolder) view.getTag();
-		Log.v("name",list.get(position).getName());
 		holder.text.setText(list.get(position).getName());
 		holder.checkbox.setChecked(list.get(position).isSelected());
 
