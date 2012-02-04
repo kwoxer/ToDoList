@@ -38,7 +38,9 @@ public class TodoListActivity extends ListActivity {
 	private Button mAdd, mAbout, mContact;
 	private int order = 0;
 
-	/** Called when the activity is first created. */
+	/** 
+	 * Called when the activity is first created. 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,7 +86,9 @@ public class TodoListActivity extends ListActivity {
 		registerForContextMenu(getListView());
 	}
 
-	/** Create the menu based on the XML defintion */
+	/** 
+	 * Create the menu based on the XML defintion 
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -92,7 +96,9 @@ public class TodoListActivity extends ListActivity {
 		return true;
 	}
 
-	/** Reaction to the menu selection */
+	/** 
+	 * Reaction to the menu selection 
+	 */
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
@@ -112,7 +118,9 @@ public class TodoListActivity extends ListActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	/** Delete a Todo by long click on it */
+	/** 
+	 * Delete a Todo by long click on it 
+	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -126,7 +134,9 @@ public class TodoListActivity extends ListActivity {
 		return super.onContextItemSelected(item);
 	}
 
-	// A ToDo was clicked
+	/**
+	 * ToDo was clicked
+	 */
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -136,18 +146,21 @@ public class TodoListActivity extends ListActivity {
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
-	// Called with the result of the other activity
-	// requestCode was the origin request code send to the activity
-	// resultCode is the return code, 0 is everything is ok
-	// intend can be use to get some data from the caller
+	/**
+	 * Called with the result of the other activity
+	 * requestCode was the origin request code send to the activity
+	 * resultCode is the return code, 0 is everything is ok
+	 * intend can be use to get some data from the caller
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 		fillToDoList();
 	}
-
-	// Always called when the ToDos are shown
+	/**
+	 * Always called when the ToDos are shown
+	 */
 	private void fillToDoList() {
 		switch (order) {
 			case 0 :
@@ -286,14 +299,18 @@ public class TodoListActivity extends ListActivity {
 		});
 		setListAdapter(column);
 	}
-	// When a ToDo Delete Menu is gonna be shown
+	/**
+	 * When a ToDo Delete Menu is gonna be shown
+	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
 	}
-
+	/**
+	 * When activity is goona be destroyed
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

@@ -32,7 +32,9 @@ public class ContactListActivity extends ListActivity {
 	private List<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
 	private Contact mContact;
-
+	/**
+	 * when Activity is created
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +55,9 @@ public class ContactListActivity extends ListActivity {
 		registerForContextMenu(getListView());
 	}
 
-	/** Delete a Todo by long click on it */
+	/**
+	 *  Delete a Todo by long click on it 
+	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
@@ -90,7 +94,9 @@ public class ContactListActivity extends ListActivity {
 
 		return super.onContextItemSelected(item);
 	}
-	// When a ToDo Delete Menu is gonna be shown
+	/**
+	 *  When a ToDo Delete Menu is gonna be shown
+	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -98,6 +104,9 @@ public class ContactListActivity extends ListActivity {
 		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
 	}
 
+	/**
+	 * when a contact was normally clicked
+	 */
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -112,7 +121,9 @@ public class ContactListActivity extends ListActivity {
 
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
-
+	/**
+	 * when new result is coming
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
@@ -120,6 +131,9 @@ public class ContactListActivity extends ListActivity {
 		mAdapter.clear();
 		showPhoneContacts();
 	}
+	/**
+	 * refreshes contact to out listview
+	 */
 	private void showPhoneContacts() {
 		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
 		setListAdapter(mAdapter);
