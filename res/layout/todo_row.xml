@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="11dip" />
-
+
         <TextView
             android:id="@+id/textViewSummary"
             android:layout_width="173dp"
@@ -41,13 +41,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
             android:textSize="18dp" />
-
     </LinearLayout>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonContacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" android:focusable="false"/>
-    
+        android:focusable="false" />
+
 </LinearLayout>
