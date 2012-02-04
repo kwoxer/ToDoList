@@ -67,16 +67,14 @@ public class TodoListActivity extends ListActivity {
 			}
 		});
 
-		
-		mContact = (Button) findViewById(R.id.buttonshowContact);
-		mContact.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(TodoListActivity.this,
-				ContactListActivity.class));
-			}
-		});	
-		
+		// mContact = (Button) findViewById(R.id.buttonshowContact);
+		// mContact.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// startActivity(new Intent(TodoListActivity.this,
+		// ContactListActivity.class));
+		// }
+		// });
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -177,31 +175,32 @@ public class TodoListActivity extends ListActivity {
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
+				TodoDatabaseAdapter.KEY_SUMMARY,
 				TodoDatabaseAdapter.KEY_SUMMARY};
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
-				R.id.textViewDate, R.id.textViewSummary};
+				R.id.textViewDate, R.id.textViewSummary, R.id.button1};
 
 		// Now create an array adapter and set it to display using our row
 		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
 
-		
-//		test.
-		
+		// test.
+
 		// Updating Checkbox and Icon and Date
 		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			@Override
 			public boolean setViewValue(View view, Cursor cursor,
-					int columnIndex) {
+					final int columnIndex) {
+				System.out.println(columnIndex);
+				
 
 				// Update Icon
 				final int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndexIcon) {
 					ImageView ico = (ImageView) view;
-					String category_type = cursor.getString((cursor
-							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY)));
+					String category_type = cursor.getString(nCheckedIndexIcon);
 					// getting the actual string from the priority values
 					if (category_type.equals(getResources().getStringArray(
 							R.array.priorities)[0])) {
@@ -212,19 +211,6 @@ public class TodoListActivity extends ListActivity {
 						return true;
 					}
 				}
-				
-				// TODO vorerst rausgenommen da ich an der Datenbank rumgespielt
-				// habe
-				// Button contactButton = (Button) view;
-				// contactButton.setOnClickListener(new OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View v) {
-				// startActivity(new Intent(TodoListActivity.this,
-				// ContactListActivity.class));
-				//
-				// }
-				// } );
 
 				// Update Checkbox
 				int nCheckedIndexCheckbox = (cursor
@@ -277,6 +263,7 @@ public class TodoListActivity extends ListActivity {
 						.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
 				if (columnIndex == nCheckedIndexColor) {
 					TextView summaryTextView = (TextView) view;
+
 					summaryTextView.setText(cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY)));
 					String todoTimeInSoconds;
@@ -294,6 +281,21 @@ public class TodoListActivity extends ListActivity {
 					else
 						summaryTextView.setTextColor(getResources().getColor(
 								R.color.white));
+					
+					
+					if (view instanceof Button) {
+						System.out.println(1234554);
+						Button test = (Button) view;
+						test.setText("Contacts");
+						test.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Toast.makeText(TodoListActivity.this, "test"+columnIndex,
+										Toast.LENGTH_SHORT).show();
+								//TODO here insert
+							}
+						});
+					}
 					return true;
 				}
 				return false;
