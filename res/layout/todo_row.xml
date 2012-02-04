@@ -31,10 +31,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="11dip" />
-
+
         <TextView
             android:id="@+id/textViewSummary"
-            android:layout_width="148dp"
+            android:layout_width="173dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0px"
             android:text="@+id/TextView"

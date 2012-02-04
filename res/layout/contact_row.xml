@@ -19,12 +19,13 @@
         android:textSize="20dp" >
 
     </TextView>
-
+
     <Button
         android:id="@+id/buttonsendSms"
         android:layout_width="69dp"
         android:layout_height="wrap_content"
-        android:text="@string/sendsms" android:focusable="false"/>
+        android:focusable="false"
+        android:text="@string/sendsms" />
 
     <Button
         android:id="@+id/buttonSendEmail"
