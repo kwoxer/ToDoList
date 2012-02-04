@@ -42,7 +42,7 @@ public class ContactEditActivity extends Activity {
 		mEmail = (EditText) findViewById(R.id.editTextEmail);
 		mSave = (Button) findViewById(R.id.buttonSave);
 
-		mContact = (Contact) getIntent().getSerializableExtra("contact");
+		mContact = (Contact) getIntent().getParcelableExtra("contact");
 		if (mContact != null) {
 			String displayName = mContact.getName();
 			if (displayName != null) {

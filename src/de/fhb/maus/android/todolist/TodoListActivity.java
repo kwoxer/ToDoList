@@ -22,9 +22,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.fhb.maus.android.todolist.contact.ContactEditActivity;
-import de.fhb.maus.android.todolist.contact.ContactListActivity;
-import de.fhb.maus.android.todolist.contact.InteractivContactarrayAdapter;
+import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
+import de.fhb.maus.android.todolist.contact.ContactListShowAllActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
@@ -72,7 +71,7 @@ public class TodoListActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(TodoListActivity.this,
-						ContactListActivity.class));
+						ContactListShowActualActivity.class));
 			}
 		});
 
@@ -201,7 +200,7 @@ public class TodoListActivity extends ListActivity {
 							Toast.makeText(TodoListActivity.this, "test " + id,
 									Toast.LENGTH_SHORT).show();
 							startActivity(new Intent(TodoListActivity.this,
-									ContactListActivity.class));
+									ContactListShowAllActivity.class));
 						}
 					});
 				}

@@ -26,11 +26,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import de.fhb.maus.android.todolist.R;
 
-public class ContactListActivity extends ListActivity {
+public class ContactListShowAllActivity extends ListActivity {
 	//private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
-	private List<Contact> mContactsList = new ArrayList<Contact>();
+	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
 	private Contact mContact;
 	/**
@@ -48,7 +48,7 @@ public class ContactListActivity extends ListActivity {
 				// startActivity(new Intent(TodoContactActivity.this,
 				// AddContactActivity.class));
 
-				startActivityForResult(new Intent(ContactListActivity.this,
+				startActivityForResult(new Intent(ContactListShowAllActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
 			}
 		});
@@ -199,4 +199,14 @@ public class ContactListActivity extends ListActivity {
 			emails.close();
 		}
 	}
+	
+	@Override
+	public void onBackPressed(){
+		Log.v("onbackPressed in ShowAll", "bin drin");
+		Log.v("onbackPressed in ShowAll", mContactsList.get(1).getName());
+		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
+		intent.putParcelableArrayListExtra("contactlist", mContactsList);
+		startActivity(intent);
+	}
+	
 }

@@ -25,7 +25,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name=".contact.ContactListActivity"
+            android:name=".contact.ContactListShowAllActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
@@ -36,7 +36,10 @@
             android:name=".sending.SendingTextActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-
+        <activity
+            android:name=".contact.ContactListShowActualActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
         <provider
             android:name=".MyTodoContentProvider"
             android:authorities="de.fhb.maus.android.todolist.provider" >

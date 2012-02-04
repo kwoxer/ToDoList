@@ -1,18 +1,12 @@
 package de.fhb.maus.android.todolist.sending;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.contact.Contact;
 
@@ -34,7 +28,7 @@ public class SendingTextActivity extends Activity {
 		adress = (EditText)findViewById(R.id.contactText);
 		text = (EditText)findViewById(R.id.messageText);
 		
-		mContact = (Contact) getIntent().getSerializableExtra("contact");	
+		mContact = (Contact) getIntent().getParcelableExtra("contact");	
 		sendsms = (Boolean)getIntent().getSerializableExtra("sms");
 		if(sendsms){
 			mPhone = mContact.getNumber();
