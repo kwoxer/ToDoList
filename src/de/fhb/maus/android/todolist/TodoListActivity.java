@@ -292,7 +292,7 @@ public class TodoListActivity extends ListActivity {
 							public void onClick(View v) {
 								Toast.makeText(TodoListActivity.this, "test"+columnIndex,
 										Toast.LENGTH_SHORT).show();
-								//TODO here insert
+								//TODO here insertsss
 							}
 						});
 					}
