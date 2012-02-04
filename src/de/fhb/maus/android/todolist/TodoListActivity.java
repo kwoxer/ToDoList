@@ -66,15 +66,15 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-
-		// mContact = (Button) findViewById(R.id.buttonshowContact);
-		// mContact.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// startActivity(new Intent(TodoListActivity.this,
-		// ContactListActivity.class));
-		// }
-		// });
+		//TODO ERASED SOON
+		mContact = (Button) findViewById(R.id.buttonshowContact);
+		mContact.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TodoListActivity.this,
+						ContactListActivity.class));
+			}
+		});
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -175,8 +175,7 @@ public class TodoListActivity extends ListActivity {
 
 		String[] from = new String[]{TodoDatabaseAdapter.KEY_CATEGORY,
 				TodoDatabaseAdapter.KEY_DONE, TodoDatabaseAdapter.KEY_DATE,
-				TodoDatabaseAdapter.KEY_SUMMARY,
-				TodoDatabaseAdapter.KEY_SUMMARY};
+				TodoDatabaseAdapter.KEY_SUMMARY, TodoDatabaseAdapter.KEY_ROWID};
 		int[] to = new int[]{R.id.imageViewIcon, R.id.todoRowCheckBox,
 				R.id.textViewDate, R.id.textViewSummary, R.id.button1};
 
@@ -184,16 +183,27 @@ public class TodoListActivity extends ListActivity {
 		SimpleCursorAdapter column = new SimpleCursorAdapter(this,
 				R.layout.todo_row, mCursor, from, to);
 
-		// test.
-
 		// Updating Checkbox and Icon and Date
 		column.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			// Go through Cursor Adapter and watch
 			@Override
-			public boolean setViewValue(View view, Cursor cursor,
+			public boolean setViewValue(View view, final Cursor cursor,
 					final int columnIndex) {
 				System.out.println(columnIndex);
-				
+
+				// Update Button
+				if (view instanceof Button) {
+					Button test = (Button) view;
+					test.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Toast.makeText(TodoListActivity.this,
+									"test" + cursor.getColumnIndex("_id"),
+									Toast.LENGTH_SHORT).show();
+							// TODO here insertsss
+						}
+					});
+				}
 
 				// Update Icon
 				final int nCheckedIndexIcon = (cursor
@@ -259,7 +269,7 @@ public class TodoListActivity extends ListActivity {
 				}
 
 				// Update Summary Color
-				int nCheckedIndexColor = (cursor
+				final int nCheckedIndexColor = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
 				if (columnIndex == nCheckedIndexColor) {
 					TextView summaryTextView = (TextView) view;
@@ -281,21 +291,7 @@ public class TodoListActivity extends ListActivity {
 					else
 						summaryTextView.setTextColor(getResources().getColor(
 								R.color.white));
-					
-					
-					if (view instanceof Button) {
-						System.out.println(1234554);
-						Button test = (Button) view;
-						test.setText("Contacts");
-						test.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Toast.makeText(TodoListActivity.this, "test"+columnIndex,
-										Toast.LENGTH_SHORT).show();
-								//TODO here insertsss
-							}
-						});
-					}
+
 					return true;
 				}
 				return false;
