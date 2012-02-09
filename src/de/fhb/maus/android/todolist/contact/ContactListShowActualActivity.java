@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ public class ContactListShowActualActivity extends ListActivity{
 	private ArrayAdapter<Contact> mAdapter;
 	private String rowid;
 	private TodoDatabaseAdapter mDbHelper;
+	private Cursor mCursor;
 	/**
 	 * when Activity is created
 	 */
@@ -55,9 +57,11 @@ public class ContactListShowActualActivity extends ListActivity{
 					Toast.LENGTH_SHORT).show();
 			mDbHelper = new TodoDatabaseAdapter(this);
 			mDbHelper.open();
+			showContact(rowid);
 		}
-		
-		showContact();
+	
+//		showContact();
+		showContact(rowid);
 		registerForContextMenu(getListView());
 	}
 	
@@ -77,5 +81,22 @@ public class ContactListShowActualActivity extends ListActivity{
 	public void showContact(){
 		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
 		setListAdapter(mAdapter);
+	}
+	public void showContact(String rowId){
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
+		setListAdapter(mAdapter);
+		if (rowId != null) {
+//		mDbHelper.setContact("2",rowId);
+		mCursor = mDbHelper.fetchContact(rowId);
+		startManagingCursor(mCursor);
+		String contactId = mCursor.getString(mCursor
+				.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
+		Log.v("showContact", contactId);
+		
+		}
+
+		
+		
+		
 	}
 }

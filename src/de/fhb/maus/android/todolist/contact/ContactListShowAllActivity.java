@@ -218,6 +218,5 @@ public class ContactListShowAllActivity extends ListActivity {
 		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
 		setResult(RESULT_OK, intent);
 		finish();
-	}
-	
+	}	
 }

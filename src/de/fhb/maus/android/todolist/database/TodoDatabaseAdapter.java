@@ -15,7 +15,9 @@ public class TodoDatabaseAdapter {
 	public static final String KEY_SUMMARY = "summary";
 	public static final String KEY_DONE = "done";
 	public static final String KEY_DESCRIPTION = "description";
-	private static final String DATABASE_TABLE = "todo";
+	public static final String KEY_CONTACTID = "_cid";
+	private static final String DATABASE_TABLE_TODO = "todo";
+	private static final String DATABASE_TABLE_HAT = "hat";
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
 	private TodoDatabaseHelper mDbHelper;
@@ -42,9 +44,14 @@ public class TodoDatabaseAdapter {
 			String summary, String description) {
 		ContentValues initialValues = createContentValues(date, category, done,
 				summary, description);
-		return mDatabase.insert(DATABASE_TABLE, null, initialValues);
+		return mDatabase.insert(DATABASE_TABLE_TODO, null, initialValues);
 	}
 
+	public long setContact(String contactId, String rowId){
+		ContentValues updateValues = createContentValues(contactId, rowId);
+		return mDatabase.insert(DATABASE_TABLE_HAT,null,updateValues);
+	}
+		
 	/**
 	 * Update the todo
 	 */
@@ -52,7 +59,7 @@ public class TodoDatabaseAdapter {
 			boolean done, String summary, String description) {
 		ContentValues updateValues = createContentValues(date, category, done,
 				summary, description);
-		return mDatabase.update(DATABASE_TABLE, updateValues, KEY_ROWID + "="
+		return mDatabase.update(DATABASE_TABLE_TODO, updateValues, KEY_ROWID + "="
 				+ rowId, null) > 0;
 	}
 
@@ -60,7 +67,18 @@ public class TodoDatabaseAdapter {
 	 * Deletes todo
 	 */
 	public boolean deleteTodo(long rowId) {
-		return mDatabase.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+	
+	
+	public Cursor fetchContact(String rowId)throws SQLException{
+		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
+				KEY_ROWID,KEY_CONTACTID}, KEY_ROWID + "=" + rowId, null, null, null,
+				null, null);
+		if (mCursor != null) {
+			mCursor.moveToFirst();
+		}
+		return mCursor;
 	}
 
 	/**
@@ -69,17 +87,17 @@ public class TodoDatabaseAdapter {
 	 * @return Cursor over all notes
 	 */
 	public Cursor fetchAllTodos() {
-		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
 				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
 				KEY_DESCRIPTION}, null, null, null, null, null);
 	}
 	public Cursor fetchAllTodosOrderByName() {
-		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
 				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
 				KEY_DESCRIPTION}, null, null, null, null, KEY_SUMMARY);
 	}
 	public Cursor fetchAllTodosOrderByDate() {
-		return mDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
 				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
 				KEY_DESCRIPTION}, null, null, null, null, KEY_DATE);
 	}
@@ -88,7 +106,7 @@ public class TodoDatabaseAdapter {
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchTodo(long rowId) throws SQLException {
-		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE, new String[]{
+		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_TODO, new String[]{
 				KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
 				KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId, null, null, null,
 				null, null);
@@ -108,5 +126,13 @@ public class TodoDatabaseAdapter {
 		values.put(KEY_DESCRIPTION, description);
 		return values;
 	}
+	private ContentValues createContentValues(String contactId, String rowId){
+		ContentValues values = new ContentValues();
+		values.put(KEY_ROWID, rowId);
+		values.put(KEY_CONTACTID, contactId);
+		return values;
+	}
+	
+	
 
 }

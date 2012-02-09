@@ -142,7 +142,7 @@ public class TodoEditActivity extends Activity {
 			startManagingCursor(mCursor);
 
 			String category = mCursor.getString(mCursor
-					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CATEGORY));
+					.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
 			for (int i = 0; i < mCategory.getCount(); i++) {
 				String s = (String) mCategory.getItemAtPosition(i);
 				Log.e(null, s + " " + category);
