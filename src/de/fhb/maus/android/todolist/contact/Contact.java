@@ -15,6 +15,10 @@ public class Contact implements Parcelable {
 	private String number = null;
 	private String email = null;
 	private byte selected = 0;
+	private long contactid;
+	
+	
+	
 	public boolean isSelected() {
 		if(selected == 1){
 			return true;
@@ -31,7 +35,7 @@ public class Contact implements Parcelable {
 		}
 		
 	}
-	private long contactid;
+	
 
 	
 	public Contact (){

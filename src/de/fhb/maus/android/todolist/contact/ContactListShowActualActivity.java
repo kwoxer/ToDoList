@@ -6,6 +6,8 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +23,7 @@ public class ContactListShowActualActivity extends ListActivity{
 	private Button addContact;
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
-	private String rowid;
+	private String rowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Cursor mCursor;
 	/**
@@ -50,18 +52,19 @@ public class ContactListShowActualActivity extends ListActivity{
 			mContactsList = new ArrayList<Contact>();
 		}
 		
-		rowid = getIntent().getStringExtra("todoRowid");
+		rowId = getIntent().getStringExtra("todoRowid");
 		
-		if(rowid != null){
-			Toast.makeText(ContactListShowActualActivity.this, "test " + rowid,
+		if(rowId != null){
+			Toast.makeText(ContactListShowActualActivity.this, "test " + rowId,
 					Toast.LENGTH_SHORT).show();
 			mDbHelper = new TodoDatabaseAdapter(this);
 			mDbHelper.open();
-			showContact(rowid);
+			showContact(rowId);
 		}
 	
 //		showContact();
-		showContact(rowid);
+		Log.v("rowId beim create", this.rowId) ;
+		showContact(rowId);
 		registerForContextMenu(getListView());
 	}
 	
@@ -72,31 +75,133 @@ public class ContactListShowActualActivity extends ListActivity{
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
+//		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
 		mContactsList.clear();
 		mContactsList = intent.getParcelableArrayListExtra("contactlist");
-		showContact();
+		writeContactsToDb();
+		showContact(rowId);
 	}
 	
-	public void showContact(){
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
-		setListAdapter(mAdapter);
-	}
-	public void showContact(String rowId){
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
-		setListAdapter(mAdapter);
-		if (rowId != null) {
-//		mDbHelper.setContact("2",rowId);
-		mCursor = mDbHelper.fetchContact(rowId);
+	private void writeContactsToDb(){
+		boolean inTable =false;
+		String contactId = null;
+		String rowId = null;
+		mCursor = mDbHelper.fetchAllContacts();
 		startManagingCursor(mCursor);
-		String contactId = mCursor.getString(mCursor
-				.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
-		Log.v("showContact", contactId);
-		
+		for(int i=0; i<mContactsList.size(); i++ ){
+			mCursor.moveToFirst();
+			Log.v("inForschleife", "inforschöleife") ;
+			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
+				contactId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
+				rowId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
+//				Log.v("ContaktIdtable", String.valueOf(contactId)) ;
+//				Log.v("ContaktIdList", String.valueOf(mContactsList.get(i).getContactid())) ;
+//				Log.v("rowIdClass", this.rowId) ;
+//				Log.v("rowIdTable", String.valueOf(rowId));
+//				Log.v("j=", String.valueOf(j)) ;
+				if(String.valueOf(mContactsList.get(i).getContactid()).equals(contactId) && this.rowId.equals(rowId)){		
+					inTable = true;
+				}				
+			}		
+			if(!inTable){
+				Log.v("insert", "insert contactId=" +String.valueOf(mContactsList.get(i).getContactid())+" rowId"+this.rowId) ;
+				mDbHelper.setContact(String.valueOf(mContactsList.get(i).getContactid()), this.rowId);
+			}
 		}
-
 		
+	}
+	
+	private void showContact(String rowId){
+		ArrayList<String> contactIds = new ArrayList<String>(); 
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
+		setListAdapter(mAdapter);
+		mCursor = mDbHelper.fetchContacts(rowId);
+		if (rowId != null && !mCursor.isAfterLast()) {
+			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
+		startManagingCursor(mCursor);
+			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
+				String contactId = mCursor.getString(mCursor
+						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
+//				String TabelrowId = mCursor.getString(mCursor
+//						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_ROWID));
+				Log.v("showContact", contactId);
+				contactIds.add(contactId);
+			}
+		}
+		showPhoneContacts(contactIds);
+	}
+	
+	/**
+	 * refreshes contact to out listview
+	 */
+	private void showPhoneContacts(ArrayList<String> contactIds) {
+		mContactsList.clear();
+		if (contactIds.isEmpty()) return;
+		Contact mContact;
 		
-		
+//		Cursor cursor = getContentResolver().query(
+//				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+		for(int i = 0 ; i<contactIds.size(); i++){
+			String contactId = contactIds.get(i);
+			Log.v("shoePhoneContactId=", contactId);
+//			cursor.moveToFirst();
+//			while (cursor.moveToNext()) {
+	//			String contactId = cursor.getString(cursor
+	//					.getColumnIndex(BaseColumns._ID));
+				
+				mContact = new Contact();
+	
+				/*
+				 * query the phones for each contact
+				 */
+				Cursor names = getContentResolver().query(
+						ContactsContract.Contacts.CONTENT_URI, null,
+						BaseColumns._ID + " = " + contactId, null, null);
+				names.moveToNext();
+//				while (names.moveToNext()) {
+					String displayName = names
+							.getString(names
+									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					Log.v("displayName", displayName);
+					long contactid = names.getLong(names
+							.getColumnIndex(BaseColumns._ID));
+					mContact.setName(displayName);
+					mContact.setContactid(contactid);
+//				}
+				
+				names.close();
+	
+				Cursor phones = getContentResolver().query(
+						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+						null,
+						ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
+								+ contactId, null, null);
+//				Log.v("showcontact", "displayname4");
+				while (phones.moveToNext()) {
+//					Log.v("showcontact", "displayname5");
+					String phoneNumber = phones
+							.getString(phones
+									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					mContact.setNumber(phoneNumber);
+//					Log.v("showcontact", "displayname6");
+				}
+				phones.close();
+	
+				Cursor emails = getContentResolver().query(
+						ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+						null,
+						ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = "
+								+ contactId, null, null);
+				while (emails.moveToNext()) {
+					String email = emails
+							.getString(emails
+									.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
+					mContact.setEmail(email);
+				}
+	
+				mContactsList.add(mContact);
+				emails.close();
+//			}
+		}
 	}
 }

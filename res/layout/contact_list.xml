@@ -14,12 +14,18 @@
         android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
+
+        <Button
+            android:id="@+id/actualContactList"
+            android:layout_width="154dp"
+            android:layout_height="wrap_content"
+            android:text="zurück zur Kontaktliste" />
+            
         <Button
             android:id="@+id/buttonAddContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/contact_add" />
+            android:text="@string/contact_add" />        
     </LinearLayout>
 
 </LinearLayout>

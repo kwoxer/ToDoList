@@ -50,6 +50,18 @@ public class ContactListShowAllActivity extends ListActivity {
 						ContactEditActivity.class), ACTIVITY_EDIT);
 			}
 		});
+		
+		Button backToContactList = (Button) findViewById(R.id.actualContactList);
+		backToContactList.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
+				intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
+				setResult(RESULT_OK, intent);
+				finish();
+			}
+		});
 		//TODO hier steigt er aus, warum zeigt er die kontakte nimma an?
 		showPhoneContacts();
 		registerForContextMenu(getListView());
@@ -200,23 +212,24 @@ public class ContactListShowAllActivity extends ListActivity {
 	
 	private ArrayList<Contact> getCheckedContacts(){
 		ArrayList<Contact> selectedContacts = new ArrayList<Contact>();
-		Log.v("size()",String.valueOf(mContactsList.size()));
+		
 		for(int i = 0; i<mContactsList.size();i++){
 			if(mContactsList.get(i).isSelected()){
 				selectedContacts.add(mContactsList.get(i));
 			}			
 		}
+		Log.v("checkedContacts size()",String.valueOf(selectedContacts.size()));
 		return selectedContacts;
 	}
 	
 	
-	@Override
-	public void onBackPressed(){
-		Log.v("onbackPressed in ShowAll BackPressed", "bin drin");
-
-		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
-		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
-		setResult(RESULT_OK, intent);
-		finish();
-	}	
+//	@Override
+//	public void onBackPressed(){
+//		Log.v("onbackPressed in ShowAll BackPressed", "bin drin");
+//
+//		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
+//		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
+//		setResult(RESULT_OK, intent);
+//		finish();
+//	}	
 }

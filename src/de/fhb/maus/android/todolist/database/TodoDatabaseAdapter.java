@@ -16,8 +16,13 @@ public class TodoDatabaseAdapter {
 	public static final String KEY_DONE = "done";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_CONTACTID = "_cid";
+	public static final String KEY_DISPLAYNAME="displayName";
+	public static final String KEY_EMAIL="email";
+	public static final String KEY_PHONENUMBER="phonenumber";
 	private static final String DATABASE_TABLE_TODO = "todo";
 	private static final String DATABASE_TABLE_HAT = "hat";
+	private static final String DATABASE_TABLE_CONTACTS = "contacttable";
+	
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
 	private TodoDatabaseHelper mDbHelper;
@@ -51,6 +56,11 @@ public class TodoDatabaseAdapter {
 		ContentValues updateValues = createContentValues(contactId, rowId);
 		return mDatabase.insert(DATABASE_TABLE_HAT,null,updateValues);
 	}
+	
+//	public long setContact(String contactId, String displayName, String email, String phonenumber){
+//		ContentValues updateValues = createContentValues(contactId,displayName,email,phonenumber);
+//		return mDatabase.insert(DATABASE_TABLE_CONTACTS,null,updateValues);
+//	}
 		
 	/**
 	 * Update the todo
@@ -71,7 +81,7 @@ public class TodoDatabaseAdapter {
 	}
 	
 	
-	public Cursor fetchContact(String rowId)throws SQLException{
+	public Cursor fetchContacts(String rowId)throws SQLException{
 		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
 				KEY_ROWID,KEY_CONTACTID}, KEY_ROWID + "=" + rowId, null, null, null,
 				null, null);
@@ -79,6 +89,15 @@ public class TodoDatabaseAdapter {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
+	}
+	
+//	public Cursor fetchAllContacts(){		
+//		return mDatabase.query(DATABASE_TABLE_CONTACTS, new String[]{KEY_CONTACTID,
+//				KEY_DISPLAYNAME, KEY_EMAIL, KEY_PHONENUMBER}, null, null, null, null, null);
+//	}
+	public Cursor fetchAllContacts(){		
+		return mDatabase.query(DATABASE_TABLE_HAT, new String[]{KEY_ROWID,
+				KEY_CONTACTID}, null, null, null, null, null);
 	}
 
 	/**
@@ -131,8 +150,6 @@ public class TodoDatabaseAdapter {
 		values.put(KEY_ROWID, rowId);
 		values.put(KEY_CONTACTID, contactId);
 		return values;
-	}
-	
-	
+	}	
 
 }
