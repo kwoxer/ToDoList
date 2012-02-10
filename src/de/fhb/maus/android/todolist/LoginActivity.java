@@ -27,10 +27,6 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		// TODO get ToDo from the server when correct login
-		// TODO check with server if device was offline
-		// TODO Übergang mit delay, also Server delay einplanen 3000 ms
-
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		mLogIn.setOnClickListener(new OnClickListener() {
 
@@ -49,7 +45,7 @@ public class LoginActivity extends Activity {
 				String response = null;
 				try {
 					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2:8080/login.php?", postParameters);
+							"http://10.0.2.2:8080/login/login.php", postParameters);
 
 					String res = response.toString();
 					res = res.replaceAll("\\s+", "");
