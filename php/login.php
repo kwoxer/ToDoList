@@ -1,13 +1,13 @@
 <?php
 $hostname = 'localhost';
 $username = 'root';
-$password = '';
+$pws = 'test';
 
 try {
     $name = $_GET['name'];
-    $pw = $_GET['password'];
+    $pw = $_GET['pw'];
 
-    $dbh = new PDO("mysql:host=$hostname;dbname=toDoList", $username, $pw);
+    $dbh = new PDO("mysql:host=$hostname;dbname=toDoList", $username, $pws);
 
     $stmt = $dbh->prepare("SELECT * FROM account WHERE name = '$name'");
     $stmt->execute();
