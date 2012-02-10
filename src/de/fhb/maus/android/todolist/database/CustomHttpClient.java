@@ -61,8 +61,9 @@ public class CustomHttpClient {
 			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
 					postParameters);
 			request.setEntity(formEntity);
+			System.out.println(request.getURI());
 			HttpResponse response = client.execute(request);
-			System.out.println(response);
+			
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
 
