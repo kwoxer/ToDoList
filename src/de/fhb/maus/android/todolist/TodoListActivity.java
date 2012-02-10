@@ -23,7 +23,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
-import de.fhb.maus.android.todolist.contact.ContactListShowAllActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
