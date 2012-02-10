@@ -1,12 +1,15 @@
 package de.fhb.maus.android.todolist.sending;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.contact.Contact;
 
@@ -50,84 +53,32 @@ public class SendingTextActivity extends Activity {
 				String  inputmessage = text.getText().toString();
 				if(sendsms && inputmessage.length() >0){
 					sendSMS(mPhone,inputmessage);
+					return;
 				}
-				
+				if(!sendsms && inputmessage.length() >0){
+					sendEmail(mPhone, inputmessage);
+					Toast.makeText(getBaseContext(), "email sent", 
+                          Toast.LENGTH_SHORT).show();
+					return;
+					
+				}
 			}
 		});
 	}
 	
-	public void sendSMS (String mPhone, String message){
-//		PendingIntent pi = PendingIntent.getActivity(SendingTextActivity.this, 0, new Intent(SendingTextActivity.this,SendingTextActivity.class), 0);
-		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(mPhone, null,message,null,null);
+	private void sendEmail (String mPhone,String message){
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		emailIntent.setType("plane/text");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{mPhone});
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "iche bins");
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(emailIntent, "send mail..."));
+		finish();
 	}
 	
-	
-//	//---sends an SMS message to another device---
-//    private void sendSMS(String phoneNumber, String message)
-//    {        
-//        String SENT = "SMS_SENT";
-//        String DELIVERED = "SMS_DELIVERED";
-// 
-//        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
-//            new Intent(SENT), 0);
-// 
-//        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
-//            new Intent(DELIVERED), 0);
-// 
-//        //---when the SMS has been sent---
-//        registerReceiver(new BroadcastReceiver(){
-//            @Override
-//            public void onReceive(Context arg0, Intent arg1) {
-//                switch (getResultCode())
-//                {
-//                    case Activity.RESULT_OK:
-//                        Toast.makeText(getBaseContext(), "SMS sent", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-//                        Toast.makeText(getBaseContext(), "Generic failure", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-//                        Toast.makeText(getBaseContext(), "No service", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case SmsManager.RESULT_ERROR_NULL_PDU:
-//                        Toast.makeText(getBaseContext(), "Null PDU", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-//                        Toast.makeText(getBaseContext(), "Radio off", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-//            }
-//        }, new IntentFilter(SENT));
-// 
-//        //---when the SMS has been delivered---
-//        registerReceiver(new BroadcastReceiver(){
-//            @Override
-//            public void onReceive(Context arg0, Intent arg1) {
-//                switch (getResultCode())
-//                {
-//                    case Activity.RESULT_OK:
-//                        Toast.makeText(getBaseContext(), "SMS delivered", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case Activity.RESULT_CANCELED:
-//                        Toast.makeText(getBaseContext(), "SMS not delivered", 
-//                                Toast.LENGTH_SHORT).show();
-//                        break;                        
-//                }
-//            }
-//        }, new IntentFilter(DELIVERED));        
-// 
-//        SmsManager sms = SmsManager.getDefault();
-//        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);        
-//    }
-	
-	
-	
-	
+	private void sendSMS (String mPhone, String message){
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(mPhone, null,message,null,null);
+		finish();
+	}	
 }

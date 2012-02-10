@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +67,6 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					Intent intent = new Intent(getContext(),SendingTextActivity.class);
 					intent.putExtra("contact",element);
 					intent.putExtra("sms", true);
-					intent.putExtra("email", false);
 					getContext().startActivity(intent);
 				}
 			});
@@ -81,8 +81,8 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					Intent intent = new Intent(getContext(),SendingTextActivity.class);
 					intent.putExtra("contact",element);
 					intent.putExtra("sms", false);
-					intent.putExtra("email", true);
-					getContext().startActivity(intent);					
+					getContext().startActivity(intent);	
+					
 				}
 			});
 			

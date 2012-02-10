@@ -49,7 +49,7 @@ public class ContactListShowAllActivity extends ListActivity {
 				startActivityForResult(new Intent(ContactListShowAllActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
 			}
-		});
+		});		
 		
 		Button backToContactList = (Button) findViewById(R.id.actualContactList);
 		backToContactList.setOnClickListener(new OnClickListener() {
@@ -223,13 +223,13 @@ public class ContactListShowAllActivity extends ListActivity {
 	}
 	
 	
-//	@Override
-//	public void onBackPressed(){
+	@Override
+	public void onBackPressed(){
 //		Log.v("onbackPressed in ShowAll BackPressed", "bin drin");
-//
-//		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
+
+		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
 //		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
-//		setResult(RESULT_OK, intent);
-//		finish();
-//	}	
+		setResult(RESULT_CANCELED, intent);
+		finish();
+	}	
 }
