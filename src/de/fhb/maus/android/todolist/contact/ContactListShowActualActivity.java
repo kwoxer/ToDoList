@@ -138,7 +138,7 @@ public class ContactListShowActualActivity extends ListActivity{
 		}
 		showPhoneContacts(contactIds);
 	}
-	
+	 
 	/**
 	 * refreshes contact to out listview
 	 */
