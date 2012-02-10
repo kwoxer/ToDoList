@@ -54,14 +54,13 @@ public class CustomHttpClient {
 	public static String executeHttpPost(String url,
 			ArrayList<NameValuePair> postParameters) throws Exception {
 		BufferedReader in = null;
-
+		System.out.println(url);
 		try {
 			HttpClient client = getHttpClient();
 			HttpPost request = new HttpPost(url);
 			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
 					postParameters);
 			request.setEntity(formEntity);
-			System.out.println(request.getURI());
 			HttpResponse response = client.execute(request);
 			
 			in = new BufferedReader(new InputStreamReader(response.getEntity()

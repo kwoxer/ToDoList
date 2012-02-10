@@ -8,6 +8,7 @@ import de.fhb.maus.android.todolist.database.CustomHttpClient;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,11 +28,10 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
 		emailField = (EditText) findViewById(R.id.editTextEmail);
 		pwField = (EditText) findViewById(R.id.editTextPassword);
-		
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
+		
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 				String response = null;
 				try {
 					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2:8080/login/login.php",
+							"http://10.0.2.2:8082/login/login.php",
 							postParameters);
 
 					String res = response.toString();
@@ -55,6 +55,7 @@ public class LoginActivity extends Activity {
 					else
 						error.setText("Sorry!! Incorrect Username or Password");
 				} catch (Exception e) {
+					Log.v(response, e.toString());
 					emailField.setText("scheiﬂ die Wand an,geht net");
 				}
 
