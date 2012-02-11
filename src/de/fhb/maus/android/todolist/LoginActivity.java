@@ -33,6 +33,18 @@ public class LoginActivity extends Activity {
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		error = (TextView) findViewById(R.id.textViewError);
 
+		
+		Button exit = (Button)findViewById(R.id.buttonExit);
+		exit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(LoginActivity.this,TodoListActivity.class));
+				
+			}
+		});
+		
+		
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

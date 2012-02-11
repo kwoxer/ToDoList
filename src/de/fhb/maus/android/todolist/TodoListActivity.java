@@ -3,6 +3,7 @@ package de.fhb.maus.android.todolist;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
+import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
@@ -35,7 +37,7 @@ public class TodoListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd, mLogout, mContact;
+	private Button mAdd, mLogout, mContact, showContactsWithTodo;
 	private int order = 0;
 
 	/**
@@ -46,6 +48,17 @@ public class TodoListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
 		// Sets up Button for adding a ToDo
+		
+		showContactsWithTodo = (Button) findViewById(R.id.showContactsWithToDO);
+		showContactsWithTodo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TodoListActivity.this, ShowContactToTodoActivity.class));				
+			}
+		});
+		
+		
 		mAdd = (Button) findViewById(R.id.buttonAdd);
 		mAdd.setOnClickListener(new OnClickListener() {
 			@Override

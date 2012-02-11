@@ -47,7 +47,10 @@
             android:name=".contact.ContactListShowActualActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-
+		<activity
+            android:name=".contact.ShowContactToTodoActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
         <provider
             android:name=".MyTodoContentProvider"
             android:authorities="de.fhb.maus.android.todolist.provider" >

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 public class TodoDatabaseAdapter {
 
@@ -26,6 +27,7 @@ public class TodoDatabaseAdapter {
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
 	private TodoDatabaseHelper mDbHelper;
+	private SQLiteQueryBuilder querybuilder;
 
 	public TodoDatabaseAdapter(Context context) {
 		this.mContext = context;
@@ -73,11 +75,17 @@ public class TodoDatabaseAdapter {
 				+ rowId, null) > 0;
 	}
 
+	
+	
 	/**
 	 * Deletes todo
 	 */
 	public boolean deleteTodo(long rowId) {
 		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+	
+	public boolean deleteContact(String rowId, String contactId){
+		return mDatabase.delete(DATABASE_TABLE_HAT, KEY_ROWID + "=? AND "+ KEY_CONTACTID + "=?", new String[]{rowId,contactId}) > 0;
 	}
 	
 	
@@ -89,6 +97,11 @@ public class TodoDatabaseAdapter {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
+	}
+	
+	public Cursor fetchContactsWithTodo(){
+		return mDatabase.query(DATABASE_TABLE_HAT, new String[]{KEY_ROWID,
+				KEY_CONTACTID}, null, null, null, null, null);
 	}
 	
 //	public Cursor fetchAllContacts(){		

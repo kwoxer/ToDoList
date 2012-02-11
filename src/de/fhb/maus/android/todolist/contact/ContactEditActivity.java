@@ -57,12 +57,12 @@ public class ContactEditActivity extends Activity {
 				String phonenumber = mContact.getNumber();
 				if (phonenumber != null) {
 					mPhone.setText(phonenumber);
-//					mPhone.setEnabled(false);
+					mPhone.setEnabled(false);
 				}
 				String email = mContact.getEmail();
 				if (email != null) {
 					mEmail.setText(email);
-//					mEmail.setEnabled(false);
+					mEmail.setEnabled(false);
 				}
 			}
 		}
@@ -100,18 +100,18 @@ public class ContactEditActivity extends Activity {
 			String editedEmail = mEmail.getText().toString();
 			String editedPhone = mPhone.getText().toString();
 			if (!"".equals(editedPhone)) {
-//				ops.add(ContentProviderOperation
-//						.newInsert(Data.CONTENT_URI)
-//						.withValueBackReference(Data.RAW_CONTACT_ID,
-//								rawContactInsertIndex)
-//						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-//						.withValue(Phone.NUMBER, editedPhone).build());
-				Log.v("id",Data.CONTACT_ID +"              " + String.valueOf(cid) );
-				ops.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
-//						.withSelection(Data.RAW_CONTACT_ID + "=" + String.valueOf(cid), new String[]{String.valueOf(cid)})
-						.withValueBackReference(Data.RAW_CONTACT_ID,(int) cid)
+				ops.add(ContentProviderOperation
+						.newInsert(Data.CONTENT_URI)
+						.withValueBackReference(Data.RAW_CONTACT_ID,
+								rawContactInsertIndex)
 						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
 						.withValue(Phone.NUMBER, editedPhone).build());
+				Log.v("id",Data.CONTACT_ID +"              " + String.valueOf(cid) );
+//				ops.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
+////						.withSelection(Data.RAW_CONTACT_ID + "=" + String.valueOf(cid), new String[]{String.valueOf(cid)})
+//						.withValueBackReference(Data.RAW_CONTACT_ID,(int) cid)
+//						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//						.withValue(Phone.NUMBER, editedPhone).build());
 			}
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation

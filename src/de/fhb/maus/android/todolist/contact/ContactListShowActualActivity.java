@@ -3,17 +3,26 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.TodoListActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
@@ -27,6 +36,7 @@ public class ContactListShowActualActivity extends ListActivity{
 	private String rowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Cursor mCursor;
+	private static final int DELETE_ID = Menu.FIRST + 1;
 	/**
 	 * when Activity is created
 	 */
@@ -74,6 +84,44 @@ public class ContactListShowActualActivity extends ListActivity{
 	}
 	
 	/**
+	 *  Delete a Todo by long click on it 
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+			case DELETE_ID :
+				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+						.getMenuInfo();
+
+				Contact contact = (Contact) getListAdapter().getItem(
+						info.position);
+				String contactid = String.valueOf(contact.getContactid());
+
+//				Log.v("displayname", contact.getName());
+//				Log.v("contactid", String.valueOf(contactid));
+				mDbHelper.deleteContact(rowId, contactid);
+//				mAdapter.clear();
+				showContact(rowId);
+				return true;
+		}
+
+		return super.onContextItemSelected(item);
+	}
+	
+	/**
+	 *  When a ToDo Delete Menu is gonna be shown
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
+	}
+	
+	
+	
+	/**
 	 * when new result is coming
 	 */
 	@Override
@@ -102,11 +150,6 @@ public class ContactListShowActualActivity extends ListActivity{
 			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
 				contactId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
 				rowId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
-//				Log.v("ContaktIdtable", String.valueOf(contactId)) ;
-//				Log.v("ContaktIdList", String.valueOf(mContactsList.get(i).getContactid())) ;
-//				Log.v("rowIdClass", this.rowId) ;
-//				Log.v("rowIdTable", String.valueOf(rowId));
-//				Log.v("j=", String.valueOf(j)) ;
 				if(String.valueOf(mContactsList.get(i).getContactid()).equals(contactId) && this.rowId.equals(rowId)){		
 					inTable = true;
 				}				
@@ -125,7 +168,7 @@ public class ContactListShowActualActivity extends ListActivity{
 		setListAdapter(mAdapter);
 		mCursor = mDbHelper.fetchContacts(rowId);
 		if (rowId != null && !mCursor.isAfterLast()) {
-			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
+//			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
 		startManagingCursor(mCursor);
 			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
 				String contactId = mCursor.getString(mCursor
