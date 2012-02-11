@@ -2,11 +2,14 @@ package de.fhb.maus.android.todolist;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.TimeZone;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fhb.maus.android.todolist.contact.Contact;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
 import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
@@ -38,6 +42,7 @@ public class TodoListActivity extends ListActivity {
 	private Cursor mCursor;
 	private Button mAdd, mLogout, mContact, showContactsWithTodo;
 	private int order = 0;
+	private long cid = -1;
 
 	/**
 	 * Called when the activity is first created.
@@ -76,6 +81,14 @@ public class TodoListActivity extends ListActivity {
 			}
 		});
 		
+		Log.v("create","blubb");
+		//get contactId to show individual Todos
+		Contact contact = (Contact) getIntent().getParcelableExtra("contact");
+		Log.v("create","blubb1");
+		if(contact != null){
+			cid = contact.getContactid();
+		}
+		Log.v("create","blubb2");
 		
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -157,20 +170,57 @@ public class TodoListActivity extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 		fillToDoList();
 	}
+	
+	
+	private String[] getRowIdsfromCursor(Cursor mCursor){
+		ArrayList<String> list = new ArrayList<String>();
+		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()){
+			list.add(mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID)));
+		}
+		Log.v("create","vor return");
+		String[] string = new String[list.size()];
+		for(int i = 0; i<list.size(); i++){
+			string[i] = list.get(i);
+		}
+		return string;
+	}
+	
+	
+	
 	/**
 	 * Always called when the ToDos are shown
 	 */
 	private void fillToDoList() {
-		switch (order) {
-			case 0 :
-				mCursor = mDbHelper.fetchAllTodosOrderByDone();
-				break;
-			case 1 :
-				mCursor = mDbHelper.fetchAllTodosOrderByDate();
-				break;
-			case 2 :
-				mCursor = mDbHelper.fetchAllTodosOrderByCategory();
-				break;
+		if(cid == -1){
+			Log.v("create","if ");
+			switch (order) {
+				case 0 :
+					mCursor = mDbHelper.fetchAllTodosOrderByDone();
+					break;
+				case 1 :
+					mCursor = mDbHelper.fetchAllTodosOrderByDate();
+					break;
+				case 2 :
+					mCursor = mDbHelper.fetchAllTodosOrderByCategory();
+					break;
+			}
+		}else{
+			Log.v("create","else");
+			switch (order) {
+				case 0 :
+					Log.v("create","case else");
+					mCursor = mDbHelper.fetchTodoToContacts(cid);
+					Log.v("create","nach return");
+					mCursor = mDbHelper.fetchIndividualTodosOrderByDone(getRowIdsfromCursor(mCursor));
+					Log.v("create","nach 2. blubb");
+					break;
+				case 1 :
+//					mCursor = mDbHelper.fetchIndividualTodosOrderByDate(cid);
+					break;
+				case 2 :
+//					mCursor = mDbHelper.fetchIndividualTodosOrderByCategory(cid);
+					break;
+			}
 		}
 		startManagingCursor(mCursor);
 

@@ -60,6 +60,11 @@ public class TodoDatabaseAdapter {
 		}
 		return mCursor;
 	}
+	public Cursor fetchTodoToContacts(long cid){
+		return mDatabase.query(DATABASE_TABLE_HAT,
+				new String[]{KEY_ROWID},
+				KEY_CONTACTID + "=" + cid, null, null, null, null, null);
+	}
 
 	public Cursor fetchContactsWithTodo() {
 		Cursor mCursor = mDatabase
@@ -107,6 +112,13 @@ public class TodoDatabaseAdapter {
 				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
 						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
 				KEY_CATEGORY);
+	}
+	
+	public Cursor fetchIndividualTodosOrderByDone(String[] rowIds){
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, KEY_ROWID + "=?", rowIds, null, null,
+				KEY_DONE);
 	}
 
 	/**
