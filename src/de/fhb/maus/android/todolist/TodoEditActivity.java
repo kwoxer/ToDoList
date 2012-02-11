@@ -256,4 +256,14 @@ public class TodoEditActivity extends Activity {
 			finish();
 		}
 	}
+	/**
+	 * When activity is goona be destroyed
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+	}
 }

@@ -99,4 +99,14 @@ public class SendingTextActivity extends Activity {
 		sms.sendTextMessage(mPhone, null,message,null,null);
 		finish();
 	}	
+	/**
+	 * When activity is goona be destroyed
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+	}
 }

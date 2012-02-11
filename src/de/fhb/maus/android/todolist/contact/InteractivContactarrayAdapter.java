@@ -58,6 +58,11 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					});
 			viewHolder.checkbox.setTag(list.get(position));
 			viewHolder.sendSms = (Button) view.findViewById(R.id.buttonsendSms);
+			if(list.get(position).getNumber()== null){
+				viewHolder.sendSms.setVisibility(android.view.View.INVISIBLE);
+			}else{
+				viewHolder.sendSms.setVisibility(android.view.View.VISIBLE);
+			}
 			viewHolder.sendSms.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -72,7 +77,11 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			});
 			
 			viewHolder.sendEmail = (Button) view.findViewById(R.id.buttonSendEmail);
-			
+			if(list.get(position).getEmail()== null){
+				viewHolder.sendEmail.setVisibility(android.view.View.INVISIBLE);
+			}else{
+				viewHolder.sendEmail.setVisibility(android.view.View.VISIBLE);
+			}
 			viewHolder.sendEmail.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -88,7 +97,8 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			});
 			
 			view.setTag(viewHolder);
-			viewHolder.sendSms.setTag(list.get(position));			
+			viewHolder.sendSms.setTag(list.get(position));	
+			viewHolder.sendEmail.setTag(list.get(position));
 			
 		} else {
 			view = convertview;

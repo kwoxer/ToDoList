@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
@@ -30,6 +31,7 @@ public class ContactListShowActualActivity extends ListActivity {
 	private String mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Cursor mCursor;
+	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	/**
 	 * when Activity is created
@@ -95,6 +97,21 @@ public class ContactListShowActualActivity extends ListActivity {
 		return super.onContextItemSelected(item);
 	}
 
+	/**
+	 * when a contact was normally clicked
+	 */
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Contact item = (Contact) this.getListAdapter().getItem(position);
+
+		Intent i = new Intent(this, ContactEditActivity.class);
+		i.putExtra("contact", item);
+
+		startActivityForResult(i, ACTIVITY_EDIT);
+	}
+	
+	
 	/**
 	 * When a ToDo Delete Menu is gonna be shown
 	 */
@@ -226,6 +243,16 @@ public class ContactListShowActualActivity extends ListActivity {
 
 			mContactsList.add(mContact);
 			emails.close();
+		}
+	}
+	/**
+	 * When activity is goona be destroyed
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mDbHelper != null) {
+			mDbHelper.close();
 		}
 	}
 }

@@ -50,7 +50,6 @@ public class ContactEditActivity extends Activity {
 			displayName = mContact.getName();
 			cid = mContact.getContactid();
 			if (displayName != null) {
-				Log.v("AddContactActivityGetIntent", displayName);
 				mName.setText(displayName);
 				mName.setEnabled(false);
 				mSave.setText("bearbeiten");
@@ -83,16 +82,16 @@ public class ContactEditActivity extends Activity {
 		} else {
 			ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 			int rawContactInsertIndex = ops.size();
-			if(!displayName.equals(editedName)){
-			ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
-					.withValue(RawContacts.ACCOUNT_NAME, null)
-					.withValue(RawContacts.ACCOUNT_TYPE, null).build());
-			ops.add(ContentProviderOperation
-					.newInsert(Data.CONTENT_URI)
-					.withValueBackReference(Data.RAW_CONTACT_ID,
-							rawContactInsertIndex)
-					.withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
-					.withValue(StructuredName.DISPLAY_NAME, editedName).build());			
+			if(displayName==null){
+				ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+						.withValue(RawContacts.ACCOUNT_NAME, null)
+						.withValue(RawContacts.ACCOUNT_TYPE, null).build());
+				ops.add(ContentProviderOperation
+						.newInsert(Data.CONTENT_URI)
+						.withValueBackReference(Data.RAW_CONTACT_ID,
+								rawContactInsertIndex)
+						.withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+						.withValue(StructuredName.DISPLAY_NAME, editedName).build());	
 			}
 			String editedEmail = mEmail.getText().toString();
 			String editedPhone = mPhone.getText().toString();
@@ -103,7 +102,6 @@ public class ContactEditActivity extends Activity {
 								rawContactInsertIndex)
 						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
 						.withValue(Phone.NUMBER, editedPhone).build());
-				Log.v("id",Data.CONTACT_ID +"              " + String.valueOf(cid) );
 			}
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation
@@ -128,6 +126,5 @@ public class ContactEditActivity extends Activity {
 			setResult(RESULT_OK);
 			finish();
 		}
-
 	}
 }

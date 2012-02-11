@@ -123,4 +123,14 @@ public class ShowContactToTodoActivity extends ListActivity {
 			emails.close();
 		}
 	}
+	/**
+	 * When activity is goona be destroyed
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mDbHelper != null) {
+			mDbHelper.close();
+		}
+	}
 }
