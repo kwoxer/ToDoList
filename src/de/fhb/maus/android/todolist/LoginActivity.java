@@ -18,12 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
+import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
 
 public class LoginActivity extends Activity {
-	/** Called when the activity is first created. */
-
+	
 	private Button mLogIn, mExit;
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
@@ -31,7 +31,8 @@ public class LoginActivity extends Activity {
 	private EmailValidator mEv;
 	private String phpAddress = "http://10.0.2.2/login/login.php",
 			serverAddress = "10.0.2.2";
-
+	
+	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +45,8 @@ public class LoginActivity extends Activity {
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
 
+		IO.exportDB();
+		
 		if (ServerAvailability.isReachable(serverAddress))
 			mServer.setText("Server available!");
 		else
@@ -75,6 +78,7 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 		});
+		
 		mEmailField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
