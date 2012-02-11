@@ -17,13 +17,13 @@ public class TodoDatabaseAdapter {
 	public static final String KEY_DONE = "done";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_CONTACTID = "_cid";
-	public static final String KEY_DISPLAYNAME="displayName";
-	public static final String KEY_EMAIL="email";
-	public static final String KEY_PHONENUMBER="phonenumber";
+	public static final String KEY_DISPLAYNAME = "displayName";
+	public static final String KEY_EMAIL = "email";
+	public static final String KEY_PHONENUMBER = "phonenumber";
 	private static final String DATABASE_TABLE_TODO = "todo";
 	private static final String DATABASE_TABLE_HAT = "hat";
 	private static final String DATABASE_TABLE_CONTACTS = "contacttable";
-	
+
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
 	private TodoDatabaseHelper mDbHelper;
@@ -54,17 +54,18 @@ public class TodoDatabaseAdapter {
 		return mDatabase.insert(DATABASE_TABLE_TODO, null, initialValues);
 	}
 
-	public long setContact(String contactId, String rowId){
+	public long setContact(String contactId, String rowId) {
 		ContentValues updateValues = createContentValues(contactId, rowId);
-		return mDatabase.insert(DATABASE_TABLE_HAT,null,updateValues);
+		return mDatabase.insert(DATABASE_TABLE_HAT, null, updateValues);
 	}
-	
-	
-//	public long setContact(String contactId, String displayName, String email, String phonenumber){
-//		ContentValues updateValues = createContentValues(contactId,displayName,email,phonenumber);
-//		return mDatabase.insert(DATABASE_TABLE_CONTACTS,null,updateValues);
-//	}
-		
+
+	// public long setContact(String contactId, String displayName, String
+	// email, String phonenumber){
+	// ContentValues updateValues =
+	// createContentValues(contactId,displayName,email,phonenumber);
+	// return mDatabase.insert(DATABASE_TABLE_CONTACTS,null,updateValues);
+	// }
+
 	/**
 	 * Update the todo
 	 */
@@ -72,45 +73,41 @@ public class TodoDatabaseAdapter {
 			boolean done, String summary, String description) {
 		ContentValues updateValues = createContentValues(date, category, done,
 				summary, description);
-		return mDatabase.update(DATABASE_TABLE_TODO, updateValues, KEY_ROWID + "="
-				+ rowId, null) > 0;
+		return mDatabase.update(DATABASE_TABLE_TODO, updateValues, KEY_ROWID
+				+ "=" + rowId, null) > 0;
 	}
 
-	
-	
 	/**
 	 * Deletes todo
 	 */
 	public boolean deleteTodo(long rowId) {
-		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId, null) > 0;
+		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId,
+				null) > 0;
 	}
-	
-	public boolean deleteContact(String rowId, String contactId){
-		return mDatabase.delete(DATABASE_TABLE_HAT, KEY_ROWID + "=? AND "+ KEY_CONTACTID + "=?", new String[]{rowId,contactId}) > 0;
+
+	public boolean deleteContact(String rowId, String contactId) {
+		return mDatabase.delete(DATABASE_TABLE_HAT, KEY_ROWID + "=? AND "
+				+ KEY_CONTACTID + "=?", new String[]{rowId, contactId}) > 0;
 	}
-	
-	
-	
-	
-	
-	public Cursor fetchContacts(String rowId)throws SQLException{
-		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
-				KEY_ROWID,KEY_CONTACTID}, KEY_ROWID + "=" + rowId, null, null, null,
-				null, null);
+
+	public Cursor fetchContacts(String rowId) throws SQLException {
+		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT,
+				new String[]{KEY_ROWID, KEY_CONTACTID},
+				KEY_ROWID + "=" + rowId, null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
 		return mCursor;
 	}
-	
-	public Cursor fetchContactsWithTodo(){
-		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
-				KEY_CONTACTID}, null, null, null, null,
-				null, null);
+
+	public Cursor fetchContactsWithTodo() {
+		Cursor mCursor = mDatabase
+				.query(true, DATABASE_TABLE_HAT, new String[]{KEY_CONTACTID},
+						null, null, null, null, null, null);
 		return mCursor;
 	}
-	
-	public Cursor fetchAllContacts(){		
+
+	public Cursor fetchAllContacts() {
 		return mDatabase.query(DATABASE_TABLE_HAT, new String[]{KEY_ROWID,
 				KEY_CONTACTID}, null, null, null, null, null);
 	}
@@ -121,29 +118,32 @@ public class TodoDatabaseAdapter {
 	 * @return Cursor over all notes
 	 */
 	public Cursor fetchAllTodos() {
-		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
-				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
-				KEY_DESCRIPTION}, null, null, null, null, null);
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
+				null);
 	}
 	public Cursor fetchAllTodosOrderByName() {
-		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
-				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
-				KEY_DESCRIPTION}, null, null, null, null, KEY_SUMMARY);
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
+				KEY_SUMMARY);
 	}
 	public Cursor fetchAllTodosOrderByDate() {
-		return mDatabase.query(DATABASE_TABLE_TODO, new String[]{KEY_ROWID,
-				KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
-				KEY_DESCRIPTION}, null, null, null, null, KEY_DATE);
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
+				KEY_DATE);
 	}
 
 	/**
 	 * Return a Cursor positioned at the defined todo
 	 */
 	public Cursor fetchTodo(long rowId) throws SQLException {
-		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_TODO, new String[]{
-				KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE, KEY_SUMMARY,
-				KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId, null, null, null,
-				null, null);
+		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, KEY_ROWID + "=" + rowId,
+				null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -160,11 +160,11 @@ public class TodoDatabaseAdapter {
 		values.put(KEY_DESCRIPTION, description);
 		return values;
 	}
-	private ContentValues createContentValues(String contactId, String rowId){
+	private ContentValues createContentValues(String contactId, String rowId) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_ROWID, rowId);
 		values.put(KEY_CONTACTID, contactId);
 		return values;
-	}	
+	}
 
 }

@@ -46,15 +46,16 @@ public class TodoListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
-		
+
 		showContactsWithTodo = (Button) findViewById(R.id.showContactsWithToDO);
 		showContactsWithTodo.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(TodoListActivity.this, ShowContactToTodoActivity.class));				
+				startActivity(new Intent(TodoListActivity.this,
+						ShowContactToTodoActivity.class));
 			}
 		});
-		
+
 		// Sets up Button for adding a ToDo
 		mAdd = (Button) findViewById(R.id.buttonAdd);
 		mAdd.setOnClickListener(new OnClickListener() {
@@ -201,7 +202,7 @@ public class TodoListActivity extends ListActivity {
 									Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(TodoListActivity.this,
 									ContactListShowActualActivity.class);
-							
+
 							intent.putExtra("todoRowid", id);
 							startActivity(intent);
 						}
@@ -212,17 +213,52 @@ public class TodoListActivity extends ListActivity {
 				final int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndexIcon) {
-					ImageView ico = (ImageView) view;
-					String category_type = cursor.getString(nCheckedIndexIcon);
-					// getting the actual string from the priority values
-					if (category_type.equals(getResources().getStringArray(
+					final ImageView ico = (ImageView) view;
+					final String category = cursor.getString(nCheckedIndexIcon);
+
+					final long id = cursor.getLong(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
+					final String date = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_DATE));
+					final int done = cursor.getInt(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
+					final String summary = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
+					final String description = cursor.getString(cursor
+							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
+					ico.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							boolean bla;
+							if (done == 1)
+								bla = true;
+							else
+								bla = false;
+							if (category.equals(getResources().getStringArray(
+									R.array.priorities)[0])) {
+								// when actual icon is reminder
+								// change it to urgent!
+								ico.setImageResource(R.drawable.ic_todoimportant);
+								mDbHelper.updateTodo(id, date, getResources()
+										.getStringArray(R.array.priorities)[1],
+										bla, summary, description);
+							} else {
+								// when actual icon is urgent
+								// change it to reminder!
+								ico.setImageResource(R.drawable.ic_todo);
+								mDbHelper.updateTodo(id, date, getResources()
+										.getStringArray(R.array.priorities)[0],
+										bla, summary, description);
+							}
+						}
+					});
+					if (category.equals(getResources().getStringArray(
 							R.array.priorities)[0])) {
-						ico.setImageResource(R.drawable.ic_todoimportant);
-						return true;
-					} else {
 						ico.setImageResource(R.drawable.ic_todo);
-						return true;
+					} else {
+						ico.setImageResource(R.drawable.ic_todoimportant);
 					}
+					return true;
 				}
 
 				// Update Checkbox
