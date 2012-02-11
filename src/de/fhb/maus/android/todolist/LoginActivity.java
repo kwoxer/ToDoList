@@ -1,5 +1,12 @@
 package de.fhb.maus.android.todolist;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
@@ -28,8 +35,28 @@ public class LoginActivity extends Activity {
 	private Button mLogIn, mExit;
 	private boolean toastAlreadyShown = false;
 	private EditText emailField, pwField;
-	private TextView error;
+	private TextView mError, mServer;
 	private EmailValidator ev;
+	private String phpAddress = "http://10.0.2.2/login/login.php",
+			serverAddress = "10.0.2.2";
+
+	private boolean isReachable(String ip) {
+		try {
+			Process exec = Runtime.getRuntime().exec("ping " + ip);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					exec.getInputStream()));
+			reader.readLine();// PING...bytes of data.
+
+			String line1 = reader.readLine().trim();
+			String line2 = reader.readLine().trim();
+			exec.destroy();
+
+			return line1.endsWith("ms") && line2.endsWith("ms");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,8 +66,14 @@ public class LoginActivity extends Activity {
 		pwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		mLogIn.setEnabled(false);
-		error = (TextView) findViewById(R.id.textViewError);
+		mError = (TextView) findViewById(R.id.textViewError);
+		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
+
+		if (isReachable(serverAddress))
+			mServer.setText("Server available!");
+		else
+			mServer.setText("Server not available!");
 
 		mExit.setOnClickListener(new OnClickListener() {
 			@Override
@@ -49,7 +82,7 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-		
+
 		emailField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -71,7 +104,7 @@ public class LoginActivity extends Activity {
 		emailField.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				error.setText("");
+				mError.setText("");
 			}
 		});
 
@@ -101,7 +134,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					error.setText("");
+					mError.setText("");
 				}
 				return false;
 			}
@@ -111,7 +144,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					error.setText("");
+					mError.setText("");
 				}
 				return false;
 			}
@@ -127,16 +160,16 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
 				try {
-					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2/login/login.php", postParameters);
+					response = CustomHttpClient.executeHttpPost(phpAddress,
+							postParameters);
 					String res = response.toString();
 					res = res.replaceAll("\\s+", "");
 					if (res.equals("1")) {
-						error.setText("Login accepted");
+						mError.setText("Login accepted");
 						startActivity(new Intent(LoginActivity.this,
 								TodoListActivity.class));
 					} else {
-						error.setText("Login not accepted");
+						mError.setText("Login not accepted");
 					}
 				} catch (Exception e) {
 					Log.e("Database", e.toString());
