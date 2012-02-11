@@ -21,6 +21,7 @@ import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 public class ContactListShowActualActivity extends ListActivity{
 	
 	private Button addContact;
+	private Button backtoContactButton;
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
 	private String rowId;
@@ -33,6 +34,10 @@ public class ContactListShowActualActivity extends ListActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
+		
+		backtoContactButton = (Button) findViewById(R.id.actualContactList);
+		backtoContactButton.setVisibility(8);
+		
 
 		addContact = (Button) findViewById(R.id.buttonAddContact);
 		addContact.setOnClickListener(new OnClickListener() {
@@ -42,7 +47,7 @@ public class ContactListShowActualActivity extends ListActivity{
 				startActivityForResult(new Intent(ContactListShowActualActivity.this, ContactListShowAllActivity.class), 0);				
 			}
 		});
-		
+		Log.v("showcontact", "here we go");
 		mContactsList.clear();
 		mContactsList = getIntent().getParcelableArrayListExtra("contactlist");
 		
@@ -51,7 +56,7 @@ public class ContactListShowActualActivity extends ListActivity{
 		}else{
 			mContactsList = new ArrayList<Contact>();
 		}
-		
+		Log.v("showcontact", "here we go");
 		rowId = getIntent().getStringExtra("todoRowid");
 		
 		if(rowId != null){
@@ -76,10 +81,13 @@ public class ContactListShowActualActivity extends ListActivity{
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 //		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
+		if(resultCode == 0){return ;
+		}
 		mContactsList.clear();
 		mContactsList = intent.getParcelableArrayListExtra("contactlist");
 		writeContactsToDb();
 		showContact(rowId);
+		
 	}
 	
 	private void writeContactsToDb(){
@@ -130,7 +138,7 @@ public class ContactListShowActualActivity extends ListActivity{
 		}
 		showPhoneContacts(contactIds);
 	}
-	
+	 
 	/**
 	 * refreshes contact to out listview
 	 */

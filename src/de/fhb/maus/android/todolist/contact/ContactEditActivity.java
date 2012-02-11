@@ -7,6 +7,7 @@ import android.content.ContentProviderOperation;
 import android.content.OperationApplicationException;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
@@ -29,7 +30,9 @@ public class ContactEditActivity extends Activity {
 	private EditText mEmail;
 	private EditText mPhone;
 	private Button mSave;
+	private long cid;
 	private Contact mContact;
+	private String displayName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,8 @@ public class ContactEditActivity extends Activity {
 
 		mContact = (Contact) getIntent().getParcelableExtra("contact");
 		if (mContact != null) {
-			String displayName = mContact.getName();
+			displayName = mContact.getName();
+			cid = mContact.getContactid();
 			if (displayName != null) {
 				Log.v("AddContactActivityGetIntent", displayName);
 				mName.setText(displayName);
@@ -53,12 +57,12 @@ public class ContactEditActivity extends Activity {
 				String phonenumber = mContact.getNumber();
 				if (phonenumber != null) {
 					mPhone.setText(phonenumber);
-					mPhone.setEnabled(false);
+//					mPhone.setEnabled(false);
 				}
 				String email = mContact.getEmail();
 				if (email != null) {
 					mEmail.setText(email);
-					mEmail.setEnabled(false);
+//					mEmail.setEnabled(false);
 				}
 			}
 		}
@@ -82,7 +86,7 @@ public class ContactEditActivity extends Activity {
 		} else {
 			ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 			int rawContactInsertIndex = ops.size();
-
+			if(!displayName.equals(editedName)){
 			ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
 					.withValue(RawContacts.ACCOUNT_NAME, null)
 					.withValue(RawContacts.ACCOUNT_TYPE, null).build());
@@ -91,14 +95,21 @@ public class ContactEditActivity extends Activity {
 					.withValueBackReference(Data.RAW_CONTACT_ID,
 							rawContactInsertIndex)
 					.withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
-					.withValue(StructuredName.DISPLAY_NAME, editedName).build());
+					.withValue(StructuredName.DISPLAY_NAME, editedName).build());			
+			}
 			String editedEmail = mEmail.getText().toString();
 			String editedPhone = mPhone.getText().toString();
 			if (!"".equals(editedPhone)) {
-				ops.add(ContentProviderOperation
-						.newInsert(Data.CONTENT_URI)
-						.withValueBackReference(Data.RAW_CONTACT_ID,
-								rawContactInsertIndex)
+//				ops.add(ContentProviderOperation
+//						.newInsert(Data.CONTENT_URI)
+//						.withValueBackReference(Data.RAW_CONTACT_ID,
+//								rawContactInsertIndex)
+//						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//						.withValue(Phone.NUMBER, editedPhone).build());
+				Log.v("id",Data.CONTACT_ID +"              " + String.valueOf(cid) );
+				ops.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
+//						.withSelection(Data.RAW_CONTACT_ID + "=" + String.valueOf(cid), new String[]{String.valueOf(cid)})
+						.withValueBackReference(Data.RAW_CONTACT_ID,(int) cid)
 						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
 						.withValue(Phone.NUMBER, editedPhone).build());
 			}
@@ -128,7 +139,6 @@ public class ContactEditActivity extends Activity {
 			}
 
 			setResult(RESULT_OK);
-			Log.v("AddContactAction", "vor finish()");
 			finish();
 		}
 

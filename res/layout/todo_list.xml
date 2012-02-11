@@ -33,12 +33,6 @@
             android:layout_width="107dp"
             android:layout_height="wrap_content"
             android:text="@string/todo_list_logout" />
-        
-        <Button
-            android:id="@+id/buttonshowContact"
-            android:layout_width="107dp"
-            android:layout_height="wrap_content"
-            android:text="show Contactlist" />
     </LinearLayout>
 
 </LinearLayout>

@@ -64,15 +64,6 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-		// TODO ERASED SOON
-		mContact = (Button) findViewById(R.id.buttonshowContact);
-		mContact.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(TodoListActivity.this,
-						ContactListShowActualActivity.class));
-			}
-		});
 
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
