@@ -31,6 +31,7 @@ public class LoginActivity extends Activity {
 		emailField = (EditText) findViewById(R.id.editTextEmail);
 		pwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
+		error = (TextView) findViewById(R.id.textViewError);
 
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -38,40 +39,38 @@ public class LoginActivity extends Activity {
 				String username = emailField.getText().toString();
 				String password = pwField.getText().toString();
 
-				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("name", username));
-				postParameters.add(new BasicNameValuePair("pw", password));
+				if (username.length() == 0) {
+					if (!toastAlreadyShown) {
+						Toast toast = Toast.makeText(getApplicationContext(),
+								getResources().getString(R.string.login_toast),
+								Toast.LENGTH_SHORT);
+						toast.show();
+						toastAlreadyShown = true;
+						return;
+					}
+				} else {
+					ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+					postParameters
+							.add(new BasicNameValuePair("name", username));
+					postParameters.add(new BasicNameValuePair("pw", password));
 
-				String response = null;
-				try {
-					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2/login/login.php", postParameters);
+					String response = null;
+					try {
+						response = CustomHttpClient.executeHttpPost(
+								"http://10.0.2.2/login/login.php",
+								postParameters);
+						String res = response.toString();
+						res = res.replaceAll("\\s+", "");
+						if (res.equals("1"))
+							startActivity(new Intent(LoginActivity.this,
+									TodoListActivity.class));
+						else
+							error.setText("0");
+					} catch (Exception e) {
+						Log.e("Database", e.toString());
+					}
 
-					String res = response.toString();
-					res = res.replaceAll("\\s+", "");
-					if (res.equals("0") || res.equals(""))
-						error.setText("Sorry!! Incorrect Username or Password");
-					else
-						error.setText("Correct Username or Password");
-				} catch (Exception e) {
-					Log.e("test", e.toString());
-					// emailField.setText("scheiﬂ die Wand an,geht net");
 				}
-
-				// String email = emailField.getText().toString();
-				// if (email.length() == 0) {
-				// if (!toastAlreadyShown) {
-				// Toast toast = Toast.makeText(getApplicationContext(),
-				// getResources().getString(R.string.login_toast),
-				// Toast.LENGTH_SHORT);
-				// toast.show();
-				// toastAlreadyShown = true;
-				// return;
-				// }
-				// } else
-				// // TODO Login with server and database here
-				// startActivity(new Intent(LoginActivity.this,
-				// TodoListActivity.class));
 			}
 		});
 	}

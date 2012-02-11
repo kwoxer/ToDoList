@@ -25,7 +25,6 @@
         android:hint="@string/login_hint_pass"
         android:inputType="textPassword"
         android:maxLength="6"
-        android:onClick="@string/app_name"
         android:typeface="monospace" />
 
     <LinearLayout

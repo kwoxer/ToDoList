@@ -73,7 +73,7 @@ public class CustomHttpClient {
 				sb.append(line + NL);
 			}
 
-			//in.close();
+			in.close();
 
 			String result = sb.toString();
 			return result;
