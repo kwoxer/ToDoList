@@ -114,11 +114,25 @@ public class TodoDatabaseAdapter {
 				KEY_CATEGORY);
 	}
 	
-	public Cursor fetchIndividualTodosOrderByDone(String[] rowIds){
+	public Cursor fetchIndividualTodosOrderByDone(String where){		
 		return mDatabase.query(DATABASE_TABLE_TODO,
 				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
-						KEY_SUMMARY, KEY_DESCRIPTION}, KEY_ROWID + "=?", rowIds, null, null,
+						KEY_SUMMARY, KEY_DESCRIPTION}, where, null, null, null,
 				KEY_DONE);
+	}
+	
+	public Cursor fetchIndividualTodosOrderByDate(String where){
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, where, null, null, null,
+						KEY_DATE);
+	}
+	
+	public Cursor fetchIndividualTodosOrderByCategory(String where){
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, where, null, null, null,
+						KEY_CATEGORY);
 	}
 
 	/**

@@ -81,14 +81,11 @@ public class TodoListActivity extends ListActivity {
 			}
 		});
 		
-		Log.v("create","blubb");
 		//get contactId to show individual Todos
 		Contact contact = (Contact) getIntent().getParcelableExtra("contact");
-		Log.v("create","blubb1");
 		if(contact != null){
 			cid = contact.getContactid();
 		}
-		Log.v("create","blubb2");
 		
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
@@ -172,17 +169,18 @@ public class TodoListActivity extends ListActivity {
 	}
 	
 	
-	private String[] getRowIdsfromCursor(Cursor mCursor){
+	private String getWhereClauseFromCursor(Cursor mCursor){
 		ArrayList<String> list = new ArrayList<String>();
 		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()){
 			list.add(mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID)));
 		}
-		Log.v("create","vor return");
-		String[] string = new String[list.size()];
-		for(int i = 0; i<list.size(); i++){
-			string[i] = list.get(i);
-		}
-		return string;
+		
+		String where = "";
+		for (int i=0;i<list.size() ; i++){
+			where = where +TodoDatabaseAdapter.KEY_ROWID+" ="+list.get(i)+" ";
+			if(i!=(list.size() -1)) where = where + " OR ";
+		}		
+		return where;
 	}
 	
 	
@@ -192,7 +190,6 @@ public class TodoListActivity extends ListActivity {
 	 */
 	private void fillToDoList() {
 		if(cid == -1){
-			Log.v("create","if ");
 			switch (order) {
 				case 0 :
 					mCursor = mDbHelper.fetchAllTodosOrderByDone();
@@ -205,20 +202,18 @@ public class TodoListActivity extends ListActivity {
 					break;
 			}
 		}else{
-			Log.v("create","else");
 			switch (order) {
 				case 0 :
-					Log.v("create","case else");
 					mCursor = mDbHelper.fetchTodoToContacts(cid);
-					Log.v("create","nach return");
-					mCursor = mDbHelper.fetchIndividualTodosOrderByDone(getRowIdsfromCursor(mCursor));
-					Log.v("create","nach 2. blubb");
+					mCursor = mDbHelper.fetchIndividualTodosOrderByDone(getWhereClauseFromCursor(mCursor));
 					break;
 				case 1 :
-//					mCursor = mDbHelper.fetchIndividualTodosOrderByDate(cid);
+					mCursor = mDbHelper.fetchTodoToContacts(cid);
+					mCursor = mDbHelper.fetchIndividualTodosOrderByDate(getWhereClauseFromCursor(mCursor));
 					break;
 				case 2 :
-//					mCursor = mDbHelper.fetchIndividualTodosOrderByCategory(cid);
+					mCursor = mDbHelper.fetchTodoToContacts(cid);
+					mCursor = mDbHelper.fetchIndividualTodosOrderByCategory(getWhereClauseFromCursor(mCursor));
 					break;
 			}
 		}
