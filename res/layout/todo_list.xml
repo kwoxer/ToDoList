@@ -3,33 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
-        android:layout_height="429dp" >
+        android:layout_height="365dp" >
+
     </ListView>
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/todo_list_noTodos" />        
-	
+        android:text="@string/todo_list_noTodos" />
+
     <LinearLayout
-        
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:layout_weight="1.85"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/todo_list_add" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation= "horizontal" >
-
-		<Button
-		    android:id="@+id/buttonAdd"
-		    android:layout_width="95dp"
-		    android:layout_height="wrap_content"
-		    android:text="@string/todo_list_add" />
+        android:orientation="horizontal" >
 
-		<Button
+        <Button
             android:id="@+id/showContactsWithToDO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,5 +51,5 @@
             android:layout_height="wrap_content"
             android:text="@string/todo_list_logout" />
     </LinearLayout>
- 
+
 </LinearLayout>
