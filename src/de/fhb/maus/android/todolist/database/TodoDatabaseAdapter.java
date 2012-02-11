@@ -59,6 +59,7 @@ public class TodoDatabaseAdapter {
 		return mDatabase.insert(DATABASE_TABLE_HAT,null,updateValues);
 	}
 	
+	
 //	public long setContact(String contactId, String displayName, String email, String phonenumber){
 //		ContentValues updateValues = createContentValues(contactId,displayName,email,phonenumber);
 //		return mDatabase.insert(DATABASE_TABLE_CONTACTS,null,updateValues);
@@ -89,6 +90,9 @@ public class TodoDatabaseAdapter {
 	}
 	
 	
+	
+	
+	
 	public Cursor fetchContacts(String rowId)throws SQLException{
 		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
 				KEY_ROWID,KEY_CONTACTID}, KEY_ROWID + "=" + rowId, null, null, null,
@@ -100,14 +104,12 @@ public class TodoDatabaseAdapter {
 	}
 	
 	public Cursor fetchContactsWithTodo(){
-		return mDatabase.query(DATABASE_TABLE_HAT, new String[]{KEY_ROWID,
-				KEY_CONTACTID}, null, null, null, null, null);
+		Cursor mCursor = mDatabase.query(true, DATABASE_TABLE_HAT, new String[]{
+				KEY_CONTACTID}, null, null, null, null,
+				null, null);
+		return mCursor;
 	}
 	
-//	public Cursor fetchAllContacts(){		
-//		return mDatabase.query(DATABASE_TABLE_CONTACTS, new String[]{KEY_CONTACTID,
-//				KEY_DISPLAYNAME, KEY_EMAIL, KEY_PHONENUMBER}, null, null, null, null, null);
-//	}
 	public Cursor fetchAllContacts(){		
 		return mDatabase.query(DATABASE_TABLE_HAT, new String[]{KEY_ROWID,
 				KEY_CONTACTID}, null, null, null, null, null);

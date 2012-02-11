@@ -23,12 +23,14 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 
 	private final List<Contact> list;
 	private final Activity context;
+	private final String rowId;
 
 //	@SuppressWarnings("unchecked")
-	public InteractivContactarrayAdapter(Activity context, List<Contact> list) {
+	public InteractivContactarrayAdapter(Activity context, List<Contact> list,String rowId) {
 		super(context, R.layout.contact_row, list);
 		this.context = context;
 		this.list = list;
+		this.rowId = rowId;
 	}
 
 	static class ViewHolder {
@@ -67,6 +69,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					Intent intent = new Intent(getContext(),SendingTextActivity.class);
 					intent.putExtra("contact",element);
 					intent.putExtra("sms", true);
+					intent.putExtra("rowId", rowId);
 					getContext().startActivity(intent);
 				}
 			});
@@ -81,6 +84,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					Intent intent = new Intent(getContext(),SendingTextActivity.class);
 					intent.putExtra("contact",element);
 					intent.putExtra("sms", false);
+					intent.putExtra("rowId", rowId);
 					getContext().startActivity(intent);	
 					
 				}

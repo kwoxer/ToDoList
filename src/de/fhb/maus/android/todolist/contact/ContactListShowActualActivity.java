@@ -21,6 +21,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.fhb.maus.android.todolist.R;
@@ -164,7 +165,7 @@ public class ContactListShowActualActivity extends ListActivity{
 	
 	private void showContact(String rowId){
 		ArrayList<String> contactIds = new ArrayList<String>(); 
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList,rowId);
 		setListAdapter(mAdapter);
 		mCursor = mDbHelper.fetchContacts(rowId);
 		if (rowId != null && !mCursor.isAfterLast()) {

@@ -3,12 +3,16 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
@@ -23,26 +27,25 @@ public class ShowContactToTodoActivity extends ListActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
 		
+		Button addContact = (Button) findViewById(R.id.buttonAddContact);
+		addContact.setVisibility(android.view.View.GONE);
+		Button kontacktlist = (Button) findViewById(R.id.actualContactList);
+		kontacktlist.setVisibility(android.view.View.GONE);
+		mDbHelper = new TodoDatabaseAdapter(this);
+		mDbHelper.open();
 		showContacts();
 		registerForContextMenu(getListView());
-	}
+	}	
 	
-	
-	
-	public void showContacts(){
-		
+
+	private void showContacts(){
 		ArrayList<String> contactIds = new ArrayList<String>(); 
-		Log.v("Daisser inner Ifanweisung mit isAfterLast()", "wuuhuuuu");
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
-		Log.v("Daisser inner Ifanweisung mit isAfterLast()", "hmm");
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList, null);
 		setListAdapter(mAdapter);
-		Log.v("Daisser inner Ifanweisung mit isAfterLast()", "blubb");
 		mCursor = mDbHelper.fetchContactsWithTodo();
-		Log.v("Daisser inner Ifanweisung mit isAfterLast()", "Dann isser halt nicht null");
 		if (!mCursor.isAfterLast()) {
-			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
+//			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
 		startManagingCursor(mCursor);
-		Log.v("in shopwContacts=", "begin");
 			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
 				String contactId = mCursor.getString(mCursor
 						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
@@ -52,7 +55,6 @@ public class ShowContactToTodoActivity extends ListActivity{
 				contactIds.add(contactId);
 			}
 		}
-		
 		showPhoneContacts(contactIds);
 	}
 	

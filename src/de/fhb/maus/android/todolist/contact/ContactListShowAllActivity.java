@@ -147,7 +147,7 @@ public class ContactListShowAllActivity extends ListActivity {
 	 * refreshes contact to out listview
 	 */
 	private void showPhoneContacts() {
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList);
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList,null);
 		setListAdapter(mAdapter);
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
