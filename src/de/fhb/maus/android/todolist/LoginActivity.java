@@ -1,20 +1,24 @@
 package de.fhb.maus.android.todolist;
 
 import java.util.ArrayList;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import de.fhb.maus.android.todolist.database.CustomHttpClient;
-import de.fhb.maus.android.todolist.validator.EmailValidator;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fhb.maus.android.todolist.database.CustomHttpClient;
+import de.fhb.maus.android.todolist.validator.EmailValidator;
 
 public class LoginActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -32,6 +36,7 @@ public class LoginActivity extends Activity {
 		emailField = (EditText) findViewById(R.id.editTextEmail);
 		pwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
+		mLogIn.setEnabled(false);
 		error = (TextView) findViewById(R.id.textViewError);
 		mExit = (Button) findViewById(R.id.buttonExit);
 
@@ -42,7 +47,49 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-
+		emailField.setOnKeyListener(new OnKeyListener() {
+	
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if((event.getAction() == KeyEvent.ACTION_DOWN) && 
+						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					String email = emailField.getText().toString();
+					Log.v("email=", email);
+					if(!email.isEmpty() && isValidEmail(email)){
+						mLogIn.setEnabled(true);
+					}else{
+						mLogIn.setEnabled(false);
+					}
+					return true;
+				}
+				return false;
+			}
+		});
+		
+		pwField.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if((event.getAction() == KeyEvent.ACTION_DOWN) && 
+						(keyCode == KeyEvent.KEYCODE_ENTER)){
+					String pw = pwField.getText().toString();
+					if(pw.length() == 6){
+						return true;
+					}else{
+						pwField.setText("");
+						Toast.makeText(getApplicationContext(),
+								getResources().getString(R.string.passwort_to_short),
+								Toast.LENGTH_SHORT).show();
+					}
+					return true;
+				}
+				return false;
+			}
+		});
+		
+		
+		
+		
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -83,4 +130,10 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
+	
+	private boolean isValidEmail(String email){
+		return true;
+	}
+	
+	
 }

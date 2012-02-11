@@ -30,5 +30,7 @@
 	<string name="sendemail">Send Email</string>
 	<string name="sending">Sending &#8230;</string>
 	<string name="show_contacts_whith_todo">show contacts whith todo &#8230;</string>
+	<string name="passwort_to_short">Das Passwort muss 6 Zeichen lang sein! &#8230;</string>
+	
 	
 </resources>
