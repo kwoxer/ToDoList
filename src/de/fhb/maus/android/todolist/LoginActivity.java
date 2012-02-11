@@ -8,6 +8,7 @@ import de.fhb.maus.android.todolist.database.CustomHttpClient;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,32 +21,32 @@ public class LoginActivity extends Activity {
 
 	private Button mLogIn;
 	private boolean toastAlreadyShown = false;
+	private EditText emailField, pwField;
 	private TextView error;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
+		emailField = (EditText) findViewById(R.id.editTextEmail);
+		pwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
+		
 		mLogIn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				EditText emailField = (EditText) findViewById(R.id.editTextEmail);
-				EditText pwField = (EditText) findViewById(R.id.editTextPassword);
-
 				String username = emailField.getText().toString();
 				String password = pwField.getText().toString();
 
 				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("mail", username));
-				postParameters.add(new BasicNameValuePair("pwhash", password));
+				postParameters.add(new BasicNameValuePair("name", username));
+				postParameters.add(new BasicNameValuePair("pw", password));
 
 				String response = null;
 				try {
 					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2:8080/login/login.php", postParameters);
+							"http://10.0.2.2:8082/login/login.php",
+							postParameters);
 
 					String res = response.toString();
 					res = res.replaceAll("\\s+", "");
@@ -54,35 +55,9 @@ public class LoginActivity extends Activity {
 					else
 						error.setText("Sorry!! Incorrect Username or Password");
 				} catch (Exception e) {
-					emailField.setText(e.toString());
+					Log.v(response, e.toString());
+					emailField.setText("scheiß die Wand an,geht net");
 				}
-
-				//
-				// try {
-				// if (username.length() > 0 && password.length() > 0) {
-				// DBUserAdapter dbUser = new DBUserAdapter(
-				// LoginActivity.this);
-				// dbUser.open();
-				// //dbUser.AddUser(username, password);
-				//
-				// if (dbUser.Login(username, password)) {
-				// Toast.makeText(LoginActivity.this,
-				// "Successfully Logged In", Toast.LENGTH_LONG)
-				// .show();
-				// startActivity(new Intent(LoginActivity.this,
-				// TodoListActivity.class));
-				// } else {
-				// Toast.makeText(LoginActivity.this,
-				// "Invalid Username/Password",
-				// Toast.LENGTH_LONG).show();
-				// }
-				// dbUser.close();
-				// }
-				//
-				// } catch (Exception e) {
-				// Toast.makeText(LoginActivity.this, e.getMessage(),
-				// Toast.LENGTH_LONG).show();
-				// }
 
 				// String email = emailField.getText().toString();
 				// if (email.length() == 0) {
