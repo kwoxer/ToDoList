@@ -101,7 +101,7 @@ public class TodoListActivity extends ListActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.noOrder :
+			case R.id.orderByDone :
 				order = 0;
 				fillToDoList();
 				return true;
@@ -109,7 +109,7 @@ public class TodoListActivity extends ListActivity {
 				order = 1;
 				fillToDoList();
 				return true;
-			case R.id.orderByName :
+			case R.id.orderByCategory :
 				order = 2;
 				fillToDoList();
 				return true;
@@ -162,13 +162,13 @@ public class TodoListActivity extends ListActivity {
 	private void fillToDoList() {
 		switch (order) {
 			case 0 :
-				mCursor = mDbHelper.fetchAllTodos();
+				mCursor = mDbHelper.fetchAllTodosOrderByDone();
 				break;
 			case 1 :
 				mCursor = mDbHelper.fetchAllTodosOrderByDate();
 				break;
 			case 2 :
-				mCursor = mDbHelper.fetchAllTodosOrderByName();
+				mCursor = mDbHelper.fetchAllTodosOrderByCategory();
 				break;
 		}
 		startManagingCursor(mCursor);

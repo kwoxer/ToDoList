@@ -117,23 +117,23 @@ public class TodoDatabaseAdapter {
 	 * 
 	 * @return Cursor over all notes
 	 */
-	public Cursor fetchAllTodos() {
+	public Cursor fetchAllTodosOrderByDone() {
 		return mDatabase.query(DATABASE_TABLE_TODO,
 				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
 						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
-				null);
-	}
-	public Cursor fetchAllTodosOrderByName() {
-		return mDatabase.query(DATABASE_TABLE_TODO,
-				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
-						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
-				KEY_SUMMARY);
+				KEY_DONE);
 	}
 	public Cursor fetchAllTodosOrderByDate() {
 		return mDatabase.query(DATABASE_TABLE_TODO,
 				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
 						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
 				KEY_DATE);
+	}
+	public Cursor fetchAllTodosOrderByCategory() {
+		return mDatabase.query(DATABASE_TABLE_TODO,
+				new String[]{KEY_ROWID, KEY_DATE, KEY_CATEGORY, KEY_DONE,
+						KEY_SUMMARY, KEY_DESCRIPTION}, null, null, null, null,
+				KEY_CATEGORY);
 	}
 
 	/**
