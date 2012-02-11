@@ -23,7 +23,7 @@ public class SendingTextActivity extends Activity {
 	private EditText text;
 	private EditText adress;
 	private TodoDatabaseAdapter mDbHelper;
-	private String rowId ; 
+	private String rowId = null; 
 	private boolean sendsms;
 	
 	@Override
@@ -46,7 +46,7 @@ public class SendingTextActivity extends Activity {
 			adress.setText(mPhone);
 			adress.setEnabled(false);
 			sending.setText("Send SMS");
-			queryTodoInfo();
+			if(rowId!= null) queryTodoInfo();
 		}else{
 			mEmail = mContact.getEmail();
 			adress.setText(mEmail);
