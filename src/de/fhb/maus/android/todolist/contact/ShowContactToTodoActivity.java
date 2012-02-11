@@ -3,13 +3,17 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import de.fhb.maus.android.todolist.R;
+import de.fhb.maus.android.todolist.TodoListActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class ShowContactToTodoActivity extends ListActivity{
@@ -49,6 +53,23 @@ public class ShowContactToTodoActivity extends ListActivity{
 		}
 		showPhoneContacts(contactIds);
 	}
+	
+	/**
+	 * when a contact was normally clicked
+	 */
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Contact item = (Contact) this.getListAdapter().getItem(position);
+
+
+		Intent i = new Intent(this, TodoListActivity.class);
+		i.putExtra("contact", item);
+
+		startActivity(i);
+	}
+	
+	
 	
 	private void showPhoneContacts(ArrayList<String> contactIds) {
 		mContactsList.clear();

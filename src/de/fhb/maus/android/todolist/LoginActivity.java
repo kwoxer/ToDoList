@@ -125,8 +125,6 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				String username = emailField.getText().toString();
 				String password = pwField.getText().toString();
-//				ev = new EmailValidator();
-//				if (ev.validate(username)) {
 					ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 					postParameters
 							.add(new BasicNameValuePair("name", username));
@@ -148,7 +146,6 @@ public class LoginActivity extends Activity {
 					} catch (Exception e) {
 						Log.e("Database", e.toString());
 					}
-//				} else {
 					if (!toastAlreadyShown) {
 						Toast toast = Toast.makeText(getApplicationContext(),
 								getResources().getString(R.string.login_toast),
@@ -156,7 +153,6 @@ public class LoginActivity extends Activity {
 						toast.show();
 						toastAlreadyShown = true;
 					}
-//				}
 			}
 		});
 	}	

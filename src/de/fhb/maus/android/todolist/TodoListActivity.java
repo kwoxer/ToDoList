@@ -75,7 +75,8 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-
+		
+		
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
 		// Helps to get our data from a database
