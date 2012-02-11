@@ -66,9 +66,6 @@ public class ContactEditActivity extends Activity {
 				}
 			}
 		}
-
-		// set a listener on the saveEntry button (we do not do any validation
-		// here!)
 		mSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -107,11 +104,6 @@ public class ContactEditActivity extends Activity {
 						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
 						.withValue(Phone.NUMBER, editedPhone).build());
 				Log.v("id",Data.CONTACT_ID +"              " + String.valueOf(cid) );
-//				ops.add(ContentProviderOperation.newUpdate(Data.CONTENT_URI)
-////						.withSelection(Data.RAW_CONTACT_ID + "=" + String.valueOf(cid), new String[]{String.valueOf(cid)})
-//						.withValueBackReference(Data.RAW_CONTACT_ID,(int) cid)
-//						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-//						.withValue(Phone.NUMBER, editedPhone).build());
 			}
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation
@@ -125,19 +117,14 @@ public class ContactEditActivity extends Activity {
 								editedEmail).build());
 
 			}
-			
-
 			try {
 				getContentResolver()
 						.applyBatch(ContactsContract.AUTHORITY, ops);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (OperationApplicationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			setResult(RESULT_OK);
 			finish();
 		}

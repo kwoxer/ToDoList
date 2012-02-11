@@ -22,12 +22,10 @@ public class TodoDatabaseAdapter {
 	public static final String KEY_PHONENUMBER = "phonenumber";
 	private static final String DATABASE_TABLE_TODO = "todo";
 	private static final String DATABASE_TABLE_HAT = "hat";
-	private static final String DATABASE_TABLE_CONTACTS = "contacttable";
 
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
 	private TodoDatabaseHelper mDbHelper;
-	private SQLiteQueryBuilder querybuilder;
 
 	public TodoDatabaseAdapter(Context context) {
 		this.mContext = context;
@@ -43,46 +41,9 @@ public class TodoDatabaseAdapter {
 		mDbHelper.close();
 	}
 
-	/**
-	 * Create a new todo If the todo is successfully created return the new
-	 * rowId for that note, otherwise return a -1 to indicate failure.
-	 */
-	public long createTodo(String date, String category, boolean done,
-			String summary, String description) {
-		ContentValues initialValues = createContentValues(date, category, done,
-				summary, description);
-		return mDatabase.insert(DATABASE_TABLE_TODO, null, initialValues);
-	}
-
 	public long setContact(String contactId, String rowId) {
 		ContentValues updateValues = createContentValues(contactId, rowId);
 		return mDatabase.insert(DATABASE_TABLE_HAT, null, updateValues);
-	}
-
-	// public long setContact(String contactId, String displayName, String
-	// email, String phonenumber){
-	// ContentValues updateValues =
-	// createContentValues(contactId,displayName,email,phonenumber);
-	// return mDatabase.insert(DATABASE_TABLE_CONTACTS,null,updateValues);
-	// }
-
-	/**
-	 * Update the todo
-	 */
-	public boolean updateTodo(long rowId, String date, String category,
-			boolean done, String summary, String description) {
-		ContentValues updateValues = createContentValues(date, category, done,
-				summary, description);
-		return mDatabase.update(DATABASE_TABLE_TODO, updateValues, KEY_ROWID
-				+ "=" + rowId, null) > 0;
-	}
-
-	/**
-	 * Deletes todo
-	 */
-	public boolean deleteTodo(long rowId) {
-		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId,
-				null) > 0;
 	}
 
 	public boolean deleteContact(String rowId, String contactId) {
@@ -113,6 +74,18 @@ public class TodoDatabaseAdapter {
 	}
 
 	/**
+	 * Create a new todo If the todo is successfully created return the new
+	 * rowId for that note, otherwise return a -1 to indicate failure.
+	 */
+	public long createTodo(String date, String category, boolean done,
+			String summary, String description) {
+		ContentValues initialValues = createContentValues(date, category, done,
+				summary, description);
+		return mDatabase.insert(DATABASE_TABLE_TODO, null, initialValues);
+	}
+	
+	
+	/**
 	 * Return a Cursor over the list of all todo in the database
 	 * 
 	 * @return Cursor over all notes
@@ -136,6 +109,26 @@ public class TodoDatabaseAdapter {
 				KEY_CATEGORY);
 	}
 
+	/**
+	 * Update the todo
+	 */
+	public boolean updateTodo(long rowId, String date, String category,
+			boolean done, String summary, String description) {
+		ContentValues updateValues = createContentValues(date, category, done,
+				summary, description);
+		return mDatabase.update(DATABASE_TABLE_TODO, updateValues, KEY_ROWID
+				+ "=" + rowId, null) > 0;
+	}
+	
+	
+	/**
+	 * Deletes todo
+	 */
+	public boolean deleteTodo(long rowId) {
+		return mDatabase.delete(DATABASE_TABLE_TODO, KEY_ROWID + "=" + rowId,
+				null) > 0;
+	}
+	
 	/**
 	 * Return a Cursor positioned at the defined todo
 	 */

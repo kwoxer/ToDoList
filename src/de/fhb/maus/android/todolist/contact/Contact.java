@@ -35,11 +35,8 @@ public class Contact implements Parcelable {
 		}
 		
 	}
-	
 
-	
-	public Contact (){
-		
+	public Contact (){		
 	}
 	public long getContactid() {
 		return contactid;

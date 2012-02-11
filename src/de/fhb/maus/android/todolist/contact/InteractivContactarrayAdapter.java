@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.sax.StartElementListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +23,6 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 	private final Activity context;
 	private final String rowId;
 
-//	@SuppressWarnings("unchecked")
 	public InteractivContactarrayAdapter(Activity context, List<Contact> list,String rowId) {
 		super(context, R.layout.contact_row, list);
 		this.context = context;

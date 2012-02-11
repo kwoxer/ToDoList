@@ -1,7 +1,6 @@
 package de.fhb.maus.android.todolist.contact;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.ListActivity;
 import android.content.ContentProviderOperation;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -27,7 +25,6 @@ import android.widget.ListView;
 import de.fhb.maus.android.todolist.R;
 
 public class ContactListShowAllActivity extends ListActivity {
-	//private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
@@ -62,7 +59,6 @@ public class ContactListShowAllActivity extends ListActivity {
 				finish();
 			}
 		});
-		//TODO hier steigt er aus, warum zeigt er die kontakte nimma an?
 		showPhoneContacts();
 		registerForContextMenu(getListView());
 	}
@@ -81,9 +77,6 @@ public class ContactListShowAllActivity extends ListActivity {
 				Contact contact = (Contact) getListAdapter().getItem(
 						info.position);
 				long contactid = contact.getContactid();
-
-				Log.v("displayname", contact.getName());
-				Log.v("contactid", String.valueOf(contactid));
 
 				ContentResolver cr = getContentResolver();
 				String[] params = new String[]{String.valueOf(contactid)};
@@ -122,11 +115,8 @@ public class ContactListShowAllActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// Toast.makeText(this, item + "selected", Toast.LENGTH_LONG).show();
 		Contact item = (Contact) this.getListAdapter().getItem(position);
 
-		// String keyword = item.getName();
-		// Toast.makeText(this, keyword, Toast.LENGTH_SHORT).show();
 
 		Intent i = new Intent(this, ContactEditActivity.class);
 		i.putExtra("contact", item);
@@ -167,14 +157,11 @@ public class ContactListShowAllActivity extends ListActivity {
 				String displayName = names
 						.getString(names
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-				Log.v("showcontact", "displayname");
 				long contactid = names.getLong(names
 						.getColumnIndex(BaseColumns._ID));
-				Log.v("showcontact", "displayname2");
 				mContact.setName(displayName);
 				mContact.setContactid(contactid);
 			}
-			Log.v("showcontact", "displayname3");
 			names.close();
 
 			Cursor phones = getContentResolver().query(
@@ -182,14 +169,11 @@ public class ContactListShowAllActivity extends ListActivity {
 					null,
 					ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
 							+ contactId, null, null);
-			Log.v("showcontact", "displayname4");
 			while (phones.moveToNext()) {
-				Log.v("showcontact", "displayname5");
 				String phoneNumber = phones
 						.getString(phones
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 				mContact.setNumber(phoneNumber);
-				Log.v("showcontact", "displayname6");
 			}
 			phones.close();
 
@@ -218,17 +202,13 @@ public class ContactListShowAllActivity extends ListActivity {
 				selectedContacts.add(mContactsList.get(i));
 			}			
 		}
-		Log.v("checkedContacts size()",String.valueOf(selectedContacts.size()));
 		return selectedContacts;
 	}
 	
 	
 	@Override
 	public void onBackPressed(){
-//		Log.v("onbackPressed in ShowAll BackPressed", "bin drin");
-
 		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
-//		intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
 		setResult(RESULT_CANCELED, intent);
 		finish();
 	}	

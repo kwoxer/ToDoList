@@ -3,29 +3,22 @@ package de.fhb.maus.android.todolist.contact;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
-import android.content.ContentProviderOperation;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.fhb.maus.android.todolist.R;
-import de.fhb.maus.android.todolist.TodoListActivity;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 public class ContactListShowActualActivity extends ListActivity{
@@ -58,16 +51,13 @@ public class ContactListShowActualActivity extends ListActivity{
 				startActivityForResult(new Intent(ContactListShowActualActivity.this, ContactListShowAllActivity.class), 0);				
 			}
 		});
-		Log.v("showcontact", "here we go");
 		mContactsList.clear();
 		mContactsList = getIntent().getParcelableArrayListExtra("contactlist");
 		
 		if (mContactsList != null) {
-			Log.v("OnActivityResult in ShowActual", mContactsList.get(1).getName());
 		}else{
 			mContactsList = new ArrayList<Contact>();
 		}
-		Log.v("showcontact", "here we go");
 		rowId = getIntent().getStringExtra("todoRowid");
 		
 		if(rowId != null){
@@ -77,9 +67,6 @@ public class ContactListShowActualActivity extends ListActivity{
 			mDbHelper.open();
 			showContact(rowId);
 		}
-	
-//		showContact();
-		Log.v("rowId beim create", this.rowId) ;
 		showContact(rowId);
 		registerForContextMenu(getListView());
 	}
@@ -99,10 +86,7 @@ public class ContactListShowActualActivity extends ListActivity{
 						info.position);
 				String contactid = String.valueOf(contact.getContactid());
 
-//				Log.v("displayname", contact.getName());
-//				Log.v("contactid", String.valueOf(contactid));
 				mDbHelper.deleteContact(rowId, contactid);
-//				mAdapter.clear();
 				showContact(rowId);
 				return true;
 		}
@@ -129,7 +113,6 @@ public class ContactListShowActualActivity extends ListActivity{
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-//		ArrayList<Contact> sekContactList = new ArrayList<Contact>();
 		if(resultCode == 0){return ;
 		}
 		mContactsList.clear();
@@ -147,7 +130,6 @@ public class ContactListShowActualActivity extends ListActivity{
 		startManagingCursor(mCursor);
 		for(int i=0; i<mContactsList.size(); i++ ){
 			mCursor.moveToFirst();
-			Log.v("inForschleife", "inforschöleife") ;
 			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
 				contactId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
 				rowId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
@@ -156,7 +138,6 @@ public class ContactListShowActualActivity extends ListActivity{
 				}				
 			}		
 			if(!inTable){
-				Log.v("insert", "insert contactId=" +String.valueOf(mContactsList.get(i).getContactid())+" rowId"+this.rowId) ;
 				mDbHelper.setContact(String.valueOf(mContactsList.get(i).getContactid()), this.rowId);
 			}
 		}
@@ -169,14 +150,10 @@ public class ContactListShowActualActivity extends ListActivity{
 		setListAdapter(mAdapter);
 		mCursor = mDbHelper.fetchContacts(rowId);
 		if (rowId != null && !mCursor.isAfterLast()) {
-//			Log.v("Daisser inner Ifanweisung mit isAfterLast()", "bin ick drin oder watt");
 		startManagingCursor(mCursor);
 			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
 				String contactId = mCursor.getString(mCursor
 						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
-//				String TabelrowId = mCursor.getString(mCursor
-//						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_ROWID));
-				Log.v("showContact", contactId);
 				contactIds.add(contactId);
 			}
 		}
@@ -191,15 +168,8 @@ public class ContactListShowActualActivity extends ListActivity{
 		if (contactIds.isEmpty()) return;
 		Contact mContact;
 		
-//		Cursor cursor = getContentResolver().query(
-//				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 		for(int i = 0 ; i<contactIds.size(); i++){
 			String contactId = contactIds.get(i);
-			Log.v("shoePhoneContactId=", contactId);
-//			cursor.moveToFirst();
-//			while (cursor.moveToNext()) {
-	//			String contactId = cursor.getString(cursor
-	//					.getColumnIndex(BaseColumns._ID));
 				
 				mContact = new Contact();
 	
@@ -210,16 +180,13 @@ public class ContactListShowActualActivity extends ListActivity{
 						ContactsContract.Contacts.CONTENT_URI, null,
 						BaseColumns._ID + " = " + contactId, null, null);
 				names.moveToNext();
-//				while (names.moveToNext()) {
 					String displayName = names
 							.getString(names
 									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-					Log.v("displayName", displayName);
 					long contactid = names.getLong(names
 							.getColumnIndex(BaseColumns._ID));
 					mContact.setName(displayName);
 					mContact.setContactid(contactid);
-//				}
 				
 				names.close();
 	
@@ -228,14 +195,11 @@ public class ContactListShowActualActivity extends ListActivity{
 						null,
 						ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
 								+ contactId, null, null);
-//				Log.v("showcontact", "displayname4");
 				while (phones.moveToNext()) {
-//					Log.v("showcontact", "displayname5");
 					String phoneNumber = phones
 							.getString(phones
 									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 					mContact.setNumber(phoneNumber);
-//					Log.v("showcontact", "displayname6");
 				}
 				phones.close();
 	
@@ -253,7 +217,6 @@ public class ContactListShowActualActivity extends ListActivity{
 	
 				mContactsList.add(mContact);
 				emails.close();
-//			}
 		}
 	}
 }

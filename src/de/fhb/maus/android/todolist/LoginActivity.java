@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,8 +56,9 @@ public class LoginActivity extends Activity {
 				if((event.getAction() == KeyEvent.ACTION_DOWN) && 
 						(keyCode == KeyEvent.KEYCODE_ENTER)){
 					String email = emailField.getText().toString();
-					Log.v("email=", email);
-					if(!email.isEmpty() && isValidEmail(email)){
+					Log.v("email=", "");
+					ev = new EmailValidator();
+					if(!email.isEmpty() && ev.validate(email)){
 						mLogIn.setEnabled(true);
 					}else{
 						mLogIn.setEnabled(false);
@@ -63,6 +66,13 @@ public class LoginActivity extends Activity {
 					return true;
 				}
 				return false;
+			}
+		});
+		emailField.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				error.setText("");				
 			}
 		});
 		
@@ -87,6 +97,26 @@ public class LoginActivity extends Activity {
 			}
 		});
 		
+		pwField.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()== MotionEvent.ACTION_DOWN){
+					error.setText("");
+				}
+				return false;
+			}
+		});
+		emailField.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()== MotionEvent.ACTION_DOWN){
+					error.setText("");
+				}
+				return false;
+			}
+		});
 		
 		
 		
@@ -95,8 +125,8 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				String username = emailField.getText().toString();
 				String password = pwField.getText().toString();
-				ev = new EmailValidator();
-				if (ev.validate(username)) {
+//				ev = new EmailValidator();
+//				if (ev.validate(username)) {
 					ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 					postParameters
 							.add(new BasicNameValuePair("name", username));
@@ -118,7 +148,7 @@ public class LoginActivity extends Activity {
 					} catch (Exception e) {
 						Log.e("Database", e.toString());
 					}
-				} else {
+//				} else {
 					if (!toastAlreadyShown) {
 						Toast toast = Toast.makeText(getApplicationContext(),
 								getResources().getString(R.string.login_toast),
@@ -126,14 +156,12 @@ public class LoginActivity extends Activity {
 						toast.show();
 						toastAlreadyShown = true;
 					}
-				}
+//				}
 			}
 		});
-	}
+	}	
 	
-	private boolean isValidEmail(String email){
-		return true;
-	}
+	
 	
 	
 }
