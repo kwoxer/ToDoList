@@ -43,6 +43,7 @@ public class TodoListActivity extends ListActivity {
 	private Button mAdd, mLogout, mContact, showContactsWithTodo;
 	private int order = 0;
 	private long cid = -1;
+	private String reminder, urgent;
 
 	/**
 	 * Called when the activity is first created.
@@ -80,18 +81,21 @@ public class TodoListActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		//get contactId to show individual Todos
+
+		// get contactId to show individual Todos
 		Contact contact = (Contact) getIntent().getParcelableExtra("contact");
-		if(contact != null){
+		if (contact != null) {
 			cid = contact.getContactid();
 		}
-		
+
 		// Divides the ToDo with a line
 		this.getListView().setDividerHeight(2);
 		// Helps to get our data from a database
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
+
+		reminder = getResources().getStringArray(R.array.priorities)[0];
+		urgent = getResources().getStringArray(R.array.priorities)[1];
 		fillToDoList();
 		registerForContextMenu(getListView());
 	}
@@ -167,29 +171,30 @@ public class TodoListActivity extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 		fillToDoList();
 	}
-	
-	
-	private String getWhereClauseFromCursor(Cursor mCursor){
+
+	private String getWhereClauseFromCursor(Cursor mCursor) {
 		ArrayList<String> list = new ArrayList<String>();
-		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()){
-			list.add(mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID)));
+		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
+				.moveToNext()) {
+			list.add(mCursor.getString(mCursor
+					.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID)));
 		}
-		
+
 		String where = "";
-		for (int i=0;i<list.size() ; i++){
-			where = where +TodoDatabaseAdapter.KEY_ROWID+" ="+list.get(i)+" ";
-			if(i!=(list.size() -1)) where = where + " OR ";
-		}		
+		for (int i = 0; i < list.size(); i++) {
+			where = where + TodoDatabaseAdapter.KEY_ROWID + " =" + list.get(i)
+					+ " ";
+			if (i != (list.size() - 1))
+				where = where + " OR ";
+		}
 		return where;
 	}
-	
-	
-	
+
 	/**
 	 * Always called when the ToDos are shown
 	 */
 	private void fillToDoList() {
-		if(cid == -1){
+		if (cid == -1) {
 			switch (order) {
 				case 0 :
 					mCursor = mDbHelper.fetchAllTodosOrderByDone();
@@ -201,19 +206,22 @@ public class TodoListActivity extends ListActivity {
 					mCursor = mDbHelper.fetchAllTodosOrderByCategory();
 					break;
 			}
-		}else{
+		} else {
 			switch (order) {
 				case 0 :
 					mCursor = mDbHelper.fetchTodoToContacts(cid);
-					mCursor = mDbHelper.fetchIndividualTodosOrderByDone(getWhereClauseFromCursor(mCursor));
+					mCursor = mDbHelper
+							.fetchIndividualTodosOrderByDone(getWhereClauseFromCursor(mCursor));
 					break;
 				case 1 :
 					mCursor = mDbHelper.fetchTodoToContacts(cid);
-					mCursor = mDbHelper.fetchIndividualTodosOrderByDate(getWhereClauseFromCursor(mCursor));
+					mCursor = mDbHelper
+							.fetchIndividualTodosOrderByDate(getWhereClauseFromCursor(mCursor));
 					break;
 				case 2 :
 					mCursor = mDbHelper.fetchTodoToContacts(cid);
-					mCursor = mDbHelper.fetchIndividualTodosOrderByCategory(getWhereClauseFromCursor(mCursor));
+					mCursor = mDbHelper
+							.fetchIndividualTodosOrderByCategory(getWhereClauseFromCursor(mCursor));
 					break;
 			}
 		}
@@ -259,9 +267,8 @@ public class TodoListActivity extends ListActivity {
 				final int nCheckedIndexIcon = (cursor
 						.getColumnIndex(TodoDatabaseAdapter.KEY_CATEGORY));
 				if (columnIndex == nCheckedIndexIcon) {
-					final ImageView ico = (ImageView) view;
-					final String category = cursor.getString(nCheckedIndexIcon);
-
+					final ImageView image = (ImageView) view;
+					String category = cursor.getString(nCheckedIndexIcon);
 					final long id = cursor.getLong(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
 					final String date = cursor.getString(cursor
@@ -272,7 +279,14 @@ public class TodoListActivity extends ListActivity {
 							.getColumnIndex(TodoDatabaseAdapter.KEY_SUMMARY));
 					final String description = cursor.getString(cursor
 							.getColumnIndex(TodoDatabaseAdapter.KEY_DESCRIPTION));
-					ico.setOnClickListener(new OnClickListener() {
+					if (category.equals(reminder)) {
+						image.setTag(reminder);
+						image.setImageResource(R.drawable.ic_todo);
+					} else {
+						image.setTag(urgent);
+						image.setImageResource(R.drawable.ic_todoimportant);
+					}
+					image.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							boolean bla;
@@ -280,30 +294,20 @@ public class TodoListActivity extends ListActivity {
 								bla = true;
 							else
 								bla = false;
-							if (category.equals(getResources().getStringArray(
-									R.array.priorities)[0])) {
-								// when actual icon is reminder
-								// change it to urgent!
-								ico.setImageResource(R.drawable.ic_todoimportant);
-								mDbHelper.updateTodo(id, date, getResources()
-										.getStringArray(R.array.priorities)[1],
-										bla, summary, description);
+							String imageTag = (String) image.getTag();
+							if (imageTag.equals(reminder)) {
+								image.setTag(urgent);
+								image.setImageResource(R.drawable.ic_todoimportant);
+								mDbHelper.updateTodo(id, date, urgent, bla,
+										summary, description);
 							} else {
-								// when actual icon is urgent
-								// change it to reminder!
-								ico.setImageResource(R.drawable.ic_todo);
-								mDbHelper.updateTodo(id, date, getResources()
-										.getStringArray(R.array.priorities)[0],
-										bla, summary, description);
+								image.setTag(reminder);
+								image.setImageResource(R.drawable.ic_todo);
+								mDbHelper.updateTodo(id, date, reminder, bla,
+										summary, description);
 							}
 						}
 					});
-					if (category.equals(getResources().getStringArray(
-							R.array.priorities)[0])) {
-						ico.setImageResource(R.drawable.ic_todo);
-					} else {
-						ico.setImageResource(R.drawable.ic_todoimportant);
-					}
 					return true;
 				}
 
