@@ -42,19 +42,20 @@ public class ContactListShowAllActivity extends ListActivity {
 		addContact.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				startActivityForResult(new Intent(ContactListShowAllActivity.this,
+				startActivityForResult(new Intent(
+						ContactListShowAllActivity.this,
 						ContactEditActivity.class), ACTIVITY_EDIT);
 			}
-		});		
-		
+		});
+
 		Button backToContactList = (Button) findViewById(R.id.actualContactList);
 		backToContactList.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
-				intent.putParcelableArrayListExtra("contactlist", getCheckedContacts());
+				Intent intent = new Intent(ContactListShowAllActivity.this,
+						ContactListShowActualActivity.class);
+				intent.putParcelableArrayListExtra("contactlist",
+						getCheckedContacts());
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -64,7 +65,7 @@ public class ContactListShowAllActivity extends ListActivity {
 	}
 
 	/**
-	 *  Delete a Todo by long click on it 
+	 * Delete a Todo by long click on it
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -100,7 +101,7 @@ public class ContactListShowAllActivity extends ListActivity {
 		return super.onContextItemSelected(item);
 	}
 	/**
-	 *  When a ToDo Delete Menu is gonna be shown
+	 * When a ToDo Delete Menu is gonna be shown
 	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -116,7 +117,6 @@ public class ContactListShowAllActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Contact item = (Contact) this.getListAdapter().getItem(position);
-
 
 		Intent i = new Intent(this, ContactEditActivity.class);
 		i.putExtra("contact", item);
@@ -137,7 +137,7 @@ public class ContactListShowAllActivity extends ListActivity {
 	 * refreshes contact to out listview
 	 */
 	private void showPhoneContacts() {
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList,null);
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList, null);
 		setListAdapter(mAdapter);
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -193,23 +193,23 @@ public class ContactListShowAllActivity extends ListActivity {
 			emails.close();
 		}
 	}
-	
-	private ArrayList<Contact> getCheckedContacts(){
+
+	private ArrayList<Contact> getCheckedContacts() {
 		ArrayList<Contact> selectedContacts = new ArrayList<Contact>();
-		
-		for(int i = 0; i<mContactsList.size();i++){
-			if(mContactsList.get(i).isSelected()){
+
+		for (int i = 0; i < mContactsList.size(); i++) {
+			if (mContactsList.get(i).isSelected()) {
 				selectedContacts.add(mContactsList.get(i));
-			}			
+			}
 		}
 		return selectedContacts;
 	}
-	
-	
+
 	@Override
-	public void onBackPressed(){
-		Intent intent = new Intent(ContactListShowAllActivity.this, ContactListShowActualActivity.class);
+	public void onBackPressed() {
+		Intent intent = new Intent(ContactListShowAllActivity.this,
+				ContactListShowActualActivity.class);
 		setResult(RESULT_CANCELED, intent);
 		finish();
-	}	
+	}
 }
