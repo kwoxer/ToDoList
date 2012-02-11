@@ -27,6 +27,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.52"
             android:text="@string/todo_list_add" />
+
+        <Button
+            android:id="@+id/showContactsWithToDO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text="@string/show_contacts_whith_todo" />
 
         <Button
             android:id="@+id/buttonLogout"
