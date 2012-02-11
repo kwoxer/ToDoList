@@ -49,18 +49,18 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
+		
 		emailField.setOnKeyListener(new OnKeyListener() {
-	
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if((event.getAction() == KeyEvent.ACTION_DOWN) && 
-						(keyCode == KeyEvent.KEYCODE_ENTER)){
+				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					String email = emailField.getText().toString();
 					Log.v("email=", "");
 					ev = new EmailValidator();
-					if(!email.isEmpty() && ev.validate(email)){
+					if (!email.isEmpty() && ev.validate(email)) {
 						mLogIn.setEnabled(true);
-					}else{
+					} else {
 						mLogIn.setEnabled(false);
 					}
 					return true;
@@ -69,26 +69,26 @@ public class LoginActivity extends Activity {
 			}
 		});
 		emailField.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				error.setText("");				
+				error.setText("");
 			}
 		});
-		
+
 		pwField.setOnKeyListener(new OnKeyListener() {
-			
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if((event.getAction() == KeyEvent.ACTION_DOWN) && 
-						(keyCode == KeyEvent.KEYCODE_ENTER)){
+				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					String pw = pwField.getText().toString();
-					if(pw.length() == 6){
+					if (pw.length() == 6) {
 						return true;
-					}else{
+					} else {
 						pwField.setText("");
-						Toast.makeText(getApplicationContext(),
-								getResources().getString(R.string.passwort_to_short),
+						Toast.makeText(
+								getApplicationContext(),
+								getResources().getString(
+										R.string.passwort_to_short),
 								Toast.LENGTH_SHORT).show();
 					}
 					return true;
@@ -96,68 +96,59 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 		});
-		
+
 		pwField.setOnTouchListener(new OnTouchListener() {
-			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()== MotionEvent.ACTION_DOWN){
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					error.setText("");
 				}
 				return false;
 			}
 		});
+
 		emailField.setOnTouchListener(new OnTouchListener() {
-			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()== MotionEvent.ACTION_DOWN){
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					error.setText("");
 				}
 				return false;
 			}
 		});
-		
-		
-		
+
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String username = emailField.getText().toString();
 				String password = pwField.getText().toString();
-					ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-					postParameters
-							.add(new BasicNameValuePair("name", username));
-					postParameters.add(new BasicNameValuePair("pw", password));
-					String response = null;
-					try {
-						response = CustomHttpClient.executeHttpPost(
-								"http://10.0.2.2/login/login.php",
-								postParameters);
-						String res = response.toString();
-						res = res.replaceAll("\\s+", "");
-						if (res.equals("1")) {
-							error.setText("Login accepted");
-							startActivity(new Intent(LoginActivity.this,
-									TodoListActivity.class));
-						} else {
-							error.setText("Login not accepted");
-						}
-					} catch (Exception e) {
-						Log.e("Database", e.toString());
+				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("name", username));
+				postParameters.add(new BasicNameValuePair("pw", password));
+				String response = null;
+				try {
+					response = CustomHttpClient.executeHttpPost(
+							"http://10.0.2.2/login/login.php", postParameters);
+					String res = response.toString();
+					res = res.replaceAll("\\s+", "");
+					if (res.equals("1")) {
+						error.setText("Login accepted");
+						startActivity(new Intent(LoginActivity.this,
+								TodoListActivity.class));
+					} else {
+						error.setText("Login not accepted");
 					}
-					if (!toastAlreadyShown) {
-						Toast toast = Toast.makeText(getApplicationContext(),
-								getResources().getString(R.string.login_toast),
-								Toast.LENGTH_SHORT);
-						toast.show();
-						toastAlreadyShown = true;
-					}
+				} catch (Exception e) {
+					Log.e("Database", e.toString());
+				}
+				if (!toastAlreadyShown) {
+					Toast toast = Toast.makeText(getApplicationContext(),
+							getResources().getString(R.string.login_toast),
+							Toast.LENGTH_SHORT);
+					toast.show();
+					toastAlreadyShown = true;
+				}
 			}
 		});
-	}	
-	
-	
-	
-	
+	}
 }
