@@ -3,7 +3,6 @@ package de.fhb.maus.android.todolist;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,18 +46,16 @@ public class TodoListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todo_list);
-		// Sets up Button for adding a ToDo
 		
 		showContactsWithTodo = (Button) findViewById(R.id.showContactsWithToDO);
 		showContactsWithTodo.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(TodoListActivity.this, ShowContactToTodoActivity.class));				
 			}
 		});
 		
-		
+		// Sets up Button for adding a ToDo
 		mAdd = (Button) findViewById(R.id.buttonAdd);
 		mAdd.setOnClickListener(new OnClickListener() {
 			@Override
