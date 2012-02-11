@@ -54,7 +54,7 @@ public class CustomHttpClient {
 	public static String executeHttpPost(String url,
 			ArrayList<NameValuePair> postParameters) throws Exception {
 		BufferedReader in = null;
-		System.out.println(url);
+		//System.out.println(url);
 		try {
 			HttpClient client = getHttpClient();
 			HttpPost request = new HttpPost(url);
@@ -73,7 +73,7 @@ public class CustomHttpClient {
 				sb.append(line + NL);
 			}
 
-			in.close();
+			//in.close();
 
 			String result = sb.toString();
 			return result;

@@ -31,7 +31,7 @@ public class LoginActivity extends Activity {
 		emailField = (EditText) findViewById(R.id.editTextEmail);
 		pwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
-		
+
 		mLogIn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -45,18 +45,17 @@ public class LoginActivity extends Activity {
 				String response = null;
 				try {
 					response = CustomHttpClient.executeHttpPost(
-							"http://10.0.2.2:8082/login/login.php",
-							postParameters);
+							"http://10.0.2.2/login/login.php", postParameters);
 
 					String res = response.toString();
 					res = res.replaceAll("\\s+", "");
-					if (res.equals("1"))
-						error.setText("Correct Username or Password");
-					else
+					if (res.equals("0") || res.equals(""))
 						error.setText("Sorry!! Incorrect Username or Password");
+					else
+						error.setText("Correct Username or Password");
 				} catch (Exception e) {
-					Log.v(response, e.toString());
-					emailField.setText("scheiﬂ die Wand an,geht net");
+					Log.e("test", e.toString());
+					// emailField.setText("scheiﬂ die Wand an,geht net");
 				}
 
 				// String email = emailField.getText().toString();
