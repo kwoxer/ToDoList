@@ -1,11 +1,15 @@
 package de.fhb.maus.android.todolist;
 
 import java.util.ArrayList;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -45,6 +49,10 @@ public class LoginActivity extends Activity {
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
 
+		TextWatcher watcher = new LocalTextWatcher();
+		mEmailField.addTextChangedListener(watcher);
+		mPwField.addTextChangedListener(watcher);
+		
 		IO.exportDB();
 		
 		if (ServerAvailability.isReachable(serverAddress))
@@ -60,24 +68,23 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		mEmailField.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if ((event.getAction() == KeyEvent.ACTION_DOWN)
-						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					String email = mEmailField.getText().toString();
-					Log.v("email=", "");
-					mEv = new EmailValidator();
-					if (!email.isEmpty() && mEv.validate(email)) {
-						mLogIn.setEnabled(true);
-					} else {
-						mLogIn.setEnabled(false);
-					}
-					return true;
-				}
-				return false;
-			}
-		});
+//		mEmailField.setOnKeyListener(new OnKeyListener() {
+//			@Override
+//			public boolean onKey(View v, int keyCode, KeyEvent event) {
+//				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+//						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
+//					String email = mEmailField.getText().toString();
+//					mEv = new EmailValidator();
+//					if (!email.isEmpty() && mEv.validate(email)) {
+//						mLogIn.setEnabled(true);
+//					} else {
+//						mLogIn.setEnabled(false);
+//					}
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
 		
 		mEmailField.setOnClickListener(new OnClickListener() {
 			@Override
@@ -161,5 +168,34 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
+	
+		updateButtonState();
+	}
+	
+	private void updateButtonState(){
+		boolean enabled = checkEditText(mEmailField)
+				&& checkEditText(mPwField);
+		mLogIn.setEnabled(enabled);
+	}
+	private boolean checkEditText(EditText edit){
+		return Integer.getInteger(edit.getText().toString()) != null;
+	}
+	
+	private class LocalTextWatcher implements TextWatcher{
+
+		@Override
+		public void afterTextChanged(Editable arg0) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {			
+		}
+		
 	}
 }
