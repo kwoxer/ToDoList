@@ -21,13 +21,13 @@ import android.widget.Toast;
 import de.fhb.maus.android.todolist.R;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
-public class ContactListShowActualActivity extends ListActivity{
-	
+public class ContactListShowActualActivity extends ListActivity {
+
 	private Button addContact;
 	private Button backtoContactButton;
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
-	private String rowId;
+	private String mRowId;
 	private TodoDatabaseAdapter mDbHelper;
 	private Cursor mCursor;
 	private static final int DELETE_ID = Menu.FIRST + 1;
@@ -38,41 +38,42 @@ public class ContactListShowActualActivity extends ListActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
-		
+
 		backtoContactButton = (Button) findViewById(R.id.actualContactList);
 		backtoContactButton.setVisibility(8);
-		
 
 		addContact = (Button) findViewById(R.id.buttonAddContact);
 		addContact.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(new Intent(ContactListShowActualActivity.this, ContactListShowAllActivity.class), 0);				
+				startActivityForResult(new Intent(
+						ContactListShowActualActivity.this,
+						ContactListShowAllActivity.class), 0);
 			}
 		});
 		mContactsList.clear();
 		mContactsList = getIntent().getParcelableArrayListExtra("contactlist");
-		
+
 		if (mContactsList != null) {
-		}else{
+		} else {
 			mContactsList = new ArrayList<Contact>();
 		}
-		rowId = getIntent().getStringExtra("todoRowid");
-		
-		if(rowId != null){
-			Toast.makeText(ContactListShowActualActivity.this, "test " + rowId,
-					Toast.LENGTH_SHORT).show();
+		mRowId = getIntent().getStringExtra("todoRowid");
+
+		if (mRowId != null) {
+			Toast.makeText(ContactListShowActualActivity.this,
+					"test " + mRowId, Toast.LENGTH_SHORT).show();
 			mDbHelper = new TodoDatabaseAdapter(this);
 			mDbHelper.open();
-			showContact(rowId);
+			showContact(mRowId);
 		}
-		showContact(rowId);
+		showContact(mRowId);
 		registerForContextMenu(getListView());
 	}
-	
+
 	/**
-	 *  Delete a Todo by long click on it 
+	 * Delete a Todo by long click on it
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -86,16 +87,16 @@ public class ContactListShowActualActivity extends ListActivity{
 						info.position);
 				String contactid = String.valueOf(contact.getContactid());
 
-				mDbHelper.deleteContact(rowId, contactid);
-				showContact(rowId);
+				mDbHelper.deleteContact(mRowId, contactid);
+				showContact(mRowId);
 				return true;
 		}
 
 		return super.onContextItemSelected(item);
 	}
-	
+
 	/**
-	 *  When a ToDo Delete Menu is gonna be shown
+	 * When a ToDo Delete Menu is gonna be shown
 	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -103,9 +104,7 @@ public class ContactListShowActualActivity extends ListActivity{
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
 	}
-	
-	
-	
+
 	/**
 	 * when new result is coming
 	 */
@@ -113,110 +112,120 @@ public class ContactListShowActualActivity extends ListActivity{
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		if(resultCode == 0){return ;
+		if (resultCode == 0) {
+			return;
 		}
 		mContactsList.clear();
 		mContactsList = intent.getParcelableArrayListExtra("contactlist");
 		writeContactsToDb();
-		showContact(rowId);
-		
+		showContact(mRowId);
+
 	}
-	
-	private void writeContactsToDb(){
-		boolean inTable =false;
+
+	private void writeContactsToDb() {
+		boolean inTable = false;
 		String contactId = null;
 		String rowId = null;
 		mCursor = mDbHelper.fetchAllContacts();
 		startManagingCursor(mCursor);
-		for(int i=0; i<mContactsList.size(); i++ ){
+		for (int i = 0; i < mContactsList.size(); i++) {
 			mCursor.moveToFirst();
-			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
-				contactId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
-				rowId = mCursor.getString(mCursor.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
-				if(String.valueOf(mContactsList.get(i).getContactid()).equals(contactId) && this.rowId.equals(rowId)){		
+			for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
+					.moveToNext()) {
+				contactId = mCursor.getString(mCursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_CONTACTID));
+				rowId = mCursor.getString(mCursor
+						.getColumnIndex(TodoDatabaseAdapter.KEY_ROWID));
+				if (String.valueOf(mContactsList.get(i).getContactid()).equals(
+						contactId)
+						&& this.mRowId.equals(rowId)) {
 					inTable = true;
-				}				
-			}		
-			if(!inTable){
-				mDbHelper.setContact(String.valueOf(mContactsList.get(i).getContactid()), this.rowId);
+				}
+			}
+			if (!inTable) {
+				mDbHelper.setContact(
+						String.valueOf(mContactsList.get(i).getContactid()),
+						this.mRowId);
 			}
 		}
-		
+
 	}
-	
-	private void showContact(String rowId){
-		ArrayList<String> contactIds = new ArrayList<String>(); 
-		mAdapter = new InteractivContactarrayAdapter(this, mContactsList,rowId);
+
+	private void showContact(String rowId) {
+		ArrayList<String> contactIds = new ArrayList<String>();
+		mAdapter = new InteractivContactarrayAdapter(this, mContactsList, rowId);
 		setListAdapter(mAdapter);
 		mCursor = mDbHelper.fetchContacts(rowId);
 		if (rowId != null && !mCursor.isAfterLast()) {
-		startManagingCursor(mCursor);
-			for(mCursor.moveToFirst();!mCursor.isAfterLast(); mCursor.moveToNext()){
-				String contactId = mCursor.getString(mCursor
-						.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
+			startManagingCursor(mCursor);
+			for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
+					.moveToNext()) {
+				String contactId = mCursor
+						.getString(mCursor
+								.getColumnIndexOrThrow(TodoDatabaseAdapter.KEY_CONTACTID));
 				contactIds.add(contactId);
 			}
 		}
 		showPhoneContacts(contactIds);
 	}
-	 
+
 	/**
 	 * refreshes contact to out listview
 	 */
 	private void showPhoneContacts(ArrayList<String> contactIds) {
 		mContactsList.clear();
-		if (contactIds.isEmpty()) return;
+		if (contactIds.isEmpty())
+			return;
 		Contact mContact;
-		
-		for(int i = 0 ; i<contactIds.size(); i++){
+
+		for (int i = 0; i < contactIds.size(); i++) {
 			String contactId = contactIds.get(i);
-				
-				mContact = new Contact();
-	
-				/*
-				 * query the phones for each contact
-				 */
-				Cursor names = getContentResolver().query(
-						ContactsContract.Contacts.CONTENT_URI, null,
-						BaseColumns._ID + " = " + contactId, null, null);
-				names.moveToNext();
-					String displayName = names
-							.getString(names
-									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-					long contactid = names.getLong(names
-							.getColumnIndex(BaseColumns._ID));
-					mContact.setName(displayName);
-					mContact.setContactid(contactid);
-				
-				names.close();
-	
-				Cursor phones = getContentResolver().query(
-						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-						null,
-						ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
-								+ contactId, null, null);
-				while (phones.moveToNext()) {
-					String phoneNumber = phones
-							.getString(phones
-									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					mContact.setNumber(phoneNumber);
-				}
-				phones.close();
-	
-				Cursor emails = getContentResolver().query(
-						ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-						null,
-						ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = "
-								+ contactId, null, null);
-				while (emails.moveToNext()) {
-					String email = emails
-							.getString(emails
-									.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
-					mContact.setEmail(email);
-				}
-	
-				mContactsList.add(mContact);
-				emails.close();
+
+			mContact = new Contact();
+
+			/*
+			 * query the phones for each contact
+			 */
+			Cursor names = getContentResolver().query(
+					ContactsContract.Contacts.CONTENT_URI, null,
+					BaseColumns._ID + " = " + contactId, null, null);
+			names.moveToNext();
+			String displayName = names.getString(names
+					.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+			long contactid = names.getLong(names
+					.getColumnIndex(BaseColumns._ID));
+			mContact.setName(displayName);
+			mContact.setContactid(contactid);
+
+			names.close();
+
+			Cursor phones = getContentResolver().query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					null,
+					ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
+							+ contactId, null, null);
+			while (phones.moveToNext()) {
+				String phoneNumber = phones
+						.getString(phones
+								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				mContact.setNumber(phoneNumber);
+			}
+			phones.close();
+
+			Cursor emails = getContentResolver().query(
+					ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+					null,
+					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = "
+							+ contactId, null, null);
+			while (emails.moveToNext()) {
+				String email = emails
+						.getString(emails
+								.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA1));
+				mContact.setEmail(email);
+			}
+
+			mContactsList.add(mContact);
+			emails.close();
 		}
 	}
 }

@@ -7,13 +7,7 @@ Endgerät und Server sollte durch geeignete
 Feedbackelemente angezeigt werden
 
 
-
-
 Die Überprüfung soll asynchron erfolgen.
 Schlägt die Überprüfung fehl, wird eine
 Fehlermeldung ausgegeben.
 
-Todos sollen grundsätzlich nach
-Erledigt/Nichterledigt sortiert sein und dann
-wahlweise nach Wichtigkeit+Datum oder nach
-Datum+Wichtigkeit.
