@@ -30,6 +30,7 @@ import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
 import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
 import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
+import de.fhb.maus.android.todolist.helpers.PATHs;
 
 /**
  * @author Curtis & Sebastian
@@ -77,13 +78,11 @@ public class TodoListActivity extends ListActivity {
 		mLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				if (){
-//					
-//				}
+				// TODO server available
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
 						Toast.LENGTH_SHORT).show();
-				IO.exportDatabase(IO.getInternalDBPath());
+				IO.exportDatabase(PATHs.getInternalDBPath());
 				startActivity(new Intent(TodoListActivity.this,
 						LoginActivity.class));
 			}

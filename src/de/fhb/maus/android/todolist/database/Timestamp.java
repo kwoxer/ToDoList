@@ -2,29 +2,19 @@ package de.fhb.maus.android.todolist.database;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
-import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
-import android.os.Environment;
 
-public class IO {
-
-
-
-	// http://stackoverflow.com/questions/2814213/making-a-database-backup-to-sdcard-on-android
-	public static void exportDatabase(String localFileName) {
+public class Timestamp {
+	
+	public static void writeActualTimestamp(String localFileName) {
 		HttpURLConnection httpUrlConnection = null;
 		OutputStream outputStream;
 		BufferedInputStream fileInputStream;
@@ -33,6 +23,7 @@ public class IO {
 		int bytesTrasferred;
 		String response = "";
 		String serverResponse = "";
+//		String localFileName = "timestamp";
 
 		// Establish a connection
 		try {
@@ -82,30 +73,5 @@ public class IO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
-
-	public static void importDatabase() throws IllegalStateException,
-			MalformedURLException, ProtocolException, IOException {
-
-		String url_str = URLs.getExternalDBPath();
-		FileOutputStream os = new FileOutputStream(PATHs.getInternalDBPath());
-		URL url = new URL(url_str);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.connect();
-
-		int responseCode = conn.getResponseCode();
-		if (responseCode == HttpURLConnection.HTTP_OK) {
-			byte tmp_buffer[] = new byte[4096];
-			InputStream is = conn.getInputStream();
-			int n;
-			while ((n = is.read(tmp_buffer)) > 0) {
-				System.out.println(n);
-				os.write(tmp_buffer, 0, n);
-				os.flush();
-			}
-		}
-		os.close();
 	}
 }

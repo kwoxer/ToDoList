@@ -107,6 +107,7 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
 				try {
+					// gets 1 if login is accepted
 					response = CustomHttpClient.executeHttpPost(phpAddress,
 							postParameters);
 					String res = response.toString();
