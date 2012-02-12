@@ -82,7 +82,7 @@ public class TodoListActivity extends ListActivity {
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
 						Toast.LENGTH_SHORT).show();
-				IO.exportDatabase(PATHs.getInternalDBPath());
+				IO.exportDatabase(PATHs.getInternalDatabasePath());
 				startActivity(new Intent(TodoListActivity.this,
 						LoginActivity.class));
 			}

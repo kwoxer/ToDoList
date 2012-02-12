@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
 import de.fhb.maus.android.todolist.database.IO;
+import de.fhb.maus.android.todolist.database.Timestamps;
+import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
 
@@ -55,6 +57,8 @@ public class LoginActivity extends Activity {
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
+		
+		Timestamps.exportTimestamp(PATHs.getInternalTimestampPath());
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);

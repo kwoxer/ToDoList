@@ -12,9 +12,9 @@ import java.net.URL;
 
 import de.fhb.maus.android.todolist.helpers.URLs;
 
-public class Timestamp {
+public class Timestamps {
 	
-	public static void writeActualTimestamp(String localFileName) {
+	public static void exportTimestamp(String localFileName) {
 		HttpURLConnection httpUrlConnection = null;
 		OutputStream outputStream;
 		BufferedInputStream fileInputStream;
@@ -23,7 +23,6 @@ public class Timestamp {
 		int bytesTrasferred;
 		String response = "";
 		String serverResponse = "";
-//		String localFileName = "timestamp";
 
 		// Establish a connection
 		try {

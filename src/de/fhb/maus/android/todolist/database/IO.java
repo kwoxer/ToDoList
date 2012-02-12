@@ -2,8 +2,6 @@ package de.fhb.maus.android.todolist.database;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,15 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
 import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
-import android.os.Environment;
 
 public class IO {
 
-
-
+	/**
+	 * Used for saving the database on the HTTP Apache server
+	 * @param localFileName
+	 */
 	// http://stackoverflow.com/questions/2814213/making-a-database-backup-to-sdcard-on-android
 	public static void exportDatabase(String localFileName) {
 		HttpURLConnection httpUrlConnection = null;
@@ -76,20 +74,24 @@ public class IO {
 			fileInputStream.close();
 			System.out.println("Database successfully saved on HTTP Server");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Used for saving the database on the emulator
+	 * @throws IllegalStateException
+	 * @throws MalformedURLException
+	 * @throws ProtocolException
+	 * @throws IOException
+	 */
 	public static void importDatabase() throws IllegalStateException,
 			MalformedURLException, ProtocolException, IOException {
 
-		String url_str = URLs.getExternalDBPath();
-		FileOutputStream os = new FileOutputStream(PATHs.getInternalDBPath());
+		String url_str = URLs.getExternalDatabasePath();
+		FileOutputStream os = new FileOutputStream(PATHs.getInternalDatabasePath());
 		URL url = new URL(url_str);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
