@@ -130,7 +130,7 @@ public class Timestamps {
 
 		boolean success = (new File(PATHs.getInternalTimestampPath())).delete();
 		if (!success) {
-			System.out.println("Delete of timestamp failed");
+			System.out.println("Deletion of timestamp failed");
 		}
 	}
 
@@ -161,7 +161,7 @@ public class Timestamps {
 			line = data.readLine();
 			data.close();
 		} catch (IOException e) {
-			System.out.println("IO Error:" + e.getMessage());
+			System.out.println("Error with timestamp from server");
 		}
 		return line;
 	}

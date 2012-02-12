@@ -32,6 +32,7 @@ import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.database.Timestamps;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 import de.fhb.maus.android.todolist.helpers.PATHs;
+import de.fhb.maus.android.todolist.helpers.URLs;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
 
 /**
@@ -48,7 +49,6 @@ public class TodoListActivity extends ListActivity {
 	private int order = 0;
 	private long cid = -1;
 	private String reminder, urgent;
-	private String serverAddress = "10.0.2.2";
 
 	/**
 	 * Called when the activity is first created.
@@ -82,7 +82,7 @@ public class TodoListActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				Timestamps.createTimestampOnDevice();
-				if (ServerAvailability.isReachable(serverAddress)){
+				if (ServerAvailability.isReachable(URLs.getExternalServerIP())){
 					// when device is online send database and timestamp
 					IO.exportDatabase(PATHs.getInternalDatabasePath());
 					Timestamps.exportTimestampToServer();
@@ -268,8 +268,8 @@ public class TodoListActivity extends ListActivity {
 					test.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Toast.makeText(TodoListActivity.this, "test " + id,
-									Toast.LENGTH_SHORT).show();
+//							Toast.makeText(TodoListActivity.this, "test " + id,
+//									Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(TodoListActivity.this,
 									ContactListShowActualActivity.class);
 

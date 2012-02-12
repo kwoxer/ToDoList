@@ -20,5 +20,7 @@ public class URLs {
 	public static String getExternalServerIP() {
 		return "10.0.2.2";
 	}
-
+	public static String getPackageName() {
+		return "/data/de.fhb.maus.android.todolist/databases/";
+	}
 }

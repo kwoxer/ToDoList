@@ -11,6 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -219,6 +220,7 @@ public class LoginActivity extends Activity {
 		View layout = inflater.inflate(R.layout.popup_window,
 				(ViewGroup) findViewById(R.id.popup_element));
 		pw = new PopupWindow(layout, 230, 200, true);
+		pw.setBackgroundDrawable(new BitmapDrawable());
 		pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 		Button cancelButton = (Button) layout
 				.findViewById(R.id.end_data_send_button);

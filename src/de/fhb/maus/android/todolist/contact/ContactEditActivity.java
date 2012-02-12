@@ -49,7 +49,7 @@ public class ContactEditActivity extends Activity {
 			if (displayName != null) {
 				mName.setText(displayName);
 				mName.setEnabled(false);
-				mSave.setText("bearbeiten");
+				mSave.setText(getResources().getString(R.string.contact_edit_button_edit));
 				String phonenumber = mContact.getNumber();
 				if (phonenumber != null) {
 					mPhone.setText(phonenumber);
@@ -79,7 +79,7 @@ public class ContactEditActivity extends Activity {
 		String editedName = mName.getText().toString();
 		if ("".equals(editedName)) {
 			Toast.makeText(ContactEditActivity.this,
-					"Ein Name muss eingegeben werden!", Toast.LENGTH_SHORT)
+					getResources().getString(R.string.contact_edit_button_save_entry), Toast.LENGTH_SHORT)
 					.show();
 		} else {
 			ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
