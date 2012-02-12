@@ -83,7 +83,7 @@ public class Timestamps {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void importTimestampFromServer() {
 
 		String url_str = URLs.getExternalTimestampPath();
@@ -136,12 +136,12 @@ public class Timestamps {
 
 	public static String getTimestampFromDevice() {
 
-		String str = null;
+		String str = "";
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
 					PATHs.getInternalTimestampPath()));
 			while ((str = in.readLine()) != null) {
-				System.out.println(str);
+				 System.out.println(str);
 			}
 			in.close();
 		} catch (IOException e) {
@@ -160,9 +160,8 @@ public class Timestamps {
 			conn.connect();
 			data = new DataInputStream(new BufferedInputStream(
 					conn.getInputStream()));
-
 			while ((line = data.readLine()) != null) {
-				sb.append(line + "\n");
+				sb.append(line);
 			}
 			data.close();
 		} catch (IOException e) {

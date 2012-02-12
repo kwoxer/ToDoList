@@ -40,7 +40,8 @@ public class LoginActivity extends Activity {
 	private Button mLogIn, mLogInLocal;
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
-	private TextView mError, mServerAvailability, mServerTimestamp;
+	private TextView mError, mServerAvailability, mServerTimestamp,
+			mDeviceTimestamp;
 	private EmailValidator mEv;
 	private PopupWindow pw;
 	private String phpAddress = "http://10.0.2.2/login/login.php",
@@ -58,18 +59,21 @@ public class LoginActivity extends Activity {
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServerAvailability = (TextView) findViewById(R.id.textViewServerAvailability);
 		mServerTimestamp = (TextView) findViewById(R.id.textViewServerTimestamp);
+		mDeviceTimestamp = (TextView) findViewById(R.id.textViewDeviceTimestamp);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-		// Timestamps.createTimestampOnDevice();
+//		 Timestamps.createTimestampOnDevice();
 		// Timestamps.deleteTimestampOnDevice();
 		// Timestamps.importTimestampFromServer();
-		// Timestamps.exportTimestampToServer();
+//		 Timestamps.exportTimestampToServer();
 		// Timestamps.getTimestampFromDevice();
 		// Timestamps.getTimestampFromServer();
 
-		mServerTimestamp.setText(MillisecondToDate.getDate(Integer
+		mServerTimestamp.setText(MillisecondToDate.getDate(Long
 				.valueOf(Timestamps.getTimestampFromServer())));
-		System.out.println(Timestamps.getTimestampFromServer());
+		// mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
+		// .valueOf(Timestamps.getTimestampFromDevice())));
+		System.out.println(Timestamps.getTimestampFromDevice());
 
 		// set a watcher on Email and Password
 		TextWatcher watcher = new LocalTextWatcher();
