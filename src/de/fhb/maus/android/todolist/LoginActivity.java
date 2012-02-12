@@ -31,7 +31,7 @@ import de.fhb.maus.android.todolist.validator.EmailValidator;
 
 public class LoginActivity extends Activity {
 
-	private Button mLogIn, mExit;
+	private Button mLogIn, mLogInLocal;
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
 	private TextView mError, mServer;
@@ -50,18 +50,18 @@ public class LoginActivity extends Activity {
 		mLogIn.setEnabled(false);
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
-		mExit = (Button) findViewById(R.id.buttonExit);
+		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 
 		if (ServerAvailability.isReachable5(serverAddress))
-			mServer.setText("Server available!");
+			mServer.setText("Server online!");
 		else
-			mServer.setText("Server not available!");
+			mServer.setText("Server offline!");
 
-		mExit.setOnClickListener(new OnClickListener() {
+		mLogInLocal.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(LoginActivity.this,

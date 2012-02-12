@@ -47,11 +47,11 @@
             android:text="@string/login_login" />
 
         <Button
-            android:id="@+id/buttonExit"
+            android:id="@+id/buttonLoginLocal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.57"
-            android:text="@string/login_exit" />
+            android:text="@string/login_login_local" />
     </LinearLayout>
 
     <TextView

@@ -16,7 +16,7 @@
     <string name="additionalTodoNoChanges">was NOT saved.</string>
     <string name="additionalLoggedOut">You are now logged out. Have a nice day :D</string>
     <string name="login_login">Login</string>
-    <string name="login_exit">Exit</string>
+    <string name="login_login_local">Login (Local)</string>
     <string name="login_hint_mail">E-Mail</string>
     <string name="login_hint_pass">Password</string>
     <string name="login_toast">You must set an correct E-Mail!</string>
