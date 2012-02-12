@@ -30,7 +30,7 @@ import de.fhb.maus.android.todolist.server.ServerAvailability;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
 
 public class LoginActivity extends Activity {
-	
+
 	private Button mLogIn, mExit;
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
 	private EmailValidator mEv;
 	private String phpAddress = "http://10.0.2.2/login/login.php",
 			serverAddress = "10.0.2.2";
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +51,20 @@ public class LoginActivity extends Activity {
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
-		
+
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
-		
-		if (ServerAvailability.isReachable1(serverAddress))
-			mServer.setText("Server available!");
-		else
+
+		try {
+			if (ServerAvailability.isReachable5(serverAddress))
+				mServer.setText("Server available!");
+			else
+				mServer.setText("Server not available!");
+		} catch (IOException e2) {
 			mServer.setText("Server not available!");
+			e2.printStackTrace();
+		}
 
 		mExit.setOnClickListener(new OnClickListener() {
 			@Override
@@ -68,7 +73,7 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-		
+
 		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -80,7 +85,7 @@ public class LoginActivity extends Activity {
 						Toast.makeText(getApplicationContext(),
 								"You must put in a valid Email",
 								Toast.LENGTH_LONG).show();
-					} 
+					}
 					return true;
 				}
 				return false;
@@ -94,70 +99,71 @@ public class LoginActivity extends Activity {
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					String pw = mPwField.getText().toString();
 					if (pw.length() != 6) {
-						Toast.makeText(getApplicationContext(),
+						Toast.makeText(
+								getApplicationContext(),
 								"You must set a password with a legnth of 6 numbers",
 								Toast.LENGTH_LONG).show();
-					} 
+					}
 					return true;
 				}
 				return false;
 			}
 		});
 
-
 		mLogIn.setOnClickListener(new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			String username = mEmailField.getText().toString();
-			String password = mPwField.getText().toString();
-			ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-			postParameters.add(new BasicNameValuePair("name", username));
-			postParameters.add(new BasicNameValuePair("pw", password));
-			String response = null;
-			try {
-				response = CustomHttpClient.executeHttpPost(phpAddress,
-						postParameters);
-				String res = response.toString();
-				res = res.replaceAll("\\s+", "");
-				if (res.equals("1")) {
-					mError.setText("Login accepted");
-					try {
-						IO.importDatabase();
-					} catch (IllegalStateException e1) {
-						e1.printStackTrace();
-					} catch (MalformedURLException e1) {
-						e1.printStackTrace();
-					} catch (ProtocolException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+			@Override
+			public void onClick(View v) {
+				String username = mEmailField.getText().toString();
+				String password = mPwField.getText().toString();
+				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("name", username));
+				postParameters.add(new BasicNameValuePair("pw", password));
+				String response = null;
+				try {
+					response = CustomHttpClient.executeHttpPost(phpAddress,
+							postParameters);
+					String res = response.toString();
+					res = res.replaceAll("\\s+", "");
+					if (res.equals("1")) {
+						mError.setText("Login accepted");
+						try {
+							IO.importDatabase();
+						} catch (IllegalStateException e1) {
+							e1.printStackTrace();
+						} catch (MalformedURLException e1) {
+							e1.printStackTrace();
+						} catch (ProtocolException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						startActivity(new Intent(LoginActivity.this,
+								TodoListActivity.class));
+					} else {
+						mError.setText("Login not accepted");
+						mLogIn.setEnabled(false);
 					}
-					startActivity(new Intent(LoginActivity.this,
-							TodoListActivity.class));
-				} else {
-					mError.setText("Login not accepted");
-					mLogIn.setEnabled(false);
+				} catch (Exception e) {
+					Log.e("Database", e.toString());
 				}
-			} catch (Exception e) {
-				Log.e("Database", e.toString());
 			}
-		}
-	});
-		
+		});
+
 	}
-	
-	private void updateButtonState(){
+
+	private void updateButtonState() {
 		mEv = new EmailValidator();
 		boolean enabled = mEv.validate(mEmailField.getText().toString())
 				&& checkEditText(mPwField);
 		mLogIn.setEnabled(enabled);
 	}
-	private boolean checkEditText(EditText edit){
-		if(edit.getText().toString().length() == 6) return true;
+	private boolean checkEditText(EditText edit) {
+		if (edit.getText().toString().length() == 6)
+			return true;
 		return false;
 	}
-	
-	private class LocalTextWatcher implements TextWatcher{
+
+	private class LocalTextWatcher implements TextWatcher {
 
 		@Override
 		public void afterTextChanged(Editable arg0) {
@@ -172,8 +178,8 @@ public class LoginActivity extends Activity {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {	
+				int count) {
 		}
-		
+
 	}
 }

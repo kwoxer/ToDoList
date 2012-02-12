@@ -29,8 +29,8 @@
 	<string name="sendsms">Send SMS</string>
 	<string name="sendemail">Send Email</string>
 	<string name="sending">Sending &#8230;</string>
-	<string name="show_contacts_with_todo">show contacts with todo &#8230;</string>
-	<string name="passwort_to_short">Das Passwort muss 6 Zeichen lang sein! &#8230;</string>
+	<string name="show_contacts_with_todo">Show used contacts &#8230;</string>
+	<string name="passwort_to_short">Password has to be 6 signs long &#8230;</string>
 	<string name="contact_item_delete">Delete Contact</string>
 	
 	

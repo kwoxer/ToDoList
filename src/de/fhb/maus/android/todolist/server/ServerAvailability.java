@@ -3,8 +3,11 @@ package de.fhb.maus.android.todolist.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.ProtocolException;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 public class ServerAvailability {
@@ -15,7 +18,9 @@ public class ServerAvailability {
 					exec.getInputStream()));
 			reader.readLine();// PING...bytes of data.
 			String line1 = reader.readLine().trim();
+			System.out.println("1" + line1);
 			String line2 = reader.readLine().trim();
+			System.out.println("2" + line2);
 			exec.destroy();
 			return line1.endsWith("ms") && line2.endsWith("ms");
 		} catch (IOException e) {
@@ -54,10 +59,10 @@ public class ServerAvailability {
 		}
 		return reachable;
 	}
-	
+
 	public static boolean isReachable4(String ip) {
 		try {
-			return  InetAddress.getByName(ip).isReachable(4000);
+			return InetAddress.getByName(ip).isReachable(4000);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,4 +73,16 @@ public class ServerAvailability {
 		return false;
 
 	}
+
+	public static boolean isReachable5(String ip) throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL("http://"
+				+ ip).openConnection();
+		connection.setRequestMethod("HEAD");
+		int responseCode = connection.getResponseCode();
+		if (responseCode != 200) {
+			return false;
+		}
+		return true;
+	}
+
 }
