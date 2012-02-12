@@ -1,5 +1,8 @@
 package de.fhb.maus.android.todolist;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
@@ -50,7 +53,23 @@ public class LoginActivity extends Activity {
 		mExit = (Button) findViewById(R.id.buttonExit);
 		
 		// Exports Database to the HTTP Server
-		IO.exportDatabase(IO.getDBName());
+		//IO.exportDatabase(IO.getInternalDBPath());
+		
+		try {
+			IO.importDatabase();
+		} catch (IllegalStateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);

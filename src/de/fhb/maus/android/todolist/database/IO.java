@@ -2,21 +2,24 @@ package de.fhb.maus.android.todolist.database;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import android.os.Environment;
 
 public class IO {
 
-	public static String getDBName() {
+	// http://stackoverflow.com/questions/7300044/trying-to-export-db-to-sdcard
+	public static String getInternalDBPath() {
 		String packageName = "de.fhb.maus.android.todolist";
 		String dbName = "applicationdata";
 		File dbPath = new File(Environment.getDataDirectory() + "/data/"
@@ -24,7 +27,14 @@ public class IO {
 		String currentDBPath = dbPath.getAbsolutePath();
 		return currentDBPath;
 	}
+	public static String getExternalDBPath() {
+		return "http://10.0.2.2/upload/database.db";
+	}
+	public static String getExternalUploadPHP() {
+		return "http://10.0.2.2/upload/upload.php";
+	}
 
+	// http://stackoverflow.com/questions/2814213/making-a-database-backup-to-sdcard-on-android
 	public static void exportDatabase(String localFileName) {
 		HttpURLConnection httpUrlConnection = null;
 		OutputStream outputStream;
@@ -38,7 +48,7 @@ public class IO {
 		// Establish a connection
 		try {
 			httpUrlConnection = (HttpURLConnection) new URL(
-					"http://10.0.2.2/upload/upload.php").openConnection();
+					getExternalUploadPHP()).openConnection();
 			httpUrlConnection.setDoOutput(true);
 			httpUrlConnection.setRequestMethod("POST");
 			outputStream = httpUrlConnection.getOutputStream();
@@ -86,53 +96,27 @@ public class IO {
 
 	}
 
-	public static void exportDB() {
-		try {
-			File sd = Environment.getExternalStorageDirectory();
-			System.out.println(sd);
-			if (sd.canWrite()) {
-				String currentDBPath = "data/data/com.mypack.myapp/databases/mydb.db";
-				String backupDBPath = sd + "/filename.db";
-				File currentDB = new File(currentDBPath);
-				File backupDB = new File(backupDBPath);
+	public static void importDatabase() throws IllegalStateException,
+			MalformedURLException, ProtocolException, IOException {
 
-				if (currentDB.exists()) {
-					FileChannel src = new FileInputStream(currentDB)
-							.getChannel();
-					FileChannel dst = new FileOutputStream(backupDB)
-							.getChannel();
-					dst.transferFrom(src, 0, src.size());
-					src.close();
-					dst.close();
-				}
+		String url_str = getExternalDBPath();
+		FileOutputStream os = new FileOutputStream(getInternalDBPath());
+		URL url = new URL(url_str);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+
+		int responseCode = conn.getResponseCode();
+		if (responseCode == HttpURLConnection.HTTP_OK) {
+			byte tmp_buffer[] = new byte[4096];
+			InputStream is = conn.getInputStream();
+			int n;
+			while ((n = is.read(tmp_buffer)) > 0) {
+				System.out.println(n);
+				os.write(tmp_buffer, 0, n);
+				os.flush();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		os.close();
 	}
-
-	public static void importDB() {
-		try {
-			File sd = Environment.getExternalStorageDirectory();
-			if (sd.canWrite()) {
-				String currentDBPath = sd + "/filename.db";
-				String backupDBPath = "data/data/com.mypack.myapp/databases/mydb_2.db";
-				File currentDB = new File(currentDBPath);
-				File backupDB = new File(backupDBPath);
-
-				if (currentDB.exists()) {
-					FileChannel src = new FileInputStream(currentDB)
-							.getChannel();
-					FileChannel dst = new FileOutputStream(backupDB)
-							.getChannel();
-					dst.transferFrom(src, 0, src.size());
-					src.close();
-					dst.close();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }
