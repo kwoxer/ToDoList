@@ -75,7 +75,7 @@ public class ContactListShowActualActivity extends ListActivity {
 	}
 
 	/**
-	 * Delete a Todo by long click on it
+	 * Delete a contact by long click on it
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -145,6 +145,7 @@ public class ContactListShowActualActivity extends ListActivity {
 		String rowId = null;
 		mCursor = mDbHelper.fetchAllContacts();
 		startManagingCursor(mCursor);
+		// query all contacts with todos and ignore duplications
 		for (int i = 0; i < mContactsList.size(); i++) {
 			mCursor.moveToFirst();
 			for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
@@ -159,6 +160,7 @@ public class ContactListShowActualActivity extends ListActivity {
 					inTable = true;
 				}
 			}
+			//put contact into table
 			if (!inTable) {
 				mDbHelper.setContact(
 						String.valueOf(mContactsList.get(i).getContactid()),
@@ -168,6 +170,9 @@ public class ContactListShowActualActivity extends ListActivity {
 
 	}
 
+	/**
+	 * show all contacts with a spezific todo
+	 */
 	private void showContact(String rowId) {
 		ArrayList<String> contactIds = new ArrayList<String>();
 		mAdapter = new InteractivContactarrayAdapter(this, mContactsList, rowId);
@@ -201,7 +206,7 @@ public class ContactListShowActualActivity extends ListActivity {
 			mContact = new Contact();
 
 			/*
-			 * query the phones for each contact
+			 * query the phonesdetails for each contact
 			 */
 			Cursor names = getContentResolver().query(
 					ContactsContract.Contacts.CONTENT_URI, null,

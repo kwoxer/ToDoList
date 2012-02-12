@@ -27,16 +27,21 @@ public class ShowContactToTodoActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_list);
 
+		//initialise the ui elemets
 		Button addContact = (Button) findViewById(R.id.buttonAddContact);
 		addContact.setVisibility(android.view.View.GONE);
 		Button kontacktlist = (Button) findViewById(R.id.actualContactList);
 		kontacktlist.setVisibility(android.view.View.GONE);
+		
+		//open the database to work with it
 		mDbHelper = new TodoDatabaseAdapter(this);
 		mDbHelper.open();
 		showContacts();
 		registerForContextMenu(getListView());
 	}
-
+	/**
+	 * show all contacts that attach to a todo
+	 */
 	private void showContacts() {
 		ArrayList<String> contactIds = new ArrayList<String>();
 		mAdapter = new InteractivContactarrayAdapter(this, mContactsList, null);

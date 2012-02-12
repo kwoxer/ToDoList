@@ -30,6 +30,9 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 		this.rowId = rowId;
 	}
 
+	/*
+	 * ui elemts for the ViewHolder
+	 */
 	static class ViewHolder {
 		protected TextView text;
 		protected CheckBox checkbox;
@@ -43,6 +46,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			LayoutInflater inflater = context.getLayoutInflater();
 			view = inflater.inflate(R.layout.contact_row, null);
 			final ViewHolder viewHolder = new ViewHolder();
+			//initialise the ui elemts for the viewholder
 			viewHolder.text = (TextView) view.findViewById(R.id.textViewContactName);
 			viewHolder.checkbox = (CheckBox) view.findViewById(R.id.check);
 			viewHolder.checkbox
@@ -58,6 +62,8 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					});
 			viewHolder.checkbox.setTag(list.get(position));
 			viewHolder.sendSms = (Button) view.findViewById(R.id.buttonsendSms);
+			
+			//set the visibility if a contact had a phonenumber
 			if(list.get(position).getNumber()== null){
 				viewHolder.sendSms.setVisibility(android.view.View.INVISIBLE);
 			}else{
@@ -77,6 +83,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			});
 			
 			viewHolder.sendEmail = (Button) view.findViewById(R.id.buttonSendEmail);
+			//set the visibility if a contact had a emailadress
 			if(list.get(position).getEmail()== null){
 				viewHolder.sendEmail.setVisibility(android.view.View.INVISIBLE);
 			}else{
@@ -96,6 +103,7 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 				}
 			});
 			
+			//set the options for each list in the listview 
 			view.setTag(viewHolder);
 			viewHolder.sendSms.setTag(list.get(position));	
 			viewHolder.sendEmail.setTag(list.get(position));

@@ -30,6 +30,7 @@ public class ContactListShowAllActivity extends ListActivity {
 	private ArrayList<Contact> mContactsList = new ArrayList<Contact>();
 	private ArrayAdapter<Contact> mAdapter;
 	private Contact mContact;
+	
 	/**
 	 * when Activity is created
 	 */
@@ -101,13 +102,13 @@ public class ContactListShowAllActivity extends ListActivity {
 		return super.onContextItemSelected(item);
 	}
 	/**
-	 * When a ToDo Delete Menu is gonna be shown
+	 * When a contact Delete Menu is gonna be shown
 	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, DELETE_ID, 0, R.string.todo_list_delete);
+		menu.add(0, DELETE_ID, 0, R.string.contact_item_delete);
 	}
 
 	/**
@@ -123,6 +124,7 @@ public class ContactListShowAllActivity extends ListActivity {
 
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
+	
 	/**
 	 * when new result is coming
 	 */
@@ -194,6 +196,9 @@ public class ContactListShowAllActivity extends ListActivity {
 		}
 	}
 
+	/*
+	 * put the checkt Contacts to contactlist
+	 */
 	private ArrayList<Contact> getCheckedContacts() {
 		ArrayList<Contact> selectedContacts = new ArrayList<Contact>();
 
