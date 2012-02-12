@@ -57,8 +57,13 @@ public class LoginActivity extends Activity {
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
-		
-		Timestamps.exportTimestamp(PATHs.getInternalTimestampPath());
+
+//		Timestamps.createTimestamp();
+//		Timestamps.deleteTimestamp();
+//		Timestamps.importTimestamp();
+//		Timestamps.exportTimestamp();
+//		Timestamps.getTimestampOnDevice();
+System.out.println( Timestamps.getTimestampOnServer());;
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
@@ -96,7 +101,8 @@ public class LoginActivity extends Activity {
 					if (pw.length() != 6) {
 						Toast.makeText(
 								getApplicationContext(),
-								getResources().getString(R.string.passwort_to_short),
+								getResources().getString(
+										R.string.passwort_to_short),
 								Toast.LENGTH_LONG).show();
 					}
 					return true;
@@ -123,7 +129,8 @@ public class LoginActivity extends Activity {
 						mError.setText("Login accepted");
 						Toast.makeText(
 								getApplicationContext(),
-								getResources().getString(R.string.login_hint_download),
+								getResources().getString(
+										R.string.login_hint_download),
 								Toast.LENGTH_LONG).show();
 						try {
 							IO.importDatabase();
@@ -147,12 +154,12 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-		
+
 		mLogInLocal.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				initiatePopupWindow();
-				
+
 			}
 		});
 	}
@@ -188,17 +195,19 @@ public class LoginActivity extends Activity {
 		}
 
 	}
-	
-	private void initiatePopupWindow(){
-		
-		LayoutInflater inflater = (LayoutInflater) LoginActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.popup_window, (ViewGroup) findViewById(R.id.popup_element));
-		pw= new PopupWindow(layout,
-				100,100,true);
+
+	private void initiatePopupWindow() {
+
+		LayoutInflater inflater = (LayoutInflater) LoginActivity.this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.popup_window,
+				(ViewGroup) findViewById(R.id.popup_element));
+		pw = new PopupWindow(layout, 100, 100, true);
 		pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
-		Button cancelButton = (Button) layout.findViewById(R.id.end_data_send_button);
+		Button cancelButton = (Button) layout
+				.findViewById(R.id.end_data_send_button);
 		cancelButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				pw.dismiss();
@@ -206,6 +215,6 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-		
+
 	}
 }

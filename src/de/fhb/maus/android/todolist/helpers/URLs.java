@@ -11,4 +11,7 @@ public class URLs {
 	public static String getExternalUploadPHP() {
 		return "http://10.0.2.2/upload/upload.php";
 	}
+	public static String getExternalUploadTimestampPHP() {
+		return "http://10.0.2.2/upload/uploadTimestamp.php";
+	}
 }
