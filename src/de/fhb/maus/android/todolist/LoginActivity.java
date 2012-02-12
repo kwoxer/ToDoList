@@ -32,6 +32,7 @@ import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.database.Timestamps;
 import de.fhb.maus.android.todolist.date.MillisecondToDate;
 import de.fhb.maus.android.todolist.helpers.PATHs;
+import de.fhb.maus.android.todolist.helpers.URLs;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
 
@@ -44,8 +45,6 @@ public class LoginActivity extends Activity {
 			mDeviceTimestamp;
 	private EmailValidator mEv;
 	private PopupWindow pw;
-	private String phpAddress = "http://10.0.2.2/login/login.php",
-			serverAddress = "10.0.2.2";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -75,12 +74,14 @@ public class LoginActivity extends Activity {
 		mPwField.addTextChangedListener(watcher);
 
 		// check availability of server
-		if (ServerAvailability.isReachable(serverAddress)) {
-			mServerAvailability.setText("Server online!");
+		if (ServerAvailability.isReachable(URLs.getExternalServerIP())) {
+			mServerAvailability.setText(getResources().getString(
+					R.string.login_server_online));
 			mServerTimestamp.setText(MillisecondToDate.getDate(Long
 					.valueOf(Timestamps.getTimestampFromServer())));
 		} else {
-			mServerAvailability.setText("Server offline!");
+			mServerAvailability.setText(getResources().getString(
+					R.string.login_server_offline));
 			mServerTimestamp.setText("");
 		}
 		mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
@@ -134,12 +135,13 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
 				try {
-					response = CustomHttpClient.executeHttpPost(phpAddress,
-							postParameters);
+					response = CustomHttpClient.executeHttpPost(
+							URLs.getExternalLoginPHP(), postParameters);
 					String res = response.toString();
 					res = res.replaceAll("\\s+", "");
 					if (res.equals("1")) {
-						mError.setText("Login accepted");
+						mError.setText(getResources().getString(
+								R.string.login_login_accepted));
 						Toast.makeText(
 								getApplicationContext(),
 								getResources().getString(
@@ -159,7 +161,8 @@ public class LoginActivity extends Activity {
 						startActivity(new Intent(LoginActivity.this,
 								TodoListActivity.class));
 					} else {
-						mError.setText("Login not accepted");
+						mError.setText(getResources().getString(
+								R.string.login_login_not_accepted));
 						mLogIn.setEnabled(false);
 					}
 				} catch (Exception e) {
