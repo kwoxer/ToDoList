@@ -140,6 +140,7 @@ public class Timestamps {
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
 					PATHs.getInternalTimestampPath()));
+			Timestamps.createTimestampOnDevice();
 			while ((str = in.readLine()) != null) {
 				 System.out.println(str);
 			}
