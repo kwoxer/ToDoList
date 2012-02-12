@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
 
@@ -171,9 +170,6 @@ public class Timestamps {
 		}
 		return sb.toString();
 	}
-	
-	public static 
-	
 
 	public static boolean differentTimestamps(int device, int server) {
 		if (device != server)
