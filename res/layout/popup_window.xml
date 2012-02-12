@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#444444"
+    android:orientation="vertical"
+    android:padding="10px" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="blubb" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal|bottom"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/end_data_send_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel" >
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

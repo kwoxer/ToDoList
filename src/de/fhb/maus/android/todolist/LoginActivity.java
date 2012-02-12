@@ -9,19 +9,22 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
@@ -36,6 +39,7 @@ public class LoginActivity extends Activity {
 	private EditText mEmailField, mPwField;
 	private TextView mError, mServer;
 	private EmailValidator mEv;
+	private PopupWindow pw;
 	private String phpAddress = "http://10.0.2.2/login/login.php",
 			serverAddress = "10.0.2.2";
 
@@ -107,7 +111,6 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
 				try {
-					// gets 1 if login is accepted
 					response = CustomHttpClient.executeHttpPost(phpAddress,
 							postParameters);
 					String res = response.toString();
@@ -144,8 +147,9 @@ public class LoginActivity extends Activity {
 		mLogInLocal.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(LoginActivity.this,
-						TodoListActivity.class));
+				initiatePopupWindow();
+//				startActivity(new Intent(LoginActivity.this,
+//						TodoListActivity.class));
 			}
 		});
 	}
@@ -180,5 +184,24 @@ public class LoginActivity extends Activity {
 				int count) {
 		}
 
+	}
+	
+	private void initiatePopupWindow(){
+		
+		LayoutInflater inflater = (LayoutInflater) LoginActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.popup_window, (ViewGroup) findViewById(R.id.popup_element));
+		pw= new PopupWindow(layout,
+				100,100,true);
+		pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+		Button cancelButton = (Button) layout.findViewById(R.id.end_data_send_button);
+		cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				pw.dismiss();
+				
+			}
+		});
+		
 	}
 }
