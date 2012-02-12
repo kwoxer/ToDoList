@@ -74,6 +74,7 @@ public class LoginActivity extends Activity {
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 
+		// check availability of server
 		if (ServerAvailability.isReachable(serverAddress)) {
 			mServerAvailability.setText("Server online!");
 			mServerTimestamp.setText(MillisecondToDate.getDate(Long
@@ -85,6 +86,7 @@ public class LoginActivity extends Activity {
 		mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
 				.valueOf(Timestamps.getTimestampFromDevice())));
 
+		// changes to email will have an event
 		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -213,7 +215,7 @@ public class LoginActivity extends Activity {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.popup_window,
 				(ViewGroup) findViewById(R.id.popup_element));
-		pw = new PopupWindow(layout, 100, 100, true);
+		pw = new PopupWindow(layout, 230, 200, true);
 		pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 		Button cancelButton = (Button) layout
 				.findViewById(R.id.end_data_send_button);
