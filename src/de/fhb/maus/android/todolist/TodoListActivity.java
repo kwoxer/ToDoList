@@ -77,6 +77,9 @@ public class TodoListActivity extends ListActivity {
 		mLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				if (){
+//					
+//				}
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
 						Toast.LENGTH_SHORT).show();

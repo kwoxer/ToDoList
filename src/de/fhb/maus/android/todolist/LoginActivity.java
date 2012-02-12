@@ -56,15 +56,10 @@ public class LoginActivity extends Activity {
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 
-		try {
-			if (ServerAvailability.isReachable5(serverAddress))
-				mServer.setText("Server available!");
-			else
-				mServer.setText("Server not available!");
-		} catch (IOException e2) {
+		if (ServerAvailability.isReachable5(serverAddress))
+			mServer.setText("Server available!");
+		else
 			mServer.setText("Server not available!");
-			e2.printStackTrace();
-		}
 
 		mExit.setOnClickListener(new OnClickListener() {
 			@Override

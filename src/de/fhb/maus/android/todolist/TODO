@@ -1,13 +1,7 @@
-Die Persistierung der Todos soll auf einem
-Server erfolgen.
+
 Abgleich der lokalen Daten mit den serverseitig
 persistierten Daten
 Erfolg/Misserfolg eines Abgleichs zwischen
 Endgerät und Server sollte durch geeignete
 Feedbackelemente angezeigt werden
-
-
-Die Überprüfung soll asynchron erfolgen.
-Schlägt die Überprüfung fehl, wird eine
-Fehlermeldung ausgegeben.
 
