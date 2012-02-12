@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 		
-		if (ServerAvailability.isReachable(serverAddress))
+		if (ServerAvailability.isReachable1(serverAddress))
 			mServer.setText("Server available!");
 		else
 			mServer.setText("Server not available!");
