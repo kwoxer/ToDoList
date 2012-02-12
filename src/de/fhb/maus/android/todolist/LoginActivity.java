@@ -62,10 +62,10 @@ public class LoginActivity extends Activity {
 		mDeviceTimestamp = (TextView) findViewById(R.id.textViewDeviceTimestamp);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-//		 Timestamps.createTimestampOnDevice();
+		// Timestamps.createTimestampOnDevice();
 		// Timestamps.deleteTimestampOnDevice();
 		// Timestamps.importTimestampFromServer();
-//		 Timestamps.exportTimestampToServer();
+		// Timestamps.exportTimestampToServer();
 		// Timestamps.getTimestampFromDevice();
 		// Timestamps.getTimestampFromServer();
 
@@ -73,7 +73,7 @@ public class LoginActivity extends Activity {
 				.valueOf(Timestamps.getTimestampFromServer())));
 		// mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
 		// .valueOf(Timestamps.getTimestampFromDevice())));
-		System.out.println(Timestamps.getTimestampFromDevice());
+//		System.out.println(Timestamps.getTimestampFromDevice());
 
 		// set a watcher on Email and Password
 		TextWatcher watcher = new LocalTextWatcher();

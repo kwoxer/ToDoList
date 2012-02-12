@@ -145,6 +145,7 @@ public class Timestamps {
 			}
 			in.close();
 		} catch (IOException e) {
+			System.out.println("Error at get timestamp from device");
 		}
 		return str;
 	}
