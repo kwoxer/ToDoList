@@ -48,6 +48,9 @@ public class LoginActivity extends Activity {
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
+		
+		// Exports Database to the HTTP Server
+		IO.exportDatabase(IO.getDBName());
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
