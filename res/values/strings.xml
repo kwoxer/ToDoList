@@ -19,19 +19,19 @@
     <string name="login_login_local">Login (Local)</string>
     <string name="login_hint_mail">E-Mail</string>
     <string name="login_hint_pass">Password</string>
+    <string name="login_hint_download">Internet database was downloaded!</string>
     <string name="login_toast">You must set an correct E-Mail!</string>
     <string name="contact_add">Add contacts</string>
     <string name="contact_edit_name">Name</string>
     <string name="contact_edit_phone">Telephone</string>
     <string name="contact_edit_email">Email</string>
-	<string name="contact_edit_button">Save</string>
-	<string name="showContactList">show contacts</string>
-	<string name="sendsms">Send SMS</string>
-	<string name="sendemail">Send Email</string>
-	<string name="sending">Sending &#8230;</string>
-	<string name="show_contacts_with_todo">Show used contacts &#8230;</string>
-	<string name="passwort_to_short">Password has to be 6 signs long &#8230;</string>
-	<string name="contact_item_delete">Delete Contact</string>
-	
-	
+    <string name="contact_edit_button">Save</string>
+    <string name="showContactList">show contacts</string>
+    <string name="sendsms">Send SMS</string>
+    <string name="sendemail">Send Email</string>
+    <string name="sending">Sending …</string>
+    <string name="show_contacts_with_todo">Show used contacts …</string>
+    <string name="passwort_to_short">Password has to be at least 6 signs long …</string>
+    <string name="contact_item_delete">Delete Contact</string>
+
 </resources>

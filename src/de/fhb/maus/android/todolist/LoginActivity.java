@@ -61,14 +61,6 @@ public class LoginActivity extends Activity {
 		else
 			mServer.setText("Server offline!");
 
-		mLogInLocal.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(LoginActivity.this,
-						TodoListActivity.class));
-			}
-		});
-
 		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -78,7 +70,7 @@ public class LoginActivity extends Activity {
 					mEv = new EmailValidator();
 					if (!mEv.validate(email)) {
 						Toast.makeText(getApplicationContext(),
-								"You must put in a valid Email",
+								getResources().getString(R.string.login_toast),
 								Toast.LENGTH_LONG).show();
 					}
 					return true;
@@ -96,7 +88,7 @@ public class LoginActivity extends Activity {
 					if (pw.length() != 6) {
 						Toast.makeText(
 								getApplicationContext(),
-								"You must set a password with a legnth of 6 numbers",
+								getResources().getString(R.string.passwort_to_short),
 								Toast.LENGTH_LONG).show();
 					}
 					return true;
@@ -121,6 +113,10 @@ public class LoginActivity extends Activity {
 					res = res.replaceAll("\\s+", "");
 					if (res.equals("1")) {
 						mError.setText("Login accepted");
+						Toast.makeText(
+								getApplicationContext(),
+								getResources().getString(R.string.login_hint_download),
+								Toast.LENGTH_LONG).show();
 						try {
 							IO.importDatabase();
 						} catch (IllegalStateException e1) {
@@ -143,7 +139,14 @@ public class LoginActivity extends Activity {
 				}
 			}
 		});
-
+		
+		mLogInLocal.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(LoginActivity.this,
+						TodoListActivity.class));
+			}
+		});
 	}
 
 	private void updateButtonState() {
