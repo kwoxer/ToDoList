@@ -23,14 +23,10 @@ import de.fhb.maus.android.todolist.R;
 
 public class ContactEditActivity extends Activity {
 
-	/**
-	 * the ui elements
-	 */
 	private EditText mName;
 	private EditText mEmail;
 	private EditText mPhone;
 	private Button mSave;
-	private long cid;
 	private Contact mContact;
 	private String displayName;
 
@@ -45,10 +41,11 @@ public class ContactEditActivity extends Activity {
 		mEmail = (EditText) findViewById(R.id.editTextEmail);
 		mSave = (Button) findViewById(R.id.buttonSave);
 
+		//get the actual contact 
 		mContact = (Contact) getIntent().getParcelableExtra("contact");
 		if (mContact != null) {
 			displayName = mContact.getName();
-			cid = mContact.getContactid();
+			// set the enabletype if he had input data
 			if (displayName != null) {
 				mName.setText(displayName);
 				mName.setEnabled(false);
@@ -65,6 +62,8 @@ public class ContactEditActivity extends Activity {
 				}
 			}
 		}
+		
+		//save the entry if the button is clicked
 		mSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,6 +72,9 @@ public class ContactEditActivity extends Activity {
 		});
 	}
 
+	/**
+	 * put the entries into the local adressbook
+	 */
 	private void saveEntry() {
 		String editedName = mName.getText().toString();
 		if ("".equals(editedName)) {
@@ -82,6 +84,7 @@ public class ContactEditActivity extends Activity {
 		} else {
 			ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 			int rawContactInsertIndex = ops.size();
+			//put the displayname into the displaynametabel
 			if(displayName==null){
 				ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
 						.withValue(RawContacts.ACCOUNT_NAME, null)
@@ -95,6 +98,7 @@ public class ContactEditActivity extends Activity {
 			}
 			String editedEmail = mEmail.getText().toString();
 			String editedPhone = mPhone.getText().toString();
+			//put the phonenumber into the numbertabel
 			if (!"".equals(editedPhone)) {
 				ops.add(ContentProviderOperation
 						.newInsert(Data.CONTENT_URI)
@@ -103,6 +107,7 @@ public class ContactEditActivity extends Activity {
 						.withValue(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
 						.withValue(Phone.NUMBER, editedPhone).build());
 			}
+			//put the emiladress into the emailadresstabel
 			if (!"".equals(editedEmail)) {
 				ops.add(ContentProviderOperation
 						.newInsert(Data.CONTENT_URI)
