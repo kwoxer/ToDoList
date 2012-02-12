@@ -5,18 +5,19 @@
     android:layout_height="wrap_content"
     android:background="#444444"
     android:orientation="vertical"
-    android:padding="10px" >
+    android:padding="10dp" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Server is NOT online. All data local!" />
+        android:text="@string/popup_window_text" />
 
     <Button
         android:id="@+id/end_data_send_button"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:text="Yes i know!" android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:text="@string/popup_window_button" >
     </Button>
 
 </LinearLayout>
