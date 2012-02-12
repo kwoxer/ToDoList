@@ -140,10 +140,7 @@ public class Timestamps {
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(
 					PATHs.getInternalTimestampPath()));
-			Timestamps.createTimestampOnDevice();
-			while ((str = in.readLine()) != null) {
-				 System.out.println(str);
-			}
+			str = in.readLine();
 			in.close();
 		} catch (IOException e) {
 			System.out.println("Error at get timestamp from device");
@@ -155,24 +152,22 @@ public class Timestamps {
 
 		URLConnection conn = null;
 		DataInputStream data = null;
-		String line;
-		StringBuffer sb = new StringBuffer();
+		String line = null;
 		try {
 			conn = new URL(URLs.getExternalTimestampPath()).openConnection();
 			conn.connect();
 			data = new DataInputStream(new BufferedInputStream(
 					conn.getInputStream()));
-			while ((line = data.readLine()) != null) {
-				sb.append(line);
-			}
+			line = data.readLine();
 			data.close();
 		} catch (IOException e) {
 			System.out.println("IO Error:" + e.getMessage());
 		}
-		return sb.toString();
+		return line;
 	}
 
 	public static boolean differentTimestamps(int device, int server) {
+
 		if (device != server)
 			return true;
 		else

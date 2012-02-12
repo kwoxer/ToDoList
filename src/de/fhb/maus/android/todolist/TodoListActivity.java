@@ -29,8 +29,10 @@ import de.fhb.maus.android.todolist.contact.Contact;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
 import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
 import de.fhb.maus.android.todolist.database.IO;
+import de.fhb.maus.android.todolist.database.Timestamps;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 import de.fhb.maus.android.todolist.helpers.PATHs;
+import de.fhb.maus.android.todolist.server.ServerAvailability;
 
 /**
  * @author Curtis & Sebastian
@@ -46,6 +48,7 @@ public class TodoListActivity extends ListActivity {
 	private int order = 0;
 	private long cid = -1;
 	private String reminder, urgent;
+	private String serverAddress = "10.0.2.2";
 
 	/**
 	 * Called when the activity is first created.
@@ -78,11 +81,18 @@ public class TodoListActivity extends ListActivity {
 		mLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO server available
-				Toast.makeText(TodoListActivity.this,
-						getResources().getString(R.string.additionalLoggedOut),
-						Toast.LENGTH_SHORT).show();
-				IO.exportDatabase(PATHs.getInternalDatabasePath());
+				Timestamps.createTimestampOnDevice();
+				if (ServerAvailability.isReachable(serverAddress)){
+					// when device is online send database and timestamp
+					IO.exportDatabase(PATHs.getInternalDatabasePath());
+					Timestamps.exportTimestampToServer();
+					Toast.makeText(TodoListActivity.this,
+							getResources().getString(R.string.additionalLoggedOut),
+							Toast.LENGTH_SHORT).show();
+				}else
+					Toast.makeText(TodoListActivity.this,
+							getResources().getString(R.string.additionalLoggedOutOffline),
+							Toast.LENGTH_SHORT).show();
 				startActivity(new Intent(TodoListActivity.this,
 						LoginActivity.class));
 			}

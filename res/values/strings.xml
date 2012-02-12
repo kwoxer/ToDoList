@@ -14,7 +14,8 @@
     <string name="additionalTodoSave">succuessfully saved</string>
     <string name="additionalTodoDelete">succuessfully deleted</string>
     <string name="additionalTodoNoChanges">was NOT saved.</string>
-    <string name="additionalLoggedOut">You are now logged out. Have a nice day :D</string>
+    <string name="additionalLoggedOut">Server is online. All data synchronized!</string>
+    <string name="additionalLoggedOutOffline">Server was offline. All data local saved!</string>
     <string name="login_login">Login</string>
     <string name="login_login_local">Login (Local)</string>
     <string name="login_hint_mail">E-Mail</string>

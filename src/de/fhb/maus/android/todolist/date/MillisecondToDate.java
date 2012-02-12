@@ -15,7 +15,7 @@ public class MillisecondToDate {
 
 	public static String getDate(long milliSec) {
 		mCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+01:00"));
-		mDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		mDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		mDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
 		mCalendar.setTimeInMillis(milliSec);
 		return mDateFormat.format(mCalendar.getTime().getTime());

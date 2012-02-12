@@ -69,21 +69,21 @@ public class LoginActivity extends Activity {
 		// Timestamps.getTimestampFromDevice();
 		// Timestamps.getTimestampFromServer();
 
-		mServerTimestamp.setText(MillisecondToDate.getDate(Long
-				.valueOf(Timestamps.getTimestampFromServer())));
-		// mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
-		// .valueOf(Timestamps.getTimestampFromDevice())));
-//		System.out.println(Timestamps.getTimestampFromDevice());
-
 		// set a watcher on Email and Password
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 
-		if (ServerAvailability.isReachable(serverAddress))
+		if (ServerAvailability.isReachable(serverAddress)) {
 			mServerAvailability.setText("Server online!");
-		else
+			mServerTimestamp.setText(MillisecondToDate.getDate(Long
+					.valueOf(Timestamps.getTimestampFromServer())));
+		} else {
 			mServerAvailability.setText("Server offline!");
+			mServerTimestamp.setText("");
+		}
+		mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
+				.valueOf(Timestamps.getTimestampFromDevice())));
 
 		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override
@@ -226,6 +226,5 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-
 	}
 }
