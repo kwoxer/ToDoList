@@ -30,6 +30,7 @@ import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
 import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.database.Timestamps;
+import de.fhb.maus.android.todolist.date.MillisecondToDate;
 import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
@@ -39,7 +40,7 @@ public class LoginActivity extends Activity {
 	private Button mLogIn, mLogInLocal;
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
-	private TextView mError, mServer;
+	private TextView mError, mServerAvailability, mServerTimestamp;
 	private EmailValidator mEv;
 	private PopupWindow pw;
 	private String phpAddress = "http://10.0.2.2/login/login.php",
@@ -55,25 +56,30 @@ public class LoginActivity extends Activity {
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		mLogIn.setEnabled(false);
 		mError = (TextView) findViewById(R.id.textViewError);
-		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
+		mServerAvailability = (TextView) findViewById(R.id.textViewServerAvailability);
+		mServerTimestamp = (TextView) findViewById(R.id.textViewServerTimestamp);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-		Timestamps.createTimestampOnDevice();
-//		Timestamps.deleteTimestampOnDevice();
-//		Timestamps.importTimestampFromServer();
-		Timestamps.exportTimestampToServer();
-//		Timestamps.getTimestampFromDevice();
-//		Timestamps.getTimestampFromServer();
-		
+		// Timestamps.createTimestampOnDevice();
+		// Timestamps.deleteTimestampOnDevice();
+		// Timestamps.importTimestampFromServer();
+		// Timestamps.exportTimestampToServer();
+		// Timestamps.getTimestampFromDevice();
+		// Timestamps.getTimestampFromServer();
 
+		mServerTimestamp.setText(MillisecondToDate.getDate(Integer
+				.valueOf(Timestamps.getTimestampFromServer())));
+		System.out.println(Timestamps.getTimestampFromServer());
+
+		// set a watcher on Email and Password
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 
-		if (ServerAvailability.isReachable5(serverAddress))
-			mServer.setText("Server online!");
+		if (ServerAvailability.isReachable(serverAddress))
+			mServerAvailability.setText("Server online!");
 		else
-			mServer.setText("Server offline!");
+			mServerAvailability.setText("Server offline!");
 
 		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override

@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class ServerAvailability {
 
-	public static boolean isReachable5(String ip) {
+	public static boolean isReachable(String ip) {
 		HttpURLConnection connection;
 		try {
 			connection = (HttpURLConnection) new URL("http://" + ip)

@@ -14,19 +14,19 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textViewServerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium Text"
+            android:text="Server Timestamp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:id="@+id/textViewServerTimestamp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:text="Server Date"
-            android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="right"/>
-
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
     <TextView
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/login_hint_pass"
         android:inputType="number"
-        android:password="true"
         android:maxLength="6"
+        android:password="true"
         android:typeface="monospace" />
 
     <LinearLayout
@@ -81,25 +81,24 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayoutDevice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textViewDeviceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="right"
-            android:text="Medium Text"
+            android:text="Device Timestamp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <TextView
+            android:id="@+id/textViewDeviceTimestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
 </LinearLayout>
