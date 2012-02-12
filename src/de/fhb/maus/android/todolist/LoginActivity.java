@@ -58,12 +58,13 @@ public class LoginActivity extends Activity {
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-//		Timestamps.createTimestamp();
-//		Timestamps.deleteTimestamp();
-//		Timestamps.importTimestamp();
-//		Timestamps.exportTimestamp();
-//		Timestamps.getTimestampOnDevice();
-System.out.println( Timestamps.getTimestampOnServer());;
+		Timestamps.createTimestampOnDevice();
+//		Timestamps.deleteTimestampOnDevice();
+//		Timestamps.importTimestampFromServer();
+		Timestamps.exportTimestampToServer();
+//		Timestamps.getTimestampFromDevice();
+//		Timestamps.getTimestampFromServer();
+		
 
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);

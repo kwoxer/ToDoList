@@ -24,7 +24,7 @@ import de.fhb.maus.android.todolist.helpers.URLs;
 
 public class Timestamps {
 
-	public static void exportTimestamp() {
+	public static void exportTimestampToServer() {
 
 		HttpURLConnection httpUrlConnection = null;
 		OutputStream outputStream;
@@ -84,7 +84,7 @@ public class Timestamps {
 		}
 	}
 	
-	public static void importTimestamp() {
+	public static void importTimestampFromServer() {
 
 		String url_str = URLs.getExternalTimestampPath();
 		FileOutputStream os;
@@ -114,7 +114,7 @@ public class Timestamps {
 		}
 	}
 
-	public static void createTimestamp() {
+	public static void createTimestampOnDevice() {
 
 		try {
 			FileWriter out = new FileWriter(PATHs.getInternalTimestampPath());
@@ -126,7 +126,7 @@ public class Timestamps {
 		}
 	}
 
-	public static void deleteTimestamp() {
+	public static void deleteTimestampOnDevice() {
 
 		boolean success = (new File(PATHs.getInternalTimestampPath())).delete();
 		if (!success) {
@@ -134,7 +134,7 @@ public class Timestamps {
 		}
 	}
 
-	public static String getTimestampOnDevice() {
+	public static String getTimestampFromDevice() {
 
 		String str = null;
 		try {
@@ -149,7 +149,7 @@ public class Timestamps {
 		return str;
 	}
 
-	public static String getTimestampOnServer() {
+	public static String getTimestampFromServer() {
 
 		URLConnection conn = null;
 		DataInputStream data = null;
