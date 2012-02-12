@@ -148,8 +148,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				initiatePopupWindow();
-//				startActivity(new Intent(LoginActivity.this,
-//						TodoListActivity.class));
+				
 			}
 		});
 	}
@@ -199,7 +198,8 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				pw.dismiss();
-				
+				startActivity(new Intent(LoginActivity.this,
+						TodoListActivity.class));
 			}
 		});
 		
