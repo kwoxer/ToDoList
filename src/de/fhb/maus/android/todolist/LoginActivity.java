@@ -53,8 +53,6 @@ public class LoginActivity extends Activity {
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
 		
-		IO.exportDB();
-		
 		if (ServerAvailability.isReachable(serverAddress))
 			mServer.setText("Server available!");
 		else
@@ -67,29 +65,22 @@ public class LoginActivity extends Activity {
 						TodoListActivity.class));
 			}
 		});
-
-//		mEmailField.setOnKeyListener(new OnKeyListener() {
-//			@Override
-//			public boolean onKey(View v, int keyCode, KeyEvent event) {
-//				if ((event.getAction() == KeyEvent.ACTION_DOWN)
-//						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//					String email = mEmailField.getText().toString();
-//					mEv = new EmailValidator();
-//					if (!email.isEmpty() && mEv.validate(email)) {
-//						mLogIn.setEnabled(true);
-//					} else {
-//						mLogIn.setEnabled(false);
-//					}
-//					return true;
-//				}
-//				return false;
-//			}
-//		});
 		
-		mEmailField.setOnClickListener(new OnClickListener() {
+		mEmailField.setOnKeyListener(new OnKeyListener() {
 			@Override
-			public void onClick(View v) {
-				mError.setText("");
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
+					String email = mEmailField.getText().toString();
+					mEv = new EmailValidator();
+					if (!mEv.validate(email)) {
+						Toast.makeText(getApplicationContext(),
+								"You must put in a valid Email",
+								Toast.LENGTH_LONG).show();
+					} 
+					return true;
+				}
+				return false;
 			}
 		});
 
@@ -99,92 +90,82 @@ public class LoginActivity extends Activity {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					String pw = mPwField.getText().toString();
-					if (pw.length() == 6) {
-						return true;
-					} else {
-						mPwField.setText("");
-						Toast.makeText(
-								getApplicationContext(),
-								getResources().getString(
-										R.string.passwort_to_short),
-								Toast.LENGTH_SHORT).show();
-					}
+					if (pw.length() != 6) {
+						Toast.makeText(getApplicationContext(),
+								"You must set a password with a legnth of 6 numbers",
+								Toast.LENGTH_LONG).show();
+					} 
 					return true;
 				}
 				return false;
 			}
 		});
 
-		mPwField.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					mError.setText("");
-				}
-				return false;
-			}
-		});
-
-		mEmailField.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					mError.setText("");
-				}
-				return false;
-			}
-		});
 
 		mLogIn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String username = mEmailField.getText().toString();
-				String password = mPwField.getText().toString();
-				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("name", username));
-				postParameters.add(new BasicNameValuePair("pw", password));
-				String response = null;
-				try {
-					response = CustomHttpClient.executeHttpPost(phpAddress,
-							postParameters);
-					String res = response.toString();
-					res = res.replaceAll("\\s+", "");
-					if (res.equals("1")) {
-						mError.setText("Login accepted");
-						startActivity(new Intent(LoginActivity.this,
-								TodoListActivity.class));
-					} else {
-						mError.setText("Login not accepted");
-					}
-				} catch (Exception e) {
-					Log.e("Database", e.toString());
+		@Override
+		public void onClick(View v) {
+			String username = mEmailField.getText().toString();
+			String password = mPwField.getText().toString();
+			ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+			postParameters.add(new BasicNameValuePair("name", username));
+			postParameters.add(new BasicNameValuePair("pw", password));
+			String response = null;
+			try {
+				response = CustomHttpClient.executeHttpPost(phpAddress,
+						postParameters);
+				String res = response.toString();
+				res = res.replaceAll("\\s+", "");
+				if (res.equals("1")) {
+					mError.setText("Login accepted");
+					startActivity(new Intent(LoginActivity.this,
+							TodoListActivity.class));
+				} else {
+					mError.setText("Login not accepted");
+					mLogIn.setEnabled(false);
 				}
-				if (!toastAlreadyShown) {
-					Toast toast = Toast.makeText(getApplicationContext(),
-							getResources().getString(R.string.login_toast),
-							Toast.LENGTH_SHORT);
-					toast.show();
-					toastAlreadyShown = true;
-				}
+			} catch (Exception e) {
+				Log.e("Database", e.toString());
 			}
-		});
-	
-		updateButtonState();
+//			mEv = new EmailValidator();
+//			if(!mEv.validate(username)){
+//				mError.setText(R.string.login_toast);
+//			}else{
+//				if(password.length()!= 6){
+//					mError.setText("Login failed! You must set a Password with a legnth of 6");
+//				}
+//			}
+			
+			
+//			if (!toastAlreadyShown) {
+//				Toast toast = Toast.makeText(getApplicationContext(),
+//						getResources().getString(R.string.login_toast),
+//						Toast.LENGTH_SHORT);
+//				toast.show();
+//				toastAlreadyShown = true;
+//			}
+		}
+	});
+		
 	}
 	
 	private void updateButtonState(){
-		boolean enabled = checkEditText(mEmailField)
+		mEv = new EmailValidator();
+		boolean enabled = mEv.validate(mEmailField.getText().toString())
 				&& checkEditText(mPwField);
 		mLogIn.setEnabled(enabled);
 	}
 	private boolean checkEditText(EditText edit){
-		return Integer.getInteger(edit.getText().toString()) != null;
+		if(edit.getText().toString().length() == 6) return true;
+		return false;
 	}
 	
 	private class LocalTextWatcher implements TextWatcher{
 
 		@Override
 		public void afterTextChanged(Editable arg0) {
+			updateButtonState();
+			mError.setText("");
 		}
 
 		@Override
@@ -194,7 +175,7 @@ public class LoginActivity extends Activity {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {			
+				int count) {	
 		}
 		
 	}
