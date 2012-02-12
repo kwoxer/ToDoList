@@ -52,25 +52,6 @@ public class LoginActivity extends Activity {
 		mServer = (TextView) findViewById(R.id.textViewServerAvailability);
 		mExit = (Button) findViewById(R.id.buttonExit);
 		
-		// Exports Database to the HTTP Server
-		//IO.exportDatabase(IO.getInternalDBPath());
-		
-		try {
-			IO.importDatabase();
-		} catch (IllegalStateException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 		TextWatcher watcher = new LocalTextWatcher();
 		mEmailField.addTextChangedListener(watcher);
 		mPwField.addTextChangedListener(watcher);
@@ -140,6 +121,17 @@ public class LoginActivity extends Activity {
 				res = res.replaceAll("\\s+", "");
 				if (res.equals("1")) {
 					mError.setText("Login accepted");
+					try {
+						IO.importDatabase();
+					} catch (IllegalStateException e1) {
+						e1.printStackTrace();
+					} catch (MalformedURLException e1) {
+						e1.printStackTrace();
+					} catch (ProtocolException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					startActivity(new Intent(LoginActivity.this,
 							TodoListActivity.class));
 				} else {
@@ -149,23 +141,6 @@ public class LoginActivity extends Activity {
 			} catch (Exception e) {
 				Log.e("Database", e.toString());
 			}
-//			mEv = new EmailValidator();
-//			if(!mEv.validate(username)){
-//				mError.setText(R.string.login_toast);
-//			}else{
-//				if(password.length()!= 6){
-//					mError.setText("Login failed! You must set a Password with a legnth of 6");
-//				}
-//			}
-			
-			
-//			if (!toastAlreadyShown) {
-//				Toast toast = Toast.makeText(getApplicationContext(),
-//						getResources().getString(R.string.login_toast),
-//						Toast.LENGTH_SHORT);
-//				toast.show();
-//				toastAlreadyShown = true;
-//			}
 		}
 	});
 		

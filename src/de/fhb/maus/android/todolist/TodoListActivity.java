@@ -28,6 +28,7 @@ import android.widget.Toast;
 import de.fhb.maus.android.todolist.contact.Contact;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
 import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
+import de.fhb.maus.android.todolist.database.IO;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 
 /**
@@ -79,6 +80,7 @@ public class TodoListActivity extends ListActivity {
 				Toast.makeText(TodoListActivity.this,
 						getResources().getString(R.string.additionalLoggedOut),
 						Toast.LENGTH_SHORT).show();
+				IO.exportDatabase(IO.getInternalDBPath());
 			}
 		});
 
