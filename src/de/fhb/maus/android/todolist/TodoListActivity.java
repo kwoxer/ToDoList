@@ -28,12 +28,12 @@ import android.widget.Toast;
 import de.fhb.maus.android.todolist.contact.Contact;
 import de.fhb.maus.android.todolist.contact.ContactListShowActualActivity;
 import de.fhb.maus.android.todolist.contact.ShowContactToTodoActivity;
-import de.fhb.maus.android.todolist.database.IO;
-import de.fhb.maus.android.todolist.database.Timestamps;
 import de.fhb.maus.android.todolist.database.TodoDatabaseAdapter;
 import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
+import de.fhb.maus.android.todolist.io.IO;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
+import de.fhb.maus.android.todolist.timestamp.Timestamps;
 
 /**
  * @author Curtis & Sebastian
@@ -84,7 +84,7 @@ public class TodoListActivity extends ListActivity {
 				Timestamps.createTimestampOnDevice();
 				if (ServerAvailability.isReachable(URLs.getExternalServerIP())){
 					// when device is online send database and timestamp
-					IO.exportDatabase(PATHs.getInternalDatabasePath());
+					IO.exportDatabase();
 					Timestamps.exportTimestampToServer();
 					Toast.makeText(TodoListActivity.this,
 							getResources().getString(R.string.additionalLoggedOut),

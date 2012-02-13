@@ -1,4 +1,4 @@
-package de.fhb.maus.android.todolist.database;
+package de.fhb.maus.android.todolist.timestamp;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -166,9 +166,10 @@ public class Timestamps {
 		return line;
 	}
 
-	public static boolean differentTimestamps(int device, int server) {
+	public static boolean databaseDiviceIsNewerThenServer() {
 
-		if (device != server)
+		if (Long.valueOf(getTimestampFromDevice()) >= Long
+				.valueOf(getTimestampFromServer()))
 			return true;
 		else
 			return false;

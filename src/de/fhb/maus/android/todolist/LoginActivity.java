@@ -29,12 +29,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
-import de.fhb.maus.android.todolist.database.IO;
-import de.fhb.maus.android.todolist.database.Timestamps;
 import de.fhb.maus.android.todolist.date.MillisecondToDate;
 import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
+import de.fhb.maus.android.todolist.io.IO;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
+import de.fhb.maus.android.todolist.timestamp.Timestamps;
 import de.fhb.maus.android.todolist.validator.EmailValidator;
 
 public class LoginActivity extends Activity {
@@ -43,7 +43,7 @@ public class LoginActivity extends Activity {
 	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
 	private TextView mError, mServerAvailability, mServerTimestamp,
-			mDeviceTimestamp;
+			mServerText, mDeviceTimestamp, mDifferenceCheck;
 	private EmailValidator mEv;
 	private PopupWindow pw;
 
@@ -58,8 +58,10 @@ public class LoginActivity extends Activity {
 		mLogIn.setEnabled(false);
 		mError = (TextView) findViewById(R.id.textViewError);
 		mServerAvailability = (TextView) findViewById(R.id.textViewServerAvailability);
+		mServerText = (TextView) findViewById(R.id.textViewServerText);
 		mServerTimestamp = (TextView) findViewById(R.id.textViewServerTimestamp);
 		mDeviceTimestamp = (TextView) findViewById(R.id.textViewDeviceTimestamp);
+		mDifferenceCheck = (TextView) findViewById(R.id.textViewDifference);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
 		// Timestamps.createTimestampOnDevice();
@@ -80,10 +82,14 @@ public class LoginActivity extends Activity {
 					R.string.login_server_online));
 			mServerTimestamp.setText(MillisecondToDate.getDate(Long
 					.valueOf(Timestamps.getTimestampFromServer())));
+			if (Timestamps.databaseDiviceIsNewerThenServer())
+				mDifferenceCheck
+						.setText("Online Database outdated. You should sync! Therefore just login.");
 		} else {
 			mServerAvailability.setText(getResources().getString(
 					R.string.login_server_offline));
 			mServerTimestamp.setText("");
+			mServerText.setText("");
 		}
 		mDeviceTimestamp.setText(MillisecondToDate.getDate(Long
 				.valueOf(Timestamps.getTimestampFromDevice())));
@@ -148,17 +154,16 @@ public class LoginActivity extends Activity {
 								getResources().getString(
 										R.string.login_hint_download),
 								Toast.LENGTH_LONG).show();
-						try {
+						if (Timestamps.databaseDiviceIsNewerThenServer()) {
+							// if the device is newer then the server
+							IO.exportDatabase();
+							Timestamps.exportTimestampToServer();
+						}else{
+							// if the server is newer then the device
 							IO.importDatabase();
-						} catch (IllegalStateException e1) {
-							e1.printStackTrace();
-						} catch (MalformedURLException e1) {
-							e1.printStackTrace();
-						} catch (ProtocolException e1) {
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							e1.printStackTrace();
+							Timestamps.importTimestampFromServer();
 						}
+
 						startActivity(new Intent(LoginActivity.this,
 								TodoListActivity.class));
 					} else {

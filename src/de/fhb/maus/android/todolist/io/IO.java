@@ -1,4 +1,4 @@
-package de.fhb.maus.android.todolist.database;
+package de.fhb.maus.android.todolist.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,7 +22,7 @@ public class IO {
 	 * @param localFileName
 	 */
 	// http://stackoverflow.com/questions/2814213/making-a-database-backup-to-sdcard-on-android
-	public static void exportDatabase(String localFileName) {
+	public static void exportDatabase() {
 		HttpURLConnection httpUrlConnection = null;
 		OutputStream outputStream;
 		BufferedInputStream fileInputStream;
@@ -31,6 +31,7 @@ public class IO {
 		int bytesTrasferred;
 		String response = "";
 		String serverResponse = "";
+		String localFileName=PATHs.getInternalDatabasePath();
 
 		// Establish a connection
 		try {
