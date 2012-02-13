@@ -1,13 +1,8 @@
 package de.fhb.maus.android.todolist;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.util.ArrayList;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fhb.maus.android.todolist.database.CustomHttpClient;
 import de.fhb.maus.android.todolist.date.MillisecondToDate;
-import de.fhb.maus.android.todolist.helpers.PATHs;
 import de.fhb.maus.android.todolist.helpers.URLs;
 import de.fhb.maus.android.todolist.io.IO;
 import de.fhb.maus.android.todolist.server.ServerAvailability;
@@ -40,12 +34,11 @@ import de.fhb.maus.android.todolist.validator.EmailValidator;
 public class LoginActivity extends Activity {
 
 	private Button mLogIn, mLogInLocal;
-	private boolean toastAlreadyShown = false;
 	private EditText mEmailField, mPwField;
-	private TextView mError, mServerAvailability, mServerTimestamp,
-			mServerText, mDeviceTimestamp, mDifferenceCheck;
+	private TextView mErrorText, mServerAvailabilityText, mServerTimestamp,
+			mServerText, mDeviceTimestamp, mCheckSyncText;
 	private EmailValidator mEv;
-	private PopupWindow pw;
+	private PopupWindow mPw;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -56,17 +49,17 @@ public class LoginActivity extends Activity {
 		mPwField = (EditText) findViewById(R.id.editTextPassword);
 		mLogIn = (Button) findViewById(R.id.buttonLogin);
 		mLogIn.setEnabled(false);
-		mError = (TextView) findViewById(R.id.textViewError);
-		mServerAvailability = (TextView) findViewById(R.id.textViewServerAvailability);
+		mErrorText = (TextView) findViewById(R.id.textViewError);
+		mServerAvailabilityText = (TextView) findViewById(R.id.textViewServerAvailability);
 		mServerText = (TextView) findViewById(R.id.textViewServerText);
 		mServerTimestamp = (TextView) findViewById(R.id.textViewServerTimestamp);
 		mDeviceTimestamp = (TextView) findViewById(R.id.textViewDeviceTimestamp);
-		mDifferenceCheck = (TextView) findViewById(R.id.textViewDifference);
+		mCheckSyncText = (TextView) findViewById(R.id.textViewDifference);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-		// Timestamps.createTimestampOnDevice();
+		 Timestamps.createTimestampOnDevice();
 		// Timestamps.deleteTimestampOnDevice();
-		// Timestamps.importTimestampFromServer();
+//		 Timestamps.importTimestampFromServer();
 		// Timestamps.exportTimestampToServer();
 		// Timestamps.getTimestampFromDevice();
 		// Timestamps.getTimestampFromServer();
@@ -78,16 +71,29 @@ public class LoginActivity extends Activity {
 
 		// check availability of server
 		if (ServerAvailability.isReachable(URLs.getExternalServerIP())) {
-			mServerAvailability.setText(getResources().getString(
+			// if server available
+			mServerAvailabilityText.setText(getResources().getString(
 					R.string.login_server_online));
+			mServerAvailabilityText.setTextColor(getResources().getColor(
+					R.color.green));
 			mServerTimestamp.setText(MillisecondToDate.getDate(Long
 					.valueOf(Timestamps.getTimestampFromServer())));
-			if (Timestamps.databaseDiviceIsNewerThenServer())
-				mDifferenceCheck
-						.setText("Online Database outdated. You should sync! Therefore just login.");
+			// check if database is different
+			if (Timestamps.databaseDiviceIsNewerThenServer()) {
+				mCheckSyncText.setTextColor(getResources().getColor(
+						R.color.yellow));
+				mCheckSyncText.setText("Out of Sync");
+			} else {
+				mCheckSyncText.setTextColor(getResources().getColor(
+						R.color.darkgreen));
+				mCheckSyncText.setText("Sync");
+			}
 		} else {
-			mServerAvailability.setText(getResources().getString(
+			// if server is not available
+			mServerAvailabilityText.setText(getResources().getString(
 					R.string.login_server_offline));
+			mServerAvailabilityText.setTextColor(getResources().getColor(
+					R.color.red));
 			mServerTimestamp.setText("");
 			mServerText.setText("");
 		}
@@ -141,38 +147,44 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("name", username));
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
-				try {
-					response = CustomHttpClient.executeHttpPost(
-							URLs.getExternalLoginPHP(), postParameters);
-					String res = response.toString();
-					res = res.replaceAll("\\s+", "");
-					if (res.equals("1")) {
-						mError.setText(getResources().getString(
-								R.string.login_login_accepted));
-						Toast.makeText(
-								getApplicationContext(),
-								getResources().getString(
-										R.string.login_hint_download),
-								Toast.LENGTH_LONG).show();
-						if (Timestamps.databaseDiviceIsNewerThenServer()) {
-							// if the device is newer then the server
-							IO.exportDatabase();
-							Timestamps.exportTimestampToServer();
-						}else{
-							// if the server is newer then the device
-							IO.importDatabase();
-							Timestamps.importTimestampFromServer();
-						}
+				if (ServerAvailability.isReachable(URLs.getExternalServerIP())) {
+					
+					try {
+						response = CustomHttpClient.executeHttpPost(
+								URLs.getExternalLoginPHP(), postParameters);
+						String res = response.toString();
+						res = res.replaceAll("\\s+", "");
+						if (res.equals("1")) {
+							mErrorText.setText(getResources().getString(
+									R.string.login_login_accepted));
+							Toast.makeText(
+									getApplicationContext(),
+									getResources().getString(
+											R.string.login_hint_download),
+									Toast.LENGTH_LONG).show();
+							if (Timestamps.databaseDiviceIsNewerThenServer()) {
+								// if the device is newer then the server
+								IO.exportDatabase();
+								Timestamps.exportTimestampToServer();
+							} else {
+								// if the server is newer then the device
+								IO.importDatabase();
+								Timestamps.importTimestampFromServer();
+							}
 
-						startActivity(new Intent(LoginActivity.this,
-								TodoListActivity.class));
-					} else {
-						mError.setText(getResources().getString(
-								R.string.login_login_not_accepted));
-						mLogIn.setEnabled(false);
+							startActivity(new Intent(LoginActivity.this,
+									TodoListActivity.class));
+						} else {
+							mErrorText.setText(getResources().getString(
+									R.string.login_login_not_accepted));
+							mLogIn.setEnabled(false);
+						}
+					} catch (Exception e) {
+						Log.e("Database", e.toString());
 					}
-				} catch (Exception e) {
-					Log.e("Database", e.toString());
+				} else {
+					mErrorText.setText(getResources().getString(
+							R.string.login_login_server_offline));
 				}
 			}
 		});
@@ -203,7 +215,7 @@ public class LoginActivity extends Activity {
 		@Override
 		public void afterTextChanged(Editable arg0) {
 			updateButtonState();
-			mError.setText("");
+			mErrorText.setText("");
 		}
 
 		@Override
@@ -224,16 +236,16 @@ public class LoginActivity extends Activity {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.popup_window,
 				(ViewGroup) findViewById(R.id.popup_element));
-		pw = new PopupWindow(layout, 230, 200, true);
-		pw.setBackgroundDrawable(new BitmapDrawable());
-		pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+		mPw = new PopupWindow(layout, 230, 200, true);
+		mPw.setBackgroundDrawable(new BitmapDrawable());
+		mPw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 		Button cancelButton = (Button) layout
 				.findViewById(R.id.end_data_send_button);
 		cancelButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				pw.dismiss();
+				mPw.dismiss();
 				startActivity(new Intent(LoginActivity.this,
 						TodoListActivity.class));
 			}

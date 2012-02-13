@@ -13,14 +13,13 @@ public class ServerAvailability {
 			connection = (HttpURLConnection) new URL("http://" + ip)
 					.openConnection();
 			connection.setRequestMethod("HEAD");
-			connection.setConnectTimeout(1000);
+			connection.setConnectTimeout(500);
 			int responseCode = connection.getResponseCode();
-			
 			if (responseCode != 200) {
 				return false;
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Server is not reachable");
 			return false;
 		}
 		return true;

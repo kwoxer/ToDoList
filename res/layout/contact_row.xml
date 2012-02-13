@@ -10,16 +10,15 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="10dp"
         android:focusable="false" />
-
+
     <TextView
         android:id="@+id/textViewContactName"
         android:layout_width="135dp"
         android:layout_height="46dp"
         android:text="@+id/textViewContactName"
         android:textSize="20dp" >
-
     </TextView>
-
+
     <Button
         android:id="@+id/buttonsendSms"
         android:layout_width="69dp"
@@ -31,7 +30,7 @@
         android:id="@+id/buttonSendEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sendemail" android:focusable="false"/>
+        android:focusable="false"
+        android:text="@string/sendemail" />
 
 </LinearLayout>
-   

@@ -117,12 +117,20 @@ public class Timestamps {
 	public static void createTimestampOnDevice() {
 
 		try {
+			File file = new File(PATHs.getInternalTimestampPath());
+			file.getParentFile().mkdirs();
+
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
 			FileWriter out = new FileWriter(PATHs.getInternalTimestampPath());
 			out.write("" + System.currentTimeMillis());
 			out.flush();
 			out.close();
+			System.out.println("New Timestamp created.");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Creating of timestamp failed.");
 		}
 	}
 
@@ -167,8 +175,8 @@ public class Timestamps {
 	}
 
 	public static boolean databaseDiviceIsNewerThenServer() {
-
-		if (Long.valueOf(getTimestampFromDevice()) >= Long
+		System.out.println(Long.valueOf(getTimestampFromDevice()));
+		if (Long.valueOf(getTimestampFromDevice())-5 > Long
 				.valueOf(getTimestampFromServer()))
 			return true;
 		else
