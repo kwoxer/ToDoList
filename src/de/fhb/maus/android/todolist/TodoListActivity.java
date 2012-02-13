@@ -81,7 +81,7 @@ public class TodoListActivity extends ListActivity {
 		mLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Timestamps.createTimestampOnDevice();
+				Timestamps.updateTimestampOnDevice();
 				if (ServerAvailability.isReachable(URLs.getExternalServerIP())){
 					// when device is online send database and timestamp
 					IO.exportDatabase();
@@ -268,11 +268,8 @@ public class TodoListActivity extends ListActivity {
 					test.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-//							Toast.makeText(TodoListActivity.this, "test " + id,
-//									Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(TodoListActivity.this,
 									ContactListShowActualActivity.class);
-
 							intent.putExtra("todoRowid", id);
 							startActivity(intent);
 						}

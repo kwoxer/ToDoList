@@ -64,8 +64,8 @@ public class ContactListShowActualActivity extends ListActivity {
 		mRowId = getIntent().getStringExtra("todoRowid");
 
 		if (mRowId != null) {
-			Toast.makeText(ContactListShowActualActivity.this,
-					"test " + mRowId, Toast.LENGTH_SHORT).show();
+			// Toast.makeText(ContactListShowActualActivity.this,
+			// "test " + mRowId, Toast.LENGTH_SHORT).show();
 			mDbHelper = new TodoDatabaseAdapter(this);
 			mDbHelper.open();
 			showContact(mRowId);
@@ -110,8 +110,7 @@ public class ContactListShowActualActivity extends ListActivity {
 
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
-	
-	
+
 	/**
 	 * When a ToDo Delete Menu is gonna be shown
 	 */
@@ -160,7 +159,7 @@ public class ContactListShowActualActivity extends ListActivity {
 					inTable = true;
 				}
 			}
-			//put contact into table
+			// put contact into table
 			if (!inTable) {
 				mDbHelper.setContact(
 						String.valueOf(mContactsList.get(i).getContactid()),

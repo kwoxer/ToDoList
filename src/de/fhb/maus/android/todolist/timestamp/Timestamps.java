@@ -76,7 +76,7 @@ public class Timestamps {
 
 			// Close the file input stream
 			fileInputStream.close();
-			System.out.println("Timestamp successfully saved on HTTP Server");
+			System.out.println("Timestamp successfully saved on HTTP server");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -105,6 +105,7 @@ public class Timestamps {
 				}
 			}
 			os.close();
+			System.out.println("Timestamp successfully saved on the device");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ProtocolException e) {
@@ -113,22 +114,32 @@ public class Timestamps {
 			e.printStackTrace();
 		}
 	}
-
 	public static void createTimestampOnDevice() {
-
+		
 		try {
 			File file = new File(PATHs.getInternalTimestampPath());
-			file.getParentFile().mkdirs();
-
 			if (!file.exists()) {
+				file.getParentFile().mkdirs();
 				file.createNewFile();
+				FileWriter out = new FileWriter(PATHs.getInternalTimestampPath());
+				out.write("" + System.currentTimeMillis());
+				out.flush();
+				out.close();
+				System.out.println("New Timestamp created.");
 			}
+		} catch (IOException e) {
+			System.out.println("Creating of timestamp failed.");
+		}
+	}
 
+	public static void updateTimestampOnDevice() {
+
+		try {
 			FileWriter out = new FileWriter(PATHs.getInternalTimestampPath());
 			out.write("" + System.currentTimeMillis());
 			out.flush();
 			out.close();
-			System.out.println("New Timestamp created.");
+			System.out.println("Timestamp updated.");
 		} catch (IOException e) {
 			System.out.println("Creating of timestamp failed.");
 		}
@@ -175,8 +186,8 @@ public class Timestamps {
 	}
 
 	public static boolean databaseDiviceIsNewerThenServer() {
-		System.out.println(Long.valueOf(getTimestampFromDevice()));
-		if (Long.valueOf(getTimestampFromDevice())-5 > Long
+
+		if (Long.valueOf(getTimestampFromDevice()) > Long
 				.valueOf(getTimestampFromServer()))
 			return true;
 		else

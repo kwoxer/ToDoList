@@ -73,7 +73,7 @@ public class IO {
 
 			// Close the file input stream
 			fileInputStream.close();
-			System.out.println("Database successfully saved on HTTP Server");
+			System.out.println("Database successfully saved on HTTP server");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -104,11 +104,11 @@ public class IO {
 			InputStream is = conn.getInputStream();
 			int n;
 			while ((n = is.read(tmp_buffer)) > 0) {
-				System.out.println(n);
 				os.write(tmp_buffer, 0, n);
 				os.flush();
 			}
 		}
 		os.close();
+		System.out.println("Database successfully saved on the device");
 	}
 }

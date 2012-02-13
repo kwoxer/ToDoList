@@ -57,12 +57,8 @@ public class LoginActivity extends Activity {
 		mCheckSyncText = (TextView) findViewById(R.id.textViewDifference);
 		mLogInLocal = (Button) findViewById(R.id.buttonLoginLocal);
 
-		 Timestamps.createTimestampOnDevice();
-		// Timestamps.deleteTimestampOnDevice();
-//		 Timestamps.importTimestampFromServer();
-		// Timestamps.exportTimestampToServer();
-		// Timestamps.getTimestampFromDevice();
-		// Timestamps.getTimestampFromServer();
+		// create the timestamp on the device just at first start
+		Timestamps.createTimestampOnDevice();
 
 		// set a watcher on Email and Password
 		TextWatcher watcher = new LocalTextWatcher();
@@ -148,7 +144,7 @@ public class LoginActivity extends Activity {
 				postParameters.add(new BasicNameValuePair("pw", password));
 				String response = null;
 				if (ServerAvailability.isReachable(URLs.getExternalServerIP())) {
-					
+
 					try {
 						response = CustomHttpClient.executeHttpPost(
 								URLs.getExternalLoginPHP(), postParameters);
