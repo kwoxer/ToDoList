@@ -17,7 +17,7 @@
             android:id="@+id/textViewServerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Server Timestamp"
+            android:text="@string/login_server_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -25,15 +25,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Server Date"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewServerAvailability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textViewServerAvailability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textViewDifference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -89,7 +101,7 @@
             android:id="@+id/textViewDeviceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Device Timestamp"
+            android:text="@string/login_divice_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -97,7 +109,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 

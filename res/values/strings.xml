@@ -9,6 +9,7 @@
     <string name="additionalTodoSave">succuessfully saved</string>
     <string name="additionalTodoNoChanges">was NOT saved.</string>
     <string name="additionalWrittenBy">Written by KwoXsaN</string>
+    <string name="login_divice_text">Device Timestamp</string>
     <string name="login_hint_download">Internet database was downloaded!</string>
     <string name="login_hint_mail">E-Mail</string>
     <string name="login_hint_pass">Password</string>
@@ -17,6 +18,7 @@
     <string name="login_login_local">Login (Local)</string>
     <string name="login_login_not_accepted">Login not accepted!</string>
     <string name="login_server_online">Server online!</string>
+    <string name="login_server_text">Server Timestamp</string>
     <string name="login_server_offline">Server offline!</string>
     <string name="login_toast">You must set an correct E-Mail!</string>
     <string name="contact_add">Add contacts</string>
