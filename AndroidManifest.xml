@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".TodoListActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
             android:name=".TodoEditActivity"

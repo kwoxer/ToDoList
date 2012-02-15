@@ -1,7 +1,5 @@
 package de.fhb.maus.android.todolist.contact;
 
-import java.io.Serializable;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,7 +7,6 @@ public class Contact implements Parcelable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 
 	private String name = null;
 	private String number = null;

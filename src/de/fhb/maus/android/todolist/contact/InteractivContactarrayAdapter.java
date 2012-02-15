@@ -23,7 +23,8 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 	private final Activity context;
 	private final String rowId;
 
-	public InteractivContactarrayAdapter(Activity context, List<Contact> list,String rowId) {
+	public InteractivContactarrayAdapter(Activity context, List<Contact> list,
+			String rowId) {
 		super(context, R.layout.contact_row, list);
 		this.context = context;
 		this.list = list;
@@ -46,8 +47,9 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 			LayoutInflater inflater = context.getLayoutInflater();
 			view = inflater.inflate(R.layout.contact_row, null);
 			final ViewHolder viewHolder = new ViewHolder();
-			//initialise the ui elemts for the viewholder
-			viewHolder.text = (TextView) view.findViewById(R.id.textViewContactName);
+			// initialise the ui elemts for the viewholder
+			viewHolder.text = (TextView) view
+					.findViewById(R.id.textViewContactName);
 			viewHolder.checkbox = (CheckBox) view.findViewById(R.id.check);
 			viewHolder.checkbox
 					.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -62,52 +64,55 @@ public class InteractivContactarrayAdapter extends ArrayAdapter {
 					});
 			viewHolder.checkbox.setTag(list.get(position));
 			viewHolder.sendSms = (Button) view.findViewById(R.id.buttonsendSms);
-			
-			//set the visibility if a contact had a phonenumber
-			if(list.get(position).getNumber()== null){
+
+			// set the visibility if a contact had a phonenumber
+			if (list.get(position).getNumber() == null) {
 				viewHolder.sendSms.setVisibility(android.view.View.INVISIBLE);
-			}else{
+			} else {
 				viewHolder.sendSms.setVisibility(android.view.View.VISIBLE);
 			}
 			viewHolder.sendSms.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					Contact element = (Contact) viewHolder.sendSms.getTag();
-					Intent intent = new Intent(getContext(),SendingTextActivity.class);
-					intent.putExtra("contact",element);
+					Intent intent = new Intent(getContext(),
+							SendingTextActivity.class);
+					intent.putExtra("contact", element);
 					intent.putExtra("sms", true);
 					intent.putExtra("rowId", rowId);
 					getContext().startActivity(intent);
 				}
 			});
-			
-			viewHolder.sendEmail = (Button) view.findViewById(R.id.buttonSendEmail);
-			//set the visibility if a contact had a emailadress
-			if(list.get(position).getEmail()== null){
+
+			viewHolder.sendEmail = (Button) view
+					.findViewById(R.id.buttonSendEmail);
+			// set the visibility if a contact had a emailadress
+			if (list.get(position).getEmail() == null) {
 				viewHolder.sendEmail.setVisibility(android.view.View.INVISIBLE);
-			}else{
+			} else {
 				viewHolder.sendEmail.setVisibility(android.view.View.VISIBLE);
 			}
 			viewHolder.sendEmail.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					Contact element = (Contact) viewHolder.sendSms.getTag();
-					Intent intent = new Intent(getContext(),SendingTextActivity.class);
-					intent.putExtra("contact",element);
+					Intent intent = new Intent(getContext(),
+							SendingTextActivity.class);
+					intent.putExtra("contact", element);
 					intent.putExtra("sms", false);
 					intent.putExtra("rowId", rowId);
-					getContext().startActivity(intent);	
-					
+					getContext().startActivity(intent);
+
 				}
 			});
-			
-			//set the options for each list in the listview 
+
+			// set the options for each list in the listview
 			view.setTag(viewHolder);
-			viewHolder.sendSms.setTag(list.get(position));	
+			viewHolder.sendSms.setTag(list.get(position));
 			viewHolder.sendEmail.setTag(list.get(position));
-			
+
 		} else {
 			view = convertview;
 			((ViewHolder) view.getTag()).checkbox.setTag(list.get(position));

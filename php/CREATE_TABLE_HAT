@@ -1,5 +1,0 @@
-CREATE TABLE `toDoList`.`hat`(
-`_id` INT NOT NULL , 
-`_cid` INT NOT NULL , 
-FOREIGN KEY (`_id`) REFERENCES todo (_id) , 
-PRIMARY KEY (`_id`, `_cid`)) ENGINE = InnoDB;

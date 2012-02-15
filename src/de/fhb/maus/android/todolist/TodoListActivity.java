@@ -45,7 +45,7 @@ public class TodoListActivity extends ListActivity {
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private Cursor mCursor;
-	private Button mAdd, mLogout, mContact, showContactsWithTodo;
+	private Button mAdd, mLogout, showContactsWithTodo;
 	private int order = 0;
 	private long cid = -1;
 	private String reminder, urgent;
